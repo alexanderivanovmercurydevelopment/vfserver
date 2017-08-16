@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<DriveStructure driveName="C:">
+  <Directories>
+    <Directory name="DIR1">
+      <Directories>
+        <Directory name="DIR5">
+          <Files>
+            <File name="3.txt">
+              <LockingUsers>
+                <LockingUser>TestUser</LockingUser>
+              </LockingUsers>
+            </File>
+            <File name="2.txt">
+              <LockingUsers>
+                <LockingUser>Me</LockingUser>
+              </LockingUsers>
+            </File>
+          </Files>
+        </Directory>
+
+        <Directory name="DIR2" />
+
+        <Directory name="DIR4">
+          <Files>
+            <File name="1.txt" />
+          </Files>
+          <Directories>
+            <Directory name="DIR3" />
+          </Directories>          
+        </Directory>
+      </Directories>
+      <Files />
+    </Directory>
+    <Directory name="DIR7" />
+    <Directory name="dIR8" />
+    <Directory name="DIR9" />
+  </Directories>
+</DriveStructure>

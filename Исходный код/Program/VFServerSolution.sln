@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFS.Server", "VFS.Server\VFS.Server.csproj", "{3E28E1AE-4F14-4396-A6FB-8434435F0F93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFS.Client", "VFS.Client\VFS.Client.csproj", "{61CF0023-5080-43FA-8440-1B5D3D7E59E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFS.InMemoryVirtualDrive", "VFS.InMemoryVirtualDrive\VFS.InMemoryVirtualDrive.csproj", "{5CE28AE2-45B0-40F3-9C33-CDC4104C8809}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFS.Interfaces", "VFS.Interfaces\VFS.Interfaces.csproj", "{55EB38AE-CA38-451F-856F-D42C0AA7B0C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFS.Tests", "VFS.Tests\VFS.Tests.csproj", "{DB4D3784-4824-4BEC-9CBD-DAB2C3E1629C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFS.WCFService", "VFS.WCFService\VFS.WCFService.csproj", "{7F0FEA08-54E0-40B0-9606-E524A3F84A01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VFS.Utilities", "VFS.Utilities\VFS.Utilities.csproj", "{0CDCB296-D0B4-46DA-AD33-AD403B3D90CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E28E1AE-4F14-4396-A6FB-8434435F0F93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E28E1AE-4F14-4396-A6FB-8434435F0F93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E28E1AE-4F14-4396-A6FB-8434435F0F93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E28E1AE-4F14-4396-A6FB-8434435F0F93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61CF0023-5080-43FA-8440-1B5D3D7E59E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61CF0023-5080-43FA-8440-1B5D3D7E59E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61CF0023-5080-43FA-8440-1B5D3D7E59E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61CF0023-5080-43FA-8440-1B5D3D7E59E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE28AE2-45B0-40F3-9C33-CDC4104C8809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE28AE2-45B0-40F3-9C33-CDC4104C8809}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE28AE2-45B0-40F3-9C33-CDC4104C8809}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE28AE2-45B0-40F3-9C33-CDC4104C8809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55EB38AE-CA38-451F-856F-D42C0AA7B0C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55EB38AE-CA38-451F-856F-D42C0AA7B0C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55EB38AE-CA38-451F-856F-D42C0AA7B0C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55EB38AE-CA38-451F-856F-D42C0AA7B0C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB4D3784-4824-4BEC-9CBD-DAB2C3E1629C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB4D3784-4824-4BEC-9CBD-DAB2C3E1629C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB4D3784-4824-4BEC-9CBD-DAB2C3E1629C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB4D3784-4824-4BEC-9CBD-DAB2C3E1629C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0FEA08-54E0-40B0-9606-E524A3F84A01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0FEA08-54E0-40B0-9606-E524A3F84A01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0FEA08-54E0-40B0-9606-E524A3F84A01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0FEA08-54E0-40B0-9606-E524A3F84A01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CDCB296-D0B4-46DA-AD33-AD403B3D90CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CDCB296-D0B4-46DA-AD33-AD403B3D90CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CDCB296-D0B4-46DA-AD33-AD403B3D90CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CDCB296-D0B4-46DA-AD33-AD403B3D90CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

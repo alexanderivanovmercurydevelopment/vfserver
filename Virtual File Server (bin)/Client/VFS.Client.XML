@@ -1,0 +1,639 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VFS.Client</name>
+    </assembly>
+    <members>
+        <member name="T:VFS.Client.ClientApplication">
+            <summary>
+            Класс клиентского приложения виртуального
+            файлового сервера.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.ClientApplication.provider">
+            <summary>
+            Поставщик доступа к интерфейсу работы 
+            с виртуальным файловым сервером.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.ClientApplication.server">
+            <summary>
+            Интерфейс доступа пользователя к виртуальному 
+            файловому серверу.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.ClientApplication.connected">
+            <summary>
+            Подключение к серверу произведено.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.ClientApplication.#ctor(VFS.Interfaces.Service.IVFSSingleUserServiceProvider)">
+            <summary>
+            Клиентское приложение для работы с 
+            виртуальным файловым сервером.
+            </summary>
+            <param name="provider">Поставщик доступа к интерфейсу
+            работы с виртуальным файловым сервером.</param>
+        </member>
+        <member name="M:VFS.Client.ClientApplication.Connect(System.String,System.Nullable{System.Int32},System.String,System.Object[])">
+            <summary>
+            Подключиться к серверу.
+            </summary>
+            <param name="hostName">Имя сервера.</param>
+            <param name="port">Порт.</param>
+            <param name="userName">Имя пользователя.</param>
+            <param name="additionalParams">Дополнительные параметры.</param>
+            <returns>Сообщение о результате подключения.</returns>
+        </member>
+        <member name="M:VFS.Client.ClientApplication.TryPerformCommand(System.String)">
+            <summary>
+            Выполнить команду виртуального файлового сервера.
+            </summary>
+            <param name="commandString">Команда (например: "md C:\test").</param>
+            <returns>Результат выполнения команды (в т.ч. может быть
+            информация об ошибке сервера или подсказка).</returns>
+        </member>
+        <member name="M:VFS.Client.ClientApplication.Disconnect">
+            <summary>
+            Отключиться от сервера.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.ClientCommands">
+            <summary>
+            Перечисление возможных команд, вводимых пользователем.
+            </summary>
+            <remarks>Здесь команды записываются в нижнем регистре.</remarks>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.md">
+            <summary>
+            Создать директорию.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.cd">
+            <summary>
+            Установить текущую рабочую директорию.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.rd">
+            <summary>
+            Удалить директорию.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.deltree">
+            <summary>
+            Удалить директорию и все её поддиректории.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.mf">
+            <summary>
+            Создать файл.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.del">
+            <summary>
+            Удалить файл.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.lock">
+            <summary>
+            Запретить удаление файла.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.unlock">
+            <summary>
+            Отменить запрет удаления файла.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.copy">
+            <summary>
+            Копировать файл или директорию.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.move">
+            <summary>
+            Переместить файл или директорию.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.ClientCommands.print">
+            <summary>
+            Получить информацию о дереве каталогов.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.CommandCreator">
+            <summary>
+            Класс создания экземпляров команд.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.CommandCreator.CreateCommand(System.String,VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды.
+            </summary>
+            <param name="commandName">Имя команды.</param>
+            <param name="VFSService">Интерфейс доступа
+            к виртуальному файловому серверу.</param>
+            <returns>Созданная команда, или null, если команды
+            с таким именем не существует.</returns>
+        </member>
+        <member name="T:VFS.Client.Commands.ConsoleCommandParser">
+            <summary>
+            Класс разбора строки консольной команды.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.ConsoleCommandParser.GetCommandName(System.String)">
+            <summary>
+            Получить имя команды.
+            </summary>
+            <param name="command">Непустая строка команды.</param>
+            <returns>Имя (название) команды.</returns>
+        </member>
+        <member name="M:VFS.Client.Commands.ConsoleCommandParser.GetCommandParams(System.String)">
+            <summary>
+            Получить параметры команды.
+            </summary>
+            <param name="command">Строка команды.</param>
+            <returns>Параметры команды (может содержать 0 параметров).</returns>
+        </member>
+        <member name="M:VFS.Client.Commands.ConsoleCommandParser.ThrowIfEmpty(System.String)">
+            <summary>
+            Сгенерировать исключение, если команда пустая.
+            </summary>
+            <param name="command">Команда.</param>
+        </member>
+        <member name="M:VFS.Client.Commands.ConsoleCommandParser.ThrowIfMultiline(System.String)">
+            <summary>
+            Сгенерировать исключение, если команда
+            состоит более чем из одной строки.
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:VFS.Client.Commands.ConsoleCommandParser.GetAllCommandParts(System.String)">
+            <summary>
+            Получить все отдельные части команды.
+            </summary>
+            <param name="command">Команда, например "md C:/MyDir".</param>
+            <returns>Составные части команды, например "md", "C:/MyDir".</returns>
+        </member>
+        <member name="T:VFS.Client.Commands.CopyCommand">
+            <summary>
+            Команда копирования файла или директории.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.VFSClientCommand">
+            <summary>
+            Команда, выполняемая клиентом виртуального
+            файлового сервера.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Commands.VFSClientCommand.VFSService">
+            <summary>
+            Команда выполняется для этого экземпляра.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.VFSClientCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.VFSClientCommand.Execute(System.String[])">
+            <summary>
+            Выполнить команду.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="M:VFS.Client.Commands.VFSClientCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.VFSClientCommand.MinParametersCount">
+            <summary>
+            Минимальное количество параметров, необходимое для выполнения команды.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.CopyCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.CopyCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду копирования файла или директории.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.CopyCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.DeleteFileCommand">
+            <summary>
+            Команда удаления файла.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.DeleteFileCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.DeleteFileCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду удаления файла.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.DeleteFileCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.DeleteTreeCommand">
+            <summary>
+            Команда удаления директории и всех её поддиректорий.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.DeleteTreeCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.DeleteTreeCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду удаления директории и всех её поддиректорий.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.DeleteTreeCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.LockFileCommand">
+            <summary>
+            Команда запрещения удаления файла.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.LockFileCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.LockFileCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду запрещения удаления файла.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.LockFileCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.MakeDirectoryCommand">
+            <summary>
+            Команда создания директории.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.MakeDirectoryCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.MakeDirectoryCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду создания директории.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.MakeDirectoryCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.MakeFileCommand">
+            <summary>
+            Команда создания файла.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.MakeFileCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.MakeFileCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду создания файла.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.MakeFileCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.MoveCommand">
+            <summary>
+            Команда перемещения файла или директории.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.MoveCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.MoveCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду перемещения файла или директории.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.MoveCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.GetTreeCommand">
+            <summary>
+            Команда получения информации о структуре папок и файлов.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.GetTreeCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.GetTreeCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду получения информации о структуре папок и файлов.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.GetTreeCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.RemoveDirectoryCommand">
+            <summary>
+            Команда удаления директории.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.RemoveDirectoryCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.RemoveDirectoryCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду удаления директории.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.RemoveDirectoryCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.SetCurrentDirectoryCommand">
+            <summary>
+            Команда установки текущей рабочей директории.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.SetCurrentDirectoryCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.SetCurrentDirectoryCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду установки текущей рабочей директории.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.SetCurrentDirectoryCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.Commands.UnlockFileCommand">
+            <summary>
+            Команда снятия запрета на удаление файла.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Commands.UnlockFileCommand.#ctor(VFS.Interfaces.Service.IVFSSingleUserService)">
+            <summary>
+            Создать экземпляр команды, выполняемой клиентом
+            виртуального файлового сервера.
+            </summary>
+            <param name="VFSService">Фасад виртуального файлового
+            сервера (над ним будут производится операции команды).</param>
+        </member>
+        <member name="M:VFS.Client.Commands.UnlockFileCommand.ExecuteImpl(System.String[])">
+            <summary>
+            Выполнить команду снятия запрета на удаление файла.
+            </summary>
+            <param name="parameters">Параметры команды.</param>
+            <returns>Сообщение пользователю о результате выполнения
+            команды или об ошибке.</returns>
+        </member>
+        <member name="P:VFS.Client.Commands.UnlockFileCommand.MinParametersCount">
+            <summary>
+            Необходимое количество параметров команды.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.ConsoleDriveStructureInfo">
+            <summary>
+            Представление информации о структуре диска в удобном для консоли виде.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.ConsoleDriveStructureInfo.driveStructure">
+            <summary>
+            Информация о структуре диска.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.ConsoleDriveStructureInfo.#ctor(System.String)">
+            <summary>
+            Создать экземпляр консольного представления
+            информации о структуре диска.
+            </summary>
+            <param name="xmlDriveInfo">
+            Информация о структуре диска в виде xml.
+            </param>
+        </member>
+        <member name="M:VFS.Client.ConsoleDriveStructureInfo.GetConsoleFriendlyString">
+            <summary>
+            Получить информацию о структуре диска,
+            в пригодном для отображения в консоли виде.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.ConsoleDriveStructureInfo.SortRecursively(VFS.Interfaces.DriveStructureMessageFormat.IVFSDirectoryInfo)">
+            <summary>
+            Произвести сортировку.
+            </summary>
+            <param name="directory">Директория.</param>
+        </member>
+        <member name="M:VFS.Client.ConsoleDriveStructureInfo.GetPresentationStringRecursively(VFS.Interfaces.DriveStructureMessageFormat.IVFSDirectoryInfo,System.String,System.Text.StringBuilder)">
+            <summary>
+            Получить строку представления информации о папке и 
+            её содержимом.
+            </summary>
+            <param name="directory">Папка.</param>
+            <param name="beginningLeftString">Символы, которые 
+            должны выводится слева перед именем папки/файла.</param>
+            <param name="currentResult">Текущая строка представления
+            информации о структуре папок и файлов.</param>
+        </member>
+        <member name="T:VFS.Client.ConsoleNotificationHandler">
+            <summary>
+            Обработчик уведомлений виртуального файлового сервера.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.ConsoleNotificationHandler.HandleNotification(System.String)">
+            <summary>
+            Выполнить какие-либо действия при получении
+            уведомления виртуального файлового сервера.
+            </summary>
+            <param name="notification">Уведомление.</param>
+        </member>
+        <member name="T:VFS.Client.Program">
+            <summary>
+            Консольный клиент виртуального файлового сервера.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.Program.application">
+            <summary>
+            Клиентское приложение для работы с виртуальным
+            файловым сервером.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Program.Main(System.String[])">
+            <summary>
+            Выполнение консольного клиентского приложения.
+            </summary>
+            <param name="args">Параметры командной строки.</param>
+        </member>
+        <member name="M:VFS.Client.Program.WriteProgramDescription">
+            <summary>
+            Отобразить описание приложения.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Program.WriteCommandsDescription">
+            <summary>
+            Вывести названия основных команд.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Program.Connect">
+            <summary>
+            Подключиться к серверу c помощью команды пользователя.
+            </summary>
+            <returns>True - подключение произведено, false - отмена.</returns>
+        </member>
+        <member name="M:VFS.Client.Program.Connect(System.String[])">
+            <summary>
+            Подключиться к серверу.
+            </summary>
+            <param name="parameters">Параметры команды подключения.</param>
+        </member>
+        <member name="M:VFS.Client.Program.PerformCommands">
+            <summary>
+            Выполнение команд виртуального файлового сервера.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Program.SafeDisconnect">
+            <summary>
+            Завершение работы с приложением.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.Program.Quit">
+            <summary>
+            Выход из консоли.
+            </summary>
+        </member>
+        <member name="T:VFS.Client.WCF.WCFBasedServiceProvider">
+            <summary>
+            Поставщик доступа пользователя к интерфейсу виртуального файлового сервера.
+            </summary>
+        </member>
+        <member name="F:VFS.Client.WCF.WCFBasedServiceProvider.duplexFactory">
+            <summary>
+            Фабрика-поставщик экземпляров сервиса.
+            </summary>
+        </member>
+        <member name="M:VFS.Client.WCF.WCFBasedServiceProvider.CreateVFSService(System.String,System.Nullable{System.Int32},VFS.Interfaces.Service.IVFSNotificationHandler,System.Object[])">
+            <summary>
+            Создать интерфейс для доступа одного пользователя
+            к виртуальному файловому серверу.
+            </summary>
+            <param name="serverName">Имя сервера.</param>
+            <param name="port">Порт.</param>
+            <param name="notificationHandler">Обработчик оповещений
+            виртуального файлового сервера.</param>
+            <param name="parameters">Дополнительные параметры.</param>
+            <returns>Интерфейс доступа пользователя к виртуальному 
+            файловому серверу.</returns>
+        </member>
+        <member name="M:VFS.Client.WCF.WCFBasedServiceProvider.Dispose">
+            <summary>
+            Освобождение ресурсов.
+            </summary>
+        </member>
+    </members>
+</doc>

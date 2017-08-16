@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VFS.Utilities</name>
+    </assembly>
+    <members>
+        <member name="T:VFS.Utilities.AppResourceReader">
+            <summary>
+            Класс чтения ресурсов сборки.
+            </summary>
+        </member>
+        <member name="M:VFS.Utilities.AppResourceReader.GetResource(System.Reflection.Assembly,System.String)">
+            <summary>
+            Прочитать ресурс сборки в строку.
+            </summary>
+            <param name="assembly">Сборка.</param>
+            <param name="resourcePath">Полный путь к ресурсу.</param>
+            <returns>Содержимое ресурса в виде строки.</returns>
+        </member>
+        <member name="T:VFS.Utilities.PathExtensions">
+            <summary>
+            Расширяющие методы для работы со строкой пути к файлу.
+            </summary>
+        </member>
+        <member name="M:VFS.Utilities.PathExtensions.ValidateCorrectPath(System.String)">
+            <summary>
+            Проверить корректность пути к файлу/папке.
+            </summary>
+            <param name="filePath">Путь к файлу/папке.</param>
+            <exception cref="T:System.ArgumentException">
+            Путь к папке или файлу некорректен.
+            </exception>
+        </member>
+        <member name="M:VFS.Utilities.PathExtensions.ContainsDriveName(System.String)">
+            <summary>
+            Путь содержит название диска.
+            </summary>
+            <param name="path">Путь.</param>
+            <returns>True - содержит название диска, false - нет.</returns>
+        </member>
+        <member name="M:VFS.Utilities.PathExtensions.GetLowerDriveName(System.String)">
+            <summary>
+            Получить имя диска (например, "c:") в нижнем регистре.
+            </summary>
+            <param name="path">Путь, содержащий в т.ч. имя диска.</param>
+            <returns>Имя диска (с двоеточием, без дополнительных разделителей).</returns>
+        </member>
+        <member name="M:VFS.Utilities.PathExtensions.GetPathWithoutLastItem(System.String)">
+            <summary>
+            Получить путь без последней папки или файла 
+            (и без последнего разделителя).
+            </summary>
+            <param name="path">Путь.</param>
+            <returns>Путь без последней папки или файла.</returns>
+            <exception cref="T:System.ArgumentException">
+            Путь некорректен.
+            </exception>
+        </member>
+        <member name="M:VFS.Utilities.PathExtensions.GetDirectoryOrFileName(System.String)">
+            <summary>
+            Получить имя директории или файла в пути (т.е.
+            название последнего элемента).
+            </summary>
+            <param name="path">Корректный путь.</param>
+            <returns>Название последнего элемента.</returns>
+        </member>
+        <member name="M:VFS.Utilities.PathExtensions.IsCorrectPath(System.String)">
+            <summary>
+            Признак корректности пути к файлу/папке.
+            </summary>
+            <param name="path">Путь к файлу/папке.</param>
+            <returns>True - путь корректен, false - нет.</returns>
+        </member>
+        <member name="T:VFS.Utilities.XMLUtilities">
+            <summary>
+            Вспомогательные методы сериализации/десериализации xml.
+            </summary>
+        </member>
+        <member name="M:VFS.Utilities.XMLUtilities.DeserializeFromXml``1(System.String)">
+            <summary>
+            Сериализовать объект в XML.
+            </summary>
+            <typeparam name="T">Тип объекта.</typeparam>
+            <param name="xml">Объект.</param>
+            <returns>Строка XML, в которую преобразован объект.</returns>
+        </member>
+        <member name="M:VFS.Utilities.XMLUtilities.SerializeToXml``1(``0)">
+            <summary>
+            Сериализовать объект в xml.
+            </summary>
+            <typeparam name="T">Тип объекта.</typeparam>
+            <param name="object">Объект.</param>
+            <returns>XML-представление объекта.</returns>
+        </member>
+        <member name="M:VFS.Utilities.XMLUtilities.ValidateXml(System.String,System.String)">
+            <summary>
+            Проверить соответствие xml схеме xsd.
+            </summary>
+            <param name="xml">XML-содержимое.</param>
+            <param name="xsd">XSD-схема.</param>
+            <returns>True - валидация прошла успешно, false - нет.</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWCFPerformanceTest", "SimpleWCFPerformanceTest.csproj", "{5F3B9469-9BB0-4E74-9FA2-6C6F55B572BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{79A4581F-8CCD-48E0-BDE8-C87AF92916F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWCFInterfaces", "..\SimpleWCFInterfaces\SimpleWCFInterfaces.csproj", "{5E65D334-22DF-4FE3-A09D-08BA96E7B1EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F3B9469-9BB0-4E74-9FA2-6C6F55B572BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3B9469-9BB0-4E74-9FA2-6C6F55B572BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3B9469-9BB0-4E74-9FA2-6C6F55B572BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3B9469-9BB0-4E74-9FA2-6C6F55B572BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E65D334-22DF-4FE3-A09D-08BA96E7B1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E65D334-22DF-4FE3-A09D-08BA96E7B1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E65D334-22DF-4FE3-A09D-08BA96E7B1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E65D334-22DF-4FE3-A09D-08BA96E7B1EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5E65D334-22DF-4FE3-A09D-08BA96E7B1EB} = {79A4581F-8CCD-48E0-BDE8-C87AF92916F1}
+	EndGlobalSection
+EndGlobal
