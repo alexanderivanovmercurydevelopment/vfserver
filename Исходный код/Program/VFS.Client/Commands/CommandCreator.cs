@@ -2,7 +2,6 @@
 {
     using System;
 
-    using VFS.Client.Commands;
     using VFS.Interfaces.Service;
 
     /// <summary>
@@ -14,69 +13,67 @@
         /// Создать экземпляр команды.
         /// </summary>
         /// <param name="commandName">Имя команды.</param>
-        /// <param name="VFSService">Интерфейс доступа
+        /// <param name="vfsService">Интерфейс доступа
         /// к виртуальному файловому серверу.</param>
         /// <returns>Созданная команда, или null, если команды
         /// с таким именем не существует.</returns>
         public static VFSClientCommand CreateCommand(
             string commandName,
-            IVFSSingleUserService VFSService)
+            IVFSSingleUserService vfsService)
         {
             if (string.IsNullOrWhiteSpace(commandName))
             {
                 throw new ArgumentNullException(
-                    "commandName",
+                    nameof(commandName),
                     "Имя команды не должно быть пустым.");
             }
 
             // команды - регистронезависимы.
             string commandNameLower = commandName.ToLowerInvariant();
 
-            Enum.GetName(typeof(ClientCommands), ClientCommands.md);
-
-            if (commandNameLower == ClientCommands.md.ToString())
+            if (commandNameLower == ClientCommands.Md.ToString().ToLowerInvariant())
             {
-                return new MakeDirectoryCommand(VFSService);
+                return new MakeDirectoryCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.cd.ToString())
+            if (commandNameLower == ClientCommands.Cd.ToString().ToLowerInvariant())
             {
-                return new SetCurrentDirectoryCommand(VFSService);
+                return new SetCurrentDirectoryCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.rd.ToString())
+            if (commandNameLower == ClientCommands.Rd.ToString().ToLowerInvariant())
             {
-                return new RemoveDirectoryCommand(VFSService);
+                return new RemoveDirectoryCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.deltree.ToString())
+            if (commandNameLower == ClientCommands.Deltree.ToString().ToLowerInvariant())
             {
-                return new DeleteTreeCommand(VFSService);
+                return new DeleteTreeCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.mf.ToString())
+            if (commandNameLower == ClientCommands.Mf.ToString().ToLowerInvariant())
             {
-                return new MakeFileCommand(VFSService);
+                return new MakeFileCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.del.ToString())
+            if (commandNameLower == ClientCommands.Del.ToString().ToLowerInvariant())
             {
-                return new DeleteFileCommand(VFSService);
+                return new DeleteFileCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.@lock.ToString())
+            if (commandNameLower == ClientCommands.Lock.ToString().ToLowerInvariant())
             {
-                return new LockFileCommand(VFSService);
+                return new LockFileCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.unlock.ToString())
+            if (commandNameLower == ClientCommands.Unlock.ToString().ToLowerInvariant())
             {
-                return new UnlockFileCommand(VFSService);
+                return new UnlockFileCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.copy.ToString())
+            if (commandNameLower == ClientCommands.Copy.ToString().ToLowerInvariant())
             {
-                return new CopyCommand(VFSService);
+                return new CopyCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.move.ToString())
+            if (commandNameLower == ClientCommands.Move.ToString().ToLowerInvariant())
             {
-                return new MoveCommand(VFSService);
+                return new MoveCommand(vfsService);
             }
-            else if (commandNameLower == ClientCommands.print.ToString())
+            if (commandNameLower == ClientCommands.Print.ToString().ToLowerInvariant())
             {
-                return new GetTreeCommand(VFSService);
+                return new GetTreeCommand(vfsService);
             }
 
             return null;

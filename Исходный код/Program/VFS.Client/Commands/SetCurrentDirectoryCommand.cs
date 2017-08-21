@@ -1,6 +1,5 @@
 ﻿namespace VFS.Client.Commands
 {
-    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Interfaces.Service;
 
     /// <summary>
@@ -12,15 +11,15 @@
         /// Создать экземпляр команды, выполняемой клиентом
         /// виртуального файлового сервера.
         /// </summary>
-        /// <param name="VFSService">Фасад виртуального файлового
+        /// <param name="vfsService">Фасад виртуального файлового
         /// сервера (над ним будут производится операции команды).</param>
-        internal SetCurrentDirectoryCommand(IVFSSingleUserService VFSService)
-            : base(VFSService) { }
+        internal SetCurrentDirectoryCommand(IVFSSingleUserService vfsService)
+            : base(vfsService) { }
 
         /// <summary>
         /// Необходимое количество параметров команды.
         /// </summary>
-        protected override int MinParametersCount { get { return 1; } }
+        protected override int MinParametersCount => 1;
 
         /// <summary>
         /// Выполнить команду установки текущей рабочей директории.
@@ -31,7 +30,7 @@
         protected override StandardOperationResult ExecuteImpl(
             params string[] parameters)
         {
-            return this.VFSService.SetCurrentDirectory(parameters[0]);
+            return this.vfsService.SetCurrentDirectory(parameters[0]);
         }
     }
 }

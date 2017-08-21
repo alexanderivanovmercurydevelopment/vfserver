@@ -1,6 +1,5 @@
 ﻿namespace VFS.Client.Commands
 {
-    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Interfaces.Service;
 
     /// <summary>
@@ -12,15 +11,15 @@
         /// Создать экземпляр команды, выполняемой клиентом
         /// виртуального файлового сервера.
         /// </summary>
-        /// <param name="VFSService">Фасад виртуального файлового
+        /// <param name="vfsService">Фасад виртуального файлового
         /// сервера (над ним будут производится операции команды).</param>
-        internal GetTreeCommand(IVFSSingleUserService VFSService)
-            : base(VFSService) { }
+        internal GetTreeCommand(IVFSSingleUserService vfsService)
+            : base(vfsService) { }
 
         /// <summary>
         /// Необходимое количество параметров команды.
         /// </summary>
-        protected override int MinParametersCount { get { return 0; } }
+        protected override int MinParametersCount => 0;
 
         /// <summary>
         /// Выполнить команду получения информации о структуре папок и файлов.
@@ -36,7 +35,7 @@
                 : null;
 
             StandardOperationResult result =
-                this.VFSService.GetDriveStructure(driveName);
+                this.vfsService.GetDriveStructure(driveName);
 
             if (!result.Succeed)
             {

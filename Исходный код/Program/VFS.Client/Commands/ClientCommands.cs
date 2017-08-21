@@ -9,56 +9,56 @@
         /// <summary>
         /// Создать директорию.
         /// </summary>
-        md,
+        Md,
 
         /// <summary>
         /// Установить текущую рабочую директорию.
         /// </summary>
-        cd,
+        Cd,
 
         /// <summary>
         /// Удалить директорию.
         /// </summary>
-        rd,
+        Rd,
 
         /// <summary>
         /// Удалить директорию и все её поддиректории.
         /// </summary>
-        deltree,
+        Deltree,
 
         /// <summary>
         /// Создать файл.
         /// </summary>
-        mf,
+        Mf,
 
         /// <summary>
         /// Удалить файл.
         /// </summary>
-        del,
+        Del,
 
         /// <summary>
         /// Запретить удаление файла.
         /// </summary>
-        @lock,
+        Lock,
 
         /// <summary>
         /// Отменить запрет удаления файла.
         /// </summary>
-        unlock,
+        Unlock,
 
         /// <summary>
         /// Копировать файл или директорию.
         /// </summary>
-        copy,
+        Copy,
 
         /// <summary>
         /// Переместить файл или директорию.
         /// </summary>
-        move,
+        Move,
 
         /// <summary>
         /// Получить информацию о дереве каталогов.
         /// </summary>
-        print
+        Print
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
 
-    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Interfaces.Service;
 
     /// <summary>
@@ -14,25 +13,25 @@
         /// <summary>
         /// Команда выполняется для этого экземпляра.
         /// </summary>
-        protected readonly IVFSSingleUserService VFSService;
+        protected readonly IVFSSingleUserService vfsService;
 
         /// <summary>
         /// Создать экземпляр команды, выполняемой клиентом
         /// виртуального файлового сервера.
         /// </summary>
-        /// <param name="VFSService">Фасад виртуального файлового
+        /// <param name="vfsService">Фасад виртуального файлового
         /// сервера (над ним будут производится операции команды).</param>
         protected VFSClientCommand(
-            IVFSSingleUserService VFSService)
+            IVFSSingleUserService vfsService)
         {
-            if (VFSService == null)
+            if (vfsService == null)
             {
                 throw new ArgumentNullException(
-                    "VFSService",
+                    nameof(vfsService),
                     "Команде нужно передать интерфейс доступа к операциям файлового сервера.");
             }
 
-            this.VFSService = VFSService;
+            this.vfsService = vfsService;
         }
 
         /// <summary>
@@ -52,7 +51,7 @@
             if (parameters == null)
             {
                 throw new ArgumentNullException(
-                    "parameters",
+                    nameof(parameters),
                     "Не переданы параметры команды.");
             }
 

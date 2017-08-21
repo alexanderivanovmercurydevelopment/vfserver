@@ -53,7 +53,7 @@
             if (string.IsNullOrWhiteSpace(command))
             {
                 throw new ArgumentNullException(
-                    "command",
+                    nameof(command),
                     "Разбор пустой команды невозможен.");
             }
         }
@@ -62,7 +62,7 @@
         /// Сгенерировать исключение, если команда
         /// состоит более чем из одной строки.
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="command">Команда.</param>
         private static void ThrowIfMultiline(string command)
         {
             string[] strings = command.Split(
@@ -72,7 +72,7 @@
             if (strings.Length > 1)
             {
                 throw new ArgumentOutOfRangeException(
-                    "command",
+                    nameof(command),
                     "Команда должна состоять из одной строки.");
             }
         }

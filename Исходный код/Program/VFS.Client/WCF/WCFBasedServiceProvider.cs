@@ -36,7 +36,7 @@
             if (port == null)
             {
                 throw new ArgumentNullException(
-                    "port",
+                    nameof(port),
                     "Необходимо указать порт.");
             }
 
@@ -63,10 +63,7 @@
         /// </summary>
         public void Dispose()
         {
-            if (this.duplexFactory != null)
-            {
-                this.duplexFactory.Close();
-            }
+            this.duplexFactory?.Close();
         }        
     }
 }

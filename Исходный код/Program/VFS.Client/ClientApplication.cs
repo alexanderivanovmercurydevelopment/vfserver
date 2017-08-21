@@ -3,7 +3,6 @@
     using System;
 
     using VFS.Client.Commands;
-    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Interfaces.Service;
 
     /// <summary>
@@ -40,7 +39,7 @@
         {
             if (provider == null)
             {
-                throw new ArgumentNullException("provider");
+                throw new ArgumentNullException(nameof(provider));
             }
 
             this.provider = provider;
@@ -108,9 +107,8 @@
 
             if (command == null)
             {
-                string message = string.Format(
-                    "Команды {0} не существует.",
-                    ConsoleCommandParser.GetCommandName(commandString));
+                string commandName = ConsoleCommandParser.GetCommandName(commandString);
+                string message = $"Команды {commandName} не существует.";
 
                 return new StandardOperationResult(null, message);
             }
