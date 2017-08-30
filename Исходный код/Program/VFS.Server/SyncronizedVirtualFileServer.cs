@@ -24,12 +24,12 @@
         /// <summary>
         /// Текущее количество выполняющихся запросов.
         /// </summary>
-        private int currentQueriesCount = 0;
+        private int currentQueriesCount;
 
         /// <summary>
         /// Объект для синхронизации.
         /// </summary>
-        private object syncObject = new object();
+        private readonly object syncObject = new object();
 
         /// <summary>
         /// Создать обертку-"синхронизатор" виртуального файлового сервера.
@@ -47,15 +47,15 @@
             if (virtualFileServer == null)
             {
                 throw new ArgumentNullException(
-                    "virtualFileServer",
+                    nameof(virtualFileServer),
                     "Необходимо передать экземпляр виртуального файлового сервера.");
             }
 
             if (maxParallelQueries <= 0)
             {
                 throw new ArgumentException(
-                    "maxParallelUsers",
-                    "Количество пользователей должно быть > 0.");
+                    "Количество пользователей должно быть > 0.",
+                    nameof(maxParallelQueries));
             }
 
             this.vfServer = virtualFileServer;
@@ -125,10 +125,8 @@
         /// <returns>Общее количество подключенных пользователей.</returns>
         public int GetUsersCount()
         {
-            return this.SyncPerformFunction<int>(() =>
-            {
-                return this.vfServer.GetUsersCount();
-            });            
+            return this.SyncPerformFunction(
+                () => this.vfServer.GetUsersCount());            
         }
 
         /// <summary>
@@ -139,10 +137,8 @@
         public DriveStructureInfo GetDriveStructure(
             string driveName)
         {
-            return this.SyncPerformFunction<DriveStructureInfo>(() =>
-            {
-                return this.vfServer.GetDriveStructure(driveName);
-            });
+            return this.SyncPerformFunction(
+                () => this.vfServer.GetDriveStructure(driveName));
         }
 
         /// <summary>

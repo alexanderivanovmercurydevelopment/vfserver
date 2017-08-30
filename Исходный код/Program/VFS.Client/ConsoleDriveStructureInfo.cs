@@ -1,10 +1,7 @@
 ﻿namespace VFS.Client
 {
     using System;
-    using System.IO;
     using System.Text;
-    using System.Xml.Linq;
-    using System.Xml.Serialization;
     
     using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Utilities;
@@ -59,22 +56,16 @@
         private void SortRecursively(IVFSDirectoryInfo directory)
         {
             directory.Directories.Sort(
-                new Comparison<VFSDirectoryInfo>((x, y) => 
-                {
-                    return string.Compare(
-                        x.Name, 
-                        y.Name, 
-                        StringComparison.OrdinalIgnoreCase);
-                }));
+                (x, y) => string.Compare(
+                    x.Name, 
+                    y.Name, 
+                    StringComparison.OrdinalIgnoreCase));
 
             directory.Files.Sort(
-                new Comparison<VFSFileInfo>((x, y) =>
-                {
-                    return string.Compare(
-                        x.Name, 
-                        y.Name, 
-                        StringComparison.OrdinalIgnoreCase);
-                }));
+                (x, y) => string.Compare(
+                    x.Name, 
+                    y.Name, 
+                    StringComparison.OrdinalIgnoreCase));
 
             foreach (IVFSDirectoryInfo childDir 
                 in directory.Directories)

@@ -19,14 +19,14 @@
             if (user == null)
             {
                 throw new ArgumentNullException(
-                    "user",
+                    nameof(user),
                     "Необходимо указать пользователя, который блокирует файл.");
             }
 
             if (file == null)
             {
                 throw new ArgumentNullException(
-                    "file",
+                    nameof(file),
                     "Необходимо указать блокируемый файл.");
             }
 
@@ -37,11 +37,11 @@
         /// <summary>
         /// Пользователь, заблокировавший файл.
         /// </summary>
-        internal VFSUser User { get; private set; }
+        internal VFSUser User { get; }
 
         /// <summary>
         /// Заблокированный файл.
         /// </summary>
-        internal IVirtualFile File { get; private set; }
+        internal IVirtualFile File { get; }
     }
 }

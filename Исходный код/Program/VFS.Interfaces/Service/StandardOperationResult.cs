@@ -59,12 +59,6 @@
         /// <summary>
         /// Операция выполнена успешно.
         /// </summary>
-        public bool Succeed
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(this.ResultMessage);
-            }
-        }
+        public bool Succeed => !string.IsNullOrWhiteSpace(this.ResultMessage);
     }
 }

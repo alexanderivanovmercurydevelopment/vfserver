@@ -51,19 +51,16 @@
         /// <param name="hostName">Имя сервера.</param>
         /// <param name="port">Порт.</param>
         /// <param name="userName">Имя пользователя.</param>
-        /// <param name="additionalParams">Дополнительные параметры.</param>
         /// <returns>Сообщение о результате подключения.</returns>
         public string Connect(
             string hostName,
             int? port,
-            string userName,
-            params object[] additionalParams)
+            string userName)
         {
             this.server = this.provider.CreateVFSService(
                 hostName,
                 port,
-                new ConsoleNotificationHandler(),
-                additionalParams);
+                new ConsoleNotificationHandler());
 
             StandardOperationResult result = 
                 this.server.Connect(userName);

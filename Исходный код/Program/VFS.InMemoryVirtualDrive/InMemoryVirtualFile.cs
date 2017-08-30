@@ -10,16 +10,6 @@
     internal class InMemoryVirtualFile : IVirtualFile
     {
         /// <summary>
-        /// Имя файла.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// Конфигурация виртуального диска.
-        /// </summary>
-        private InMemoryVirtualDriveConfig config;
-
-        /// <summary>
         /// Создать файл, хранящий данные в памяти.
         /// </summary>
         /// <param name="name">Имя файла.</param>
@@ -31,7 +21,7 @@
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(
-                    "name",
+                    nameof(name),
                     "Имя файла не должно быть пустым.");
             }
 
@@ -42,16 +32,12 @@
                     + config.MaxDirectoryNameLength + ".");
             }
 
-            this.name = name;
-            this.config = config;
+            this.Name = name;
         }
 
         /// <summary>
         /// Имя файла.
         /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-        }
+        public string Name { get; }
     }
 }

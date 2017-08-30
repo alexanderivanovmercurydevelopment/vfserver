@@ -18,7 +18,7 @@
             if (user == null)
             {
                 throw new ArgumentNullException(
-                    "user",
+                    nameof(user),
                     "Необходимо передать экземпляр класса пользователя.");
             }
 
@@ -28,6 +28,6 @@
         /// <summary>
         /// Пользователь виртуального файлового сервера.
         /// </summary>
-        internal VFSUser User { get; private set; }
+        internal VFSUser User { get; }
     }
 }

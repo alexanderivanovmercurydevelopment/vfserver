@@ -35,14 +35,14 @@
             if (!Regex.IsMatch(driveName, "\\w:"))
             {
                 throw new ArgumentOutOfRangeException(
-                    "driveName",
+                    nameof(driveName),
                     "Имя диска должно содержать букву диска и символ \":\".");
             }
 
             if (string.IsNullOrWhiteSpace(xmlConfig))
             {
                 throw new ArgumentNullException(
-                    "xmlConfig",
+                    nameof(xmlConfig),
                     "Для инициализации интеграции необходимо передать XML-конфигурацию настройки.");
             }
 
@@ -61,18 +61,6 @@
             this.root = new InMemoryVirtualDirectory(
                 "root", 
                 this.config);
-        }
-
-        /// <summary>
-        /// Определить поведение интеграции с другими реализациями
-        /// виртуального диска.
-        /// </summary>
-        /// <param name="integrationBehaviour">Поведение интеграции.</param>
-        public void SetIntegrationBehaviour(
-            IIntegrationBehaviour integrationBehaviour)
-        {
-            this.ThrowIfNotInitialized();
-            this.config.IntegrationBehaviour = integrationBehaviour;
         }
 
         /// <summary>
@@ -238,7 +226,7 @@
                 this.Name.ToLowerInvariant() + Path.DirectorySeparatorChar, 
                 string.Empty)
                 .Split(
-                    new char[] { Path.DirectorySeparatorChar },
+                    new [] { Path.DirectorySeparatorChar },
                     StringSplitOptions.RemoveEmptyEntries);
 
             if (lowerDirNames.Length == 0

@@ -1,10 +1,7 @@
 ﻿namespace VFS.Server
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
-    using VFS.Interfaces.VirtualDrive;
     using VFS.Utilities;
 
     /// <summary>
@@ -29,7 +26,7 @@
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(
-                    "name",
+                    nameof(name),
                     "Имя пользователя не должно быть пустым.");
             }
 
@@ -42,7 +39,7 @@
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        internal string Name { get; private set; }
+        internal string Name { get; }
 
         /// <summary>
         /// Путь к текущей папке пользователя.

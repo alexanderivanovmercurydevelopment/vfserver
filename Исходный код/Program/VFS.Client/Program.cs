@@ -4,13 +4,12 @@
 
     using VFS.Client.Commands;
     using VFS.Client.WCF;
-    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Interfaces.Service;
 
     /// <summary>
     /// Консольный клиент виртуального файлового сервера.
     /// </summary>
-    class Program
+    public static class Program
     {
         /// <summary>
         /// Клиентское приложение для работы с виртуальным
@@ -21,8 +20,7 @@
         /// <summary>
         /// Выполнение консольного клиентского приложения.
         /// </summary>
-        /// <param name="args">Параметры командной строки.</param>
-        static void Main(string[] args)
+        static void Main()
         {
             try
             {
@@ -150,14 +148,7 @@
                 StandardOperationResult result = 
                     Program.application.TryPerformCommand(command);
 
-                if (result.Succeed)
-                {
-                    Console.WriteLine(result.ResultMessage);
-                }
-                else
-                {
-                    Console.WriteLine(result.ErrorMessage);
-                }
+                Console.WriteLine(result.Succeed ? result.ResultMessage : result.ErrorMessage);
 
                 Console.WriteLine();
                 Console.WriteLine("Введите следующую команду. (quit - выход)");

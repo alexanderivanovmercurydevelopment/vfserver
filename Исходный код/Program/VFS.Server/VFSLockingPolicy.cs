@@ -32,7 +32,7 @@
             if (connectedUsers == null)
             {
                 throw new ArgumentNullException(
-                    "connectedUsers",
+                    nameof(connectedUsers),
                     "Необходимо передать коллекцию подключенных пользователей.");
             }
 

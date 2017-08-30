@@ -22,6 +22,6 @@
         /// Путь к директории, с которой начинают 
         /// работу все новые пользователи
         /// </summary>
-        internal string DefaultDirPath { get; private set; }
+        internal string DefaultDirPath { get; }
     }
 }

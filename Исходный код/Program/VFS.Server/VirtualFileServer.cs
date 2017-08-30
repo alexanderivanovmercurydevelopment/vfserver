@@ -15,6 +15,9 @@
     /// </summary>
     public class VirtualFileServer : IVirtualFileServer
     {
+        private const string CantRemoveCurrentDirectory = "Нельзя удалить или переместить текущую директорию, "
+            + "или директорию, родительскую по отношению к текущей.";
+
         /// <summary>
         /// Единая виртуальная файловая система.
         /// </summary>
@@ -144,7 +147,12 @@
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
             string fullPath = this.GetFullPath(userName, directoryPath);
-            this.ThrowIfTryRemoveCurrentDir(userName, fullPath);
+
+            if (this.IsCurrentOrParentDirForUser(userName, fullPath))
+            {
+                throw new InvalidOperationException(VirtualFileServer.CantRemoveCurrentDirectory);
+            }
+
             IVirtualDirectory directory = this.fileSystem.GetExistingDirectory(fullPath);
             this.lockingPolicy.ThrowIfCantRemoveDirectory(directory);
             this.fileSystem.RemoveDirectory(fullPath, recursive);
@@ -258,7 +266,12 @@
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
             string fullSource = this.GetFullPath(userName, sourcePath);
-            this.ThrowIfTryRemoveCurrentDir(userName, fullSource);
+
+            if (this.IsCurrentOrParentDirForUser(userName, fullSource))
+            {
+                throw new InvalidOperationException(VirtualFileServer.CantRemoveCurrentDirectory);
+            }
+
             string fullDestination = this.GetFullPath(userName, destinationPath);
             this.lockingPolicy.ThrowIfCantRemove(fullSource, this.fileSystem);
             this.fileSystem.Move(fullSource, fullDestination);
@@ -311,19 +324,14 @@
         /// <param name="userName">Имя пользователя.</param>
         /// <param name="fullPath">Полный путь к директории, которую
         /// пользователь собирается удалить/переместить.</param>
-        private void ThrowIfTryRemoveCurrentDir(
+        private bool IsCurrentOrParentDirForUser(
             string userName,
             string fullPath)
         {
             string currentDir = this.connectedUsers
                 .GetConnectedUser(userName).CurrentDirectoryPath;
 
-            if (currentDir.ToLowerInvariant().Contains(fullPath.ToLowerInvariant()))
-            {
-                throw new InvalidOperationException(
-                    "Нельзя удалить или переместить текущую директорию, "
-                    + "или директорию, родительскую по отношению к текущей.");
-            }
+            return currentDir.ToLowerInvariant().Contains(fullPath.ToLowerInvariant());
         }
 
         /// <summary>

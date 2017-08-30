@@ -50,12 +50,9 @@
 
             this.registeredUsers.Remove(user);
 
-            if (this.UserUnregistered != null)
-            {
-                this.UserUnregistered(
-                    this,
-                    new VFSUserEventArgs(user));
-            }
+            this.UserUnregistered?.Invoke(
+                this,
+                new VFSUserEventArgs(user));
         }
 
         /// <summary>
@@ -91,12 +88,7 @@
         /// <summary>
         /// Список подключенных пользователей.
         /// </summary>
-        internal IEnumerable<VFSUser> RegisteredUsers
-        {
-            get
-            {
-                return this.registeredUsers.ToList();
-            }
-        }
+        internal IEnumerable<VFSUser> RegisteredUsers 
+            => this.registeredUsers.ToList();
     }
 }

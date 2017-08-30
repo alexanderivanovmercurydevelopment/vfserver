@@ -5,6 +5,7 @@
     /// <summary>
     /// Обработчик уведомлений сервера.
     /// </summary>
+    [ServiceContract]
     public interface IVFSNotificationHandler
     {
         /// <summary>

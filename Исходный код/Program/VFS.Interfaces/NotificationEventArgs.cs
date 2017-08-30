@@ -19,14 +19,14 @@
             if (string.IsNullOrWhiteSpace(notification))
             {
                 throw new ArgumentNullException(
-                    "notification",
+                    nameof(notification),
                     "Необходимо передать не пустое сообщение.");
             }
 
             if (string.IsNullOrWhiteSpace(userName))
             {
                 throw new ArgumentNullException(
-                    "userName",
+                    nameof(userName),
                     "Необходимо указать имя пользователя.");
             }
 
@@ -37,11 +37,11 @@
         /// <summary>
         /// Уведомление.
         /// </summary>
-        public string Notification { get; private set; }
+        public string Notification { get; }
 
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        public string UserName { get; private set; }
+        public string UserName { get; }
     }
 }

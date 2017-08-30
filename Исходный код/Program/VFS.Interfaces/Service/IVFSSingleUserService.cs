@@ -2,8 +2,6 @@
 {
     using System.ServiceModel;
 
-    using VFS.Interfaces.DriveStructureMessageFormat;
-
     /// <summary>
     /// Интерфейс доступа ОДНОГО клиента к операциям сервера.
     /// </summary>

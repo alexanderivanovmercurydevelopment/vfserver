@@ -24,14 +24,12 @@
         /// <param name="port">Порт.</param>
         /// <param name="notificationHandler">Обработчик оповещений
         /// виртуального файлового сервера.</param>
-        /// <param name="parameters">Дополнительные параметры.</param>
         /// <returns>Интерфейс доступа пользователя к виртуальному 
         /// файловому серверу.</returns>
         public IVFSSingleUserService CreateVFSService(
             string serverName, 
             int? port, 
-            IVFSNotificationHandler notificationHandler,
-            params object[] parameters)
+            IVFSNotificationHandler notificationHandler)
         {
             if (port == null)
             {

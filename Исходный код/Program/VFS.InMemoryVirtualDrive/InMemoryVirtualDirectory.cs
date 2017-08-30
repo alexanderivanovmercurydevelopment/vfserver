@@ -20,7 +20,7 @@
         /// <summary>
         /// Конфигурация виртуального диска.
         /// </summary>
-        private InMemoryVirtualDriveConfig config;
+        private readonly InMemoryVirtualDriveConfig config;
 
         /// <summary>
         /// Дочерние папки.
@@ -37,7 +37,7 @@
         /// <summary>
         /// Блокируемый объект (для параллельных операций).
         /// </summary>
-        private object lockObj = new object();
+        private readonly object lockObj = new object();
 
         /// <summary>
         /// Создать виртуальную директорию.
@@ -51,7 +51,7 @@
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(
-                    "name",
+                    nameof(name),
                     "Имя папки не должно быть пустым.");
             }
 
@@ -69,10 +69,7 @@
         /// <summary>
         /// Имя папки.
         /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-        }
+        public string Name => this.name;
 
         /// <summary>
         /// Дочерние папки.
@@ -105,45 +102,45 @@
         /// <summary>
         /// Создать новый файл.
         /// </summary>
-        /// <param name="name">Имя файла.</param>
+        /// <param name="fileName">Имя файла.</param>
         /// <returns>Созданный файл.</returns>
-        public IVirtualFile CreateFile(string name)
+        public IVirtualFile CreateFile(string fileName)
         {
             lock (this.lockObj)
             {
-                if (this.files.Any((f) => f.Name == name))
+                if (this.files.Any((f) => f.Name == fileName))
                 {
                     throw new InvalidOperationException(
-                        "Файл с именем " + name + " уже существует в папке " + this.name);
+                        "Файл с именем " + fileName + " уже существует в папке " + this.name);
                 }
 
                 InMemoryVirtualFile newFile = new InMemoryVirtualFile(
-                    name, this.config);
+                    fileName, this.config);
 
                 this.files.Add(newFile);
 
                 return newFile;
             }
-        }        
+        }
 
         /// <summary>
         /// Создать новую папку.
         /// </summary>
-        /// <param name="name">Имя папки.</param>
+        /// <param name="directoryName">Имя папки.</param>
         /// <returns>Созданная папка.</returns>
-        public IVirtualDirectory CreateDirectory(string name)
+        public IVirtualDirectory CreateDirectory(string directoryName)
         {
             lock (this.lockObj)
             {
-                if (this.childDirectories.Any(d => d.Name == name))
+                if (this.childDirectories.Any(d => d.Name == directoryName))
                 {
                     throw new InvalidOperationException(
-                        "Папка " + name + " уже существует.");
+                        "Папка " + directoryName + " уже существует.");
                 }
 
                 InMemoryVirtualDirectory newDirectory =
                     new InMemoryVirtualDirectory(
-                        name,
+                        directoryName,
                         this.config);
 
                 this.childDirectories.Add(newDirectory);
@@ -155,18 +152,18 @@
         /// <summary>
         /// Удалить файл.
         /// </summary>
-        /// <param name="name">Имя удаляемого файла.</param>
-        public void RemoveFile(string name)
+        /// <param name="fileName">Имя удаляемого файла.</param>
+        public void RemoveFile(string fileName)
         {
             lock (this.lockObj)
             {
                 InMemoryVirtualFile file = this.files.FirstOrDefault(
-                    f => f.Name == name);
+                    f => f.Name == fileName);
 
                 if (file == null)
                 {
                     throw new FileNotFoundException(
-                        "Файла " + name + " не существует в папке " + this.name + ".");
+                        "Файла " + fileName + " не существует в папке " + this.name + ".");
                 }
 
                 this.files.Remove(file);
@@ -176,24 +173,24 @@
         /// <summary>
         /// Удалить дочернюю папку.
         /// </summary>
-        /// <param name="name">Имя удаляемой папки.</param>
+        /// <param name="directoryName">Имя удаляемой папки.</param>
         /// <param name="recursive">Если папка содержит подпапки, удалить 
         /// также и подпапки.</param>
         /// <exception cref="InvalidOperationException">
         /// Если параметр <paramref name="recursive"/> равен false, 
         /// а папка содержит подпапки.
         /// </exception>
-        public void RemoveDirectory(string name, bool recursive)
+        public void RemoveDirectory(string directoryName, bool recursive)
         {
             lock (this.lockObj)
             {
                 InMemoryVirtualDirectory directory =
-                    this.childDirectories.FirstOrDefault(d => d.Name == name);
+                    this.childDirectories.FirstOrDefault(d => d.Name == directoryName);
 
                 if (directory == null)
                 {
                     throw new DirectoryNotFoundException(
-                        "В папке " + this.name + " не существует папки " + name);
+                        "В папке " + this.name + " не существует папки " + directoryName);
                 }
 
                 bool containsDirectories = directory.childDirectories.Count > 0;
@@ -201,7 +198,7 @@
                 if (containsDirectories && !recursive)
                 {
                     throw new InvalidOperationException(
-                        "Невозможно удалить папку " + name + "."
+                        "Невозможно удалить папку " + directoryName + "."
                         + " Сначала нужно удалить дочерние папки.");
                 }
 

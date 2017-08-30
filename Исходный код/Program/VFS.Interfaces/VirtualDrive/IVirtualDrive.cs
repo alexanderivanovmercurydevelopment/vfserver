@@ -1,7 +1,6 @@
 ﻿namespace VFS.Interfaces.VirtualDrive
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Виртуальный диск.
@@ -25,15 +24,6 @@
         /// <remarks>Схема - .xsd документ, содержащий правила формирования
         /// xml-документа.</remarks>
         string GetXmlConfigSchema();
-
-        /// <summary>
-        /// Назначить поведение интеграции с другими
-        /// реализациями виртуальных дисков.
-        /// </summary>
-        /// <param name="integrationBehaviour">Поведение интеграции
-        /// с другими реализациями виртуальных дисков.</param>
-        void SetIntegrationBehaviour(
-            IIntegrationBehaviour integrationBehaviour);
 
         /// <summary>
         /// Найти директорию по полному пути.

@@ -6,7 +6,6 @@
     using System.Linq;
 
     using VFS.InMemoryVirtualDrive;
-    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Interfaces.VirtualDrive;
     using VFS.Utilities;
 
@@ -214,7 +213,7 @@
             if (string.IsNullOrWhiteSpace(fullDirectoryPath))
             {
                 throw new ArgumentNullException(
-                    "directoryFullPath",
+                    nameof(fullDirectoryPath),
                     "Необходимо указать путь к директории.");
             }
 
@@ -244,15 +243,8 @@
             IVirtualDirectory directory = this.FindDirectory(
                 fullFilePath.GetPathWithoutLastItem());
 
-            if (directory == null)
-            {
-                return null;
-            }
-
-            IVirtualFile file = directory.Files.FirstOrDefault(f =>
+            return directory?.Files.FirstOrDefault(f =>
                 f.Name == fullFilePath.GetDirectoryOrFileName());
-
-            return file;
         }
 
         /// <summary>
@@ -295,6 +287,7 @@
         /// Сгенерировать исключение, если полный путь содержит только имя диска.
         /// </summary>
         /// <param name="fullPath">Полный путь.</param>
+        // ReSharper disable once UnusedParameter.Local Весь метод используется только с целью проверки.
         private void ThrowIfContainsOnlyDriveName(string fullPath)
         {
             if (!fullPath.Contains(Path.DirectorySeparatorChar)

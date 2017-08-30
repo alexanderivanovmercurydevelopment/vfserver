@@ -96,7 +96,7 @@
         [TestMethod]
         public void ConfigSchemaNotEmpty()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            IVirtualDrive drive = new InMemoryVirtualDrive();
             string schema = drive.GetXmlConfigSchema();
             Assert.IsFalse(string.IsNullOrWhiteSpace(schema));
         }
