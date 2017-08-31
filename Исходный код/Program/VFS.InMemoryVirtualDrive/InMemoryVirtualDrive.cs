@@ -46,7 +46,7 @@
                     "Для инициализации интеграции необходимо передать XML-конфигурацию настройки.");
             }
 
-            if (!XMLUtilities.ValidateXml(xmlConfig, this.GetXmlConfigSchema()))
+            if (!XmlUtilities.ValidateXml(xmlConfig, this.GetXmlConfigSchema()))
             {
                 throw new InvalidOperationException(
                     "Переданная xml-конфигурация не соответствует описанной в xsd-схеме.");
@@ -54,7 +54,7 @@
 
             this.Name = driveName;
 
-            this.config = XMLUtilities
+            this.config = XmlUtilities
                 .DeserializeFromXml<InMemoryVirtualDriveConfig>(
                     xmlConfig);
 

@@ -1,7 +1,6 @@
 ﻿namespace VFS.Utilities
 {
     using System.IO;
-    using System.Xml;
     using System.Xml.Linq;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -9,7 +8,7 @@
     /// <summary>
     /// Вспомогательные методы сериализации/десериализации xml.
     /// </summary>
-    public static class XMLUtilities
+    public static class XmlUtilities
     {
         /// <summary>
         /// Сериализовать объект в XML.

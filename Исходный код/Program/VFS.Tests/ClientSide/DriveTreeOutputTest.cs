@@ -1,9 +1,5 @@
 ﻿namespace VFS.Tests.ClientSide
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Reflection;
-    using System.Xml.Serialization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using VFS.Client;
@@ -58,7 +54,7 @@
             string xml = this.GetDriveStructureExample();
 
             DriveStructureInfo structureInfo =
-                XMLUtilities.DeserializeFromXml<DriveStructureInfo>(
+                XmlUtilities.DeserializeFromXml<DriveStructureInfo>(
                     xml);
 
             this.CheckCollectionsNotNullRecursive(structureInfo);

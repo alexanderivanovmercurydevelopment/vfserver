@@ -24,7 +24,7 @@
                 + Path.DirectorySeparatorChar
                 + "config.txt";
 
-            File.AppendAllText(configPath, "PortNumber = 8000");
+            File.AppendAllText(configPath, @"PortNumber = 8000");
 
             WCFHost host = new WCFHost();
             host.Start();

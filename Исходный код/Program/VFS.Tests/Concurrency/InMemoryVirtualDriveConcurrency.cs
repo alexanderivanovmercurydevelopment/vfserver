@@ -107,10 +107,7 @@
         /// </summary>
         private void Dispose()
         {
-            if (this.drive != null)
-            {
-                this.drive.Dispose();
-            }
+            this.drive?.Dispose();
 
             this.drive = null;
             this.createErrors = null;
@@ -128,8 +125,6 @@
                 taskNumber <= InMemoryVirtualDriveConcurrency.UsersCount; 
                 taskNumber++)
             {
-                string iString = taskNumber.ToString();
-
                 Task task = Task.Factory.StartNew(() =>
                 {
                     for (int dirName = 1; 
@@ -165,8 +160,6 @@
                 taskNumber <= InMemoryVirtualDriveConcurrency.UsersCount; 
                 taskNumber++)
             {
-                string iString = taskNumber.ToString();
-
                 Task task = Task.Factory.StartNew(() =>
                 {
                     for (int dirName = 1;

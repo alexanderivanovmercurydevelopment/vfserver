@@ -20,13 +20,16 @@
         [TestMethod]
         public void SerializationWithoutExceptions()
         {
-            var drive = new DriveStructureInfo();
-            drive.Directories = new List<VFSDirectoryInfo>();
-            drive.Files = new List<VFSFileInfo>();
-            drive.Directories.Add(new VFSDirectoryInfo() { Name = "dir" });
-            drive.Files.Add(new VFSFileInfo() { Name = "file" });
+            var drive = new DriveStructureInfo
+            {
+                Directories = new List<VFSDirectoryInfo>(),
+                Files = new List<VFSFileInfo>()
+            };
 
-            string str = XMLUtilities.SerializeToXml<DriveStructureInfo>(drive);
+            drive.Directories.Add(new VFSDirectoryInfo { Name = "dir" });
+            drive.Files.Add(new VFSFileInfo { Name = "file" });
+
+            XmlUtilities.SerializeToXml(drive);
         }
     }
 }

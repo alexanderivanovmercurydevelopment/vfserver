@@ -43,6 +43,8 @@
                 builder.Append("fsdfsdfsdfdsf");
             }
 
+            // ReSharper disable once UnusedVariable
+            // для тестирования производительности StringBuilder.ToString() метода.
             string result = builder.ToString();
 
             TimeSpan resultTime = DateTime.Now - startTime;
@@ -57,15 +59,15 @@
         private TimeSpan GetStringTime()
         {
             DateTime startTime = DateTime.Now;
-
+            
+            // ReSharper disable once NotAccessedVariable
+            // для тестирования производительности простой конкатенации.
             string result = string.Empty;
 
             for (int i = 0; i <= 10000; i++)
             {
                 result += "fsdfsdfsdfdsf";
             }
-
-            string resultStr = result;
 
             TimeSpan resultTime = DateTime.Now - startTime;
             return resultTime;

@@ -1,8 +1,5 @@
 ﻿namespace VFS.Tests.TestDoubles
 {
-    using System;
-
-    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Interfaces.Service;
 
     /// <summary>

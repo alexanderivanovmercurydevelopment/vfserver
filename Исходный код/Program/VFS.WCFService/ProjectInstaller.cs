@@ -14,15 +14,21 @@
         /// </summary>
         public ProjectInstaller()
         {
-            serviceProcessInstaller1 = new ServiceProcessInstaller();
-            serviceProcessInstaller1.Account = ServiceAccount.LocalSystem;
-            serviceInstaller1 = new ServiceInstaller();
-            serviceInstaller1.ServiceName = "VirtualFileServer";
-            serviceInstaller1.DisplayName = "Virtual File Server";
-            serviceInstaller1.Description = "Виртуальный файловый сервер (тестовое задание MERCURY DEVELOPMENT)";
-            serviceInstaller1.StartType = ServiceStartMode.Automatic;
-            Installers.Add(serviceProcessInstaller1);
-            Installers.Add(serviceInstaller1);
+            this.serviceProcessInstaller1 = new ServiceProcessInstaller
+            {
+                Account = ServiceAccount.LocalSystem
+            };
+
+            this.serviceInstaller1 = new ServiceInstaller
+            {
+                ServiceName = "VirtualFileServer",
+                DisplayName = "Virtual File Server",
+                Description = "Виртуальный файловый сервер (тестовое задание MERCURY DEVELOPMENT)",
+                StartType = ServiceStartMode.Automatic
+            };
+
+            this.Installers.Add(this.serviceProcessInstaller1);
+            this.Installers.Add(this.serviceInstaller1);
         }
     }
 }

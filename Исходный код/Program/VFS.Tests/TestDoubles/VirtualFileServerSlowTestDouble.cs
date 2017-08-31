@@ -13,38 +13,15 @@
     public class VirtualFileServerSlowTestDouble : IVirtualFileServer
     {
         /// <summary>
-        /// Среднее время выполнения каждой операции.
-        /// </summary>
-        private readonly int operationTimeInMilliseconds;
-
-        /// <summary>
         /// Имена созданных папок.
         /// </summary>
         private readonly List<string> createdFolderNames
             = new List<string>();
 
         /// <summary>
-        /// Создать имитацию виртуального файлового сервера, выполняющего
-        /// длительные операции и успешно создающего новые папки.
-        /// </summary>
-        /// <param name="milliseconds">Примерное время выполнения
-        /// каждой операции.</param>
-        public VirtualFileServerSlowTestDouble(int milliseconds)
-        {
-            if (milliseconds <= 0)
-            {
-                throw new ArgumentException(
-                    "milliseconds",
-                    "Продолжительность операций не может быть " + milliseconds + " миллисекунд.");
-            }
-
-            this.operationTimeInMilliseconds = milliseconds;
-        }
-
-        /// <summary>
         /// Список имен созданных директорий.
         /// </summary>
-        public List<string> CreatedDirectories { get { return this.createdFolderNames; } }
+        public List<string> CreatedDirectories => this.createdFolderNames;
 
         /// <summary>
         /// Метод сам по себе - не потокобезопасный. 
@@ -135,10 +112,9 @@
         {
             System.Threading.Thread.Sleep(500);
 
-            if (this.OperationPerformed != null)
-            {
-                this.OperationPerformed(this, new NotificationEventArgs("Операция выполнена успешно.", "noUser"));
-            }
+            this.OperationPerformed?.Invoke(
+                this, 
+                new NotificationEventArgs("Операция выполнена успешно.", "noUser"));
         }
     }
 }

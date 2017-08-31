@@ -41,20 +41,20 @@
 
             for (int i = startNumber; i <= tasksNumber; i++)
             {
-                Assert.IsTrue(this.numbers.Contains(i));
+                lock (this.numbers)
+                {
+                    Assert.IsTrue(this.numbers.Contains(i));
+                }
             }
         }
 
         /// <summary>
         /// Переместить папку или файл в другую папку.
         /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="sourcePath">Путь к перемещаемой папке или файлу.</param>
-        /// <param name="destinationPath">Путь к целевой папке.</param>
-        public int ParallelOperation(
+        private int ParallelOperation(
             int number)
         {            
-            int num = this.PerformFunction(() => { return this.GetSameNumber(number); });
+            int num = this.PerformFunction(() => this.GetSameNumber(number));
             
             lock(this.numbers)
             {

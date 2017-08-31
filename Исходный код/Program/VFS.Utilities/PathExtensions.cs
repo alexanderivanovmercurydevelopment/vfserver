@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -49,6 +50,7 @@
         {
             path.ValidateCorrectPath();
             
+            Debug.Assert(path != null, "path != null");
             string root = Path.GetPathRoot(path)
                 .Trim()
                 .Replace(Path.DirectorySeparatorChar.ToString(), string.Empty);           
@@ -56,8 +58,8 @@
             if (!root.Contains(":") || root.Length > 2)
             {
                 throw new ArgumentException(
-                    "path",
-                    "Путь не содержит имя диска.");
+                    "Путь не содержит имя диска.",
+                    nameof(path));
             }
 
             return root.ToLowerInvariant();
@@ -125,7 +127,7 @@
             }
 
             List<string> dirOrDriveNames = path.Split(
-                new char[] { Path.DirectorySeparatorChar },
+                new [] { Path.DirectorySeparatorChar },
                 StringSplitOptions.None)
                 .ToList();
 
@@ -134,7 +136,7 @@
                 dirOrDriveNames.RemoveAt(dirOrDriveNames.Count - 1);
             }
 
-            if (dirOrDriveNames.Any(s => string.IsNullOrWhiteSpace(s)))
+            if (dirOrDriveNames.Any(string.IsNullOrWhiteSpace))
             {
                 return false;
             }

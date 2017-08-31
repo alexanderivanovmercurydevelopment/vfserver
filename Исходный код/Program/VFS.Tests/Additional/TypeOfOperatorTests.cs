@@ -17,6 +17,10 @@
             IA a = new A();
             Assert.IsTrue(a.GetType() == typeof(A));
             Assert.IsTrue(a is A);
+
+            // ReSharper disable once IsExpressionAlwaysTrue
+            // Тест - для учебных целей, чтобы как раз показать, что 
+            // это условие всегда верное.
             Assert.IsTrue(a is IA);
         }
 

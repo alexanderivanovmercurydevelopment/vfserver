@@ -1,4 +1,7 @@
-﻿namespace VFS.Tests.ServerSide
+﻿// ReSharper disable UnusedVariable
+// названия директорий и другие переменные могут использоваться
+// просто для наглядности.
+namespace VFS.Tests.ServerSide
 {
     using System;
     using System.IO;

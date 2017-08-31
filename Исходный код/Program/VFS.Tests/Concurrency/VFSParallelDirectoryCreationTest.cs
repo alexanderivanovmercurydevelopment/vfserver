@@ -50,7 +50,7 @@
         [TestMethod]
         public void CreateDirectoriesWithSameNameWithoutSyncroniser()
         {
-            this.serverTestDouble = new VirtualFileServerSlowTestDouble(300);
+            this.serverTestDouble = new VirtualFileServerSlowTestDouble();
             this.server = this.serverTestDouble;
 
             this.CreateDirectoriesParallel();
@@ -71,7 +71,7 @@
         [TestMethod]
         public void CreateDirectoriesWithSameNameWithSyncroniser()
         {
-            this.serverTestDouble = new VirtualFileServerSlowTestDouble(200);
+            this.serverTestDouble = new VirtualFileServerSlowTestDouble();
             this.server = new SyncronizedVirtualFileServer(
                 this.serverTestDouble,
                 100);

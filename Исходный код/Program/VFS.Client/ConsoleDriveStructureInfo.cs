@@ -26,7 +26,7 @@
         public ConsoleDriveStructureInfo(string xmlDriveInfo)
         {
             DriveStructureInfo driveStrInfo =
-                XMLUtilities.DeserializeFromXml<DriveStructureInfo>(
+                XmlUtilities.DeserializeFromXml<DriveStructureInfo>(
                     xmlDriveInfo);
 
             this.driveStructure = driveStrInfo;

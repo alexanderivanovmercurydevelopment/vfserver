@@ -1,8 +1,6 @@
 ﻿namespace VFS.Tests.ServerSide
 {
     using System;
-    using System.IO;
-    using System.Reflection;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -159,7 +157,7 @@
         {
             InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
             drive.Initialize(this.GetDriveStandardConfig(), "C:");
-            IVirtualDirectory rootDir = drive.CreateDirectory("dir1");
+            drive.CreateDirectory("dir1");
             Assert.IsNull(drive.FindDirectory("D:\\dir1\\DIR2\\dir3"));
         }
 

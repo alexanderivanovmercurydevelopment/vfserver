@@ -26,7 +26,7 @@
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        private string userName;
+        private string connectedUserName;
 
         /// <summary>
         /// Действие, выполняемое при завершении любой операции сервера.
@@ -41,11 +41,11 @@
         public StandardOperationResult Connect(
             string userName)
         {
-            if (!string.IsNullOrWhiteSpace(this.userName))
+            if (!string.IsNullOrWhiteSpace(this.connectedUserName))
             {
                 return new StandardOperationResult(
                     null,
-                    "Пользователь уже подключен как \"" + this.userName + "\".");
+                    "Пользователь уже подключен как \"" + this.connectedUserName + "\".");
             }
 
             return this.SafeExecute(() =>
@@ -55,7 +55,7 @@
                 int usersCount = 
                     VFSSingleUserServiceWCF.server.GetUsersCount();
 
-                this.userName = userName;
+                this.connectedUserName = userName;
                 return new StandardOperationResult(
                     "Подключение к серверу произведено. Количество пользователей - " + usersCount,
                     null);
@@ -70,8 +70,8 @@
         {
             return this.SafeExecute(() =>
             {
-                VFSSingleUserServiceWCF.server.DisconnectUser(this.userName);
-                this.userName = null;
+                VFSSingleUserServiceWCF.server.DisconnectUser(this.connectedUserName);
+                this.connectedUserName = null;
 
                 VFSSingleUserServiceWCF.server.OperationPerformed
                     -= this.ServerOnOperationPerformed;
@@ -90,7 +90,7 @@
             if (this.notifyAction != null)
             {
                 throw new InvalidOperationException(
-                    "Пользователь " + this.userName + " уже подписан на оповещения.");
+                    "Пользователь " + this.connectedUserName + " уже подписан на оповещения.");
             }
 
             IVFSNotificationHandler handler =
@@ -113,7 +113,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.CreateDirectory(
-                    this.userName, 
+                    this.connectedUserName, 
                     path);
 
                 return new StandardOperationResult(
@@ -133,7 +133,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server
-                    .ChangeUsersCurrentDirectory(this.userName, path);
+                    .ChangeUsersCurrentDirectory(this.connectedUserName, path);
 
                 return new StandardOperationResult(
                     "Текущая директория успешно изменена.",
@@ -154,7 +154,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.RemoveDirectory(
-                    this.userName,
+                    this.connectedUserName,
                     path,
                     recursive);
 
@@ -175,7 +175,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.CreateFile(
-                    this.userName,
+                    this.connectedUserName,
                     path);
 
                 return new StandardOperationResult(
@@ -195,7 +195,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.RemoveFile(
-                    this.userName,
+                    this.connectedUserName,
                     path);
 
                 return new StandardOperationResult(
@@ -214,7 +214,7 @@
         {
             return this.SafeExecute(() =>
             {
-                VFSSingleUserServiceWCF.server.LockFile(this.userName, path);
+                VFSSingleUserServiceWCF.server.LockFile(this.connectedUserName, path);
 
                 return new StandardOperationResult(
                     "Файл " + path + " успешно заблокирован.",
@@ -232,7 +232,7 @@
         {
             return this.SafeExecute(() =>
             {
-                VFSSingleUserServiceWCF.server.UnlockFile(this.userName, path);
+                VFSSingleUserServiceWCF.server.UnlockFile(this.connectedUserName, path);
 
                 return new StandardOperationResult(
                     "Файл " + path + " успешно разблокирован.",
@@ -253,7 +253,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.Copy(
-                    this.userName, 
+                    this.connectedUserName, 
                     sourcePath,
                     destinationPath);
 
@@ -276,7 +276,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.Move(
-                    this.userName,
+                    this.connectedUserName,
                     sourcePath,
                     destinationPath);
 
@@ -300,7 +300,7 @@
                     VFSSingleUserServiceWCF.server.GetDriveStructure(drive);
 
                 return new StandardOperationResult(
-                    XMLUtilities.SerializeToXml<DriveStructureInfo>(driveStructure),
+                    XmlUtilities.SerializeToXml(driveStructure),
                     null);
             });
         }
@@ -339,7 +339,7 @@
             {
                 try
                 {
-                    if (e.UserName != this.userName)
+                    if (e.UserName != this.connectedUserName)
                     {
                         this.notifyAction(e.Notification);
                     }
@@ -359,7 +359,7 @@
         /// </summary>
         ~VFSSingleUserServiceWCF()
         {
-            if (this.userName != null)
+            if (this.connectedUserName != null)
             {
                 try
                 {
@@ -367,8 +367,10 @@
                         -= this.ServerOnOperationPerformed;
 
                     VFSSingleUserServiceWCF.server
-                        .DisconnectUser(this.userName);
+                        .DisconnectUser(this.connectedUserName);
                 }
+                // ReSharper disable once EmptyGeneralCatchClause
+                // Prevent any error during finalization.
                 catch
                 { }
             }

@@ -2,8 +2,6 @@
 {
     using System.ServiceProcess;
 
-    using VFS.WCFService;
-
     /// <summary>
     /// Служба для работы с виртуальным файловым сервером через WCF.
     /// </summary>
@@ -16,7 +14,7 @@
         /// </summary>
         public VFSService()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         /// <summary>

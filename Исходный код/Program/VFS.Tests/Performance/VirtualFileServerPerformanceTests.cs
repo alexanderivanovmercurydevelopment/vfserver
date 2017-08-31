@@ -43,12 +43,12 @@
         /// <summary>
         /// Количество успешно выполненых запросов.
         /// </summary>
-        private int successRequestsCount = 0;
+        private int successRequestsCount;
 
         /// <summary>
         /// Количество оповещений.
         /// </summary>
-        private int notificationsCount = 0;
+        private int notificationsCount;
 
         /// <summary>
         /// Возникшие исключения.
@@ -67,8 +67,7 @@
         public VirtualFileServerPerformanceTests()
         {
             this.server = new SyncronizedVirtualFileServer(
-                new VirtualFileServerSlowTestDouble(
-                    this.config.ServerOperationTimeInMillisec),
+                new VirtualFileServerSlowTestDouble(),
                 this.config.MaxParallelQueries);
         }
 
@@ -99,10 +98,7 @@
                 userNumber <= this.config.UsersCount;
                 userNumber++)
             {
-                Task task = Task.Factory.StartNew(() =>
-                {
-                    this.SingleUserOperations();
-                });
+                Task task = Task.Factory.StartNew(this.SingleUserOperations);
 
                 tasks.Add(task);
             }

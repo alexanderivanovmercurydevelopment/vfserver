@@ -16,7 +16,7 @@
         /// <summary>
         /// Экземпляр хостинга.
         /// </summary>
-        private ServiceHost serviceHost = null;
+        private ServiceHost serviceHost;
 
         /// <summary>
         /// Начать работу.
@@ -29,14 +29,14 @@
                     "Хостинг WCF уже запущен.");
             }
 
-            Uri[] adrbase = { new Uri(WCFHost.GetTCPServiceUri()) };
+            Uri[] adrbase = { new Uri(WCFHost.GetTcpServiceUri()) };
             this.serviceHost = new ServiceHost(typeof(VFSSingleUserServiceWCF), adrbase);
 
             this.SetMetadataBehavior();
-            this.AddTCPServiceEndpoint();
+            this.AddTcpServiceEndpoint();
             this.AddMexEndpoint();
 
-            serviceHost.Open();
+            this.serviceHost.Open();
         }
 
         /// <summary>
@@ -44,10 +44,10 @@
         /// </summary>
         public void Stop()
         {
-            if (serviceHost != null)
+            if (this.serviceHost != null)
             {
-                serviceHost.Close();
-                serviceHost = null;
+                this.serviceHost.Close();
+                this.serviceHost = null;
             }
         }
 
@@ -55,7 +55,7 @@
         /// Получить URI сервиса.
         /// </summary>
         /// <returns>URI сервиса.</returns>
-        private static string GetTCPServiceUri()
+        private static string GetTcpServiceUri()
         {
             return "net.tcp://" + Dns.GetHostName() + ":" + WCFHost.GetPortNumber() + "/VFSSingleUserServiceWCF";
         }
@@ -95,13 +95,13 @@
         private void SetMetadataBehavior()
         {
             ServiceMetadataBehavior mBehave = new ServiceMetadataBehavior();
-            serviceHost.Description.Behaviors.Add(mBehave);
+            this.serviceHost.Description.Behaviors.Add(mBehave);
         }
 
         /// <summary>
         /// Добавить конечную точку доступа к сервису.
         /// </summary>
-        private void AddTCPServiceEndpoint()
+        private void AddTcpServiceEndpoint()
         {
             NetTcpBinding tcpb = new NetTcpBinding()
             {
@@ -112,10 +112,10 @@
                 MaxConnections = 1000
             };
 
-            serviceHost.AddServiceEndpoint(
+            this.serviceHost.AddServiceEndpoint(
                 typeof(IVFSSingleUserService),
                 tcpb,
-                WCFHost.GetTCPServiceUri());
+                WCFHost.GetTcpServiceUri());
         }
 
         /// <summary>
@@ -123,7 +123,7 @@
         /// </summary>
         private void AddMexEndpoint()
         {
-            serviceHost.AddServiceEndpoint(
+            this.serviceHost.AddServiceEndpoint(
                 typeof(IMetadataExchange),
                 MetadataExchangeBindings.CreateMexTcpBinding(),
                 WCFHost.GetUriForMex());
