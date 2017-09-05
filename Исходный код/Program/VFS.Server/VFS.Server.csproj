@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\VFS.Server.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LockInfo.cs" />
-    <Compile Include="SyncronizedVirtualFileServer.cs" />
+    <Compile Include="VFSSyncronizationDecorator.cs" />
     <Compile Include="VFSConfig.cs" />
     <Compile Include="VFSConnectedUsers.cs" />
     <Compile Include="VFSUser.cs" />

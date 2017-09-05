@@ -11,15 +11,8 @@
     /// </summary>
     public static class Program
     {
-        /// <summary>
-        /// Клиентское приложение для работы с виртуальным
-        /// файловым сервером.
-        /// </summary>
         private static ClientApplication application;
 
-        /// <summary>
-        /// Выполнение консольного клиентского приложения.
-        /// </summary>
         static void Main()
         {
             try
@@ -45,9 +38,6 @@
             }
         }
 
-        /// <summary>
-        /// Отобразить описание приложения.
-        /// </summary>
         private static void WriteProgramDescription()
         {
             Console.WriteLine("ВИРТУАЛЬНЫЙ ФАЙЛОВЫЙ СЕРВЕР");
@@ -55,9 +45,6 @@
             Console.WriteLine();
         }
 
-        /// <summary>
-        /// Вывести названия основных команд.
-        /// </summary>
         private static void WriteCommandsDescription()
         {
             Console.WriteLine("MD [Drive:]Path - создание директории");
@@ -107,9 +94,6 @@
             }
         }
 
-        /// <summary>
-        /// Подключиться к серверу.
-        /// </summary>
         /// <param name="parameters">Параметры команды подключения.</param>
         private static void Connect(string[] parameters)
         {
@@ -155,9 +139,6 @@
             }
         }
 
-        /// <summary>
-        /// Завершение работы с приложением.
-        /// </summary>
         private static void SafeDisconnect()
         {
             if (Program.application != null)

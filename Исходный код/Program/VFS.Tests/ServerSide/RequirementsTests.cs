@@ -577,13 +577,9 @@ namespace VFS.Tests.ServerSide
             var file2 = dir2.Files.First(f => f.Name == "2.txt");
         }
 
-        /// <summary>
-        /// Создать экземпляр виртуального файлового сервера.
-        /// </summary>
-        /// <returns>Новый экземпляр виртуального файлового сервера.</returns>
         private IVirtualFileServer CreateStandardServer()
         {
-            return new SyncronizedVirtualFileServer(
+            return new VFSSyncronizationDecorator(
                 new VirtualFileServer(),
                 100);
         }

@@ -40,24 +40,12 @@
         /// </summary>
         private readonly IVirtualFileServer server;
 
-        /// <summary>
-        /// Количество успешно выполненых запросов.
-        /// </summary>
         private int successRequestsCount;
 
-        /// <summary>
-        /// Количество оповещений.
-        /// </summary>
         private int notificationsCount;
 
-        /// <summary>
-        /// Возникшие исключения.
-        /// </summary>
-        private readonly List<Exception> exceptions = new List<Exception>();
+        private readonly List<Exception> exceptionsOccurred = new List<Exception>();
 
-        /// <summary>
-        /// Объект синхронизации.
-        /// </summary>
         private readonly object syncObject = new object();
 
         /// <summary>
@@ -66,7 +54,7 @@
         /// </summary>
         public VirtualFileServerPerformanceTests()
         {
-            this.server = new SyncronizedVirtualFileServer(
+            this.server = new VFSSyncronizationDecorator(
                 new VirtualFileServerSlowTestDouble(),
                 this.config.MaxParallelQueries);
         }
@@ -77,7 +65,7 @@
         [TestMethod]
         public void VirtualFileServerPerformanceTest()
         {
-            this.exceptions.Clear();
+            this.exceptionsOccurred.Clear();
 
             for (int i = 1;
                 i <= this.config.UsersCount;
@@ -105,7 +93,7 @@
 
             Task.WaitAll(tasks.ToArray());
 
-            Assert.AreEqual(0, this.exceptions.Count);
+            Assert.AreEqual(0, this.exceptionsOccurred.Count);
             Assert.AreEqual(
                 this.config.UsersCount * this.config.RequestsPerUser,
                 this.successRequestsCount);
@@ -140,7 +128,7 @@
             {
                 lock (this.syncObject)
                 {
-                    this.exceptions.Add(ex);
+                    this.exceptionsOccurred.Add(ex);
                 }
             }
         }

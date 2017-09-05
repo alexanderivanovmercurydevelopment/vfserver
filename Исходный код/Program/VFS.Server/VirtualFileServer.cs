@@ -18,14 +18,8 @@
         private const string CantRemoveCurrentDirectory = "Нельзя удалить или переместить текущую директорию, "
             + "или директорию, родительскую по отношению к текущей.";
 
-        /// <summary>
-        /// Единая виртуальная файловая система.
-        /// </summary>
         private readonly VirtualFileSystem fileSystem;
 
-        /// <summary>
-        /// Подключенные пользователи.
-        /// </summary>
         private readonly VFSConnectedUsers connectedUsers;
 
         /// <summary>
@@ -33,9 +27,6 @@
         /// </summary>
         private readonly VFSLockingPolicy lockingPolicy;
 
-        /// <summary>
-        /// Конфигурация виртуального файлового сервера.
-        /// </summary>
         private readonly VFSConfig config;
 
         /// <summary>
@@ -77,7 +68,7 @@
             string fullDirPath = this.GetFullPath(userName, directoryPath);
             this.fileSystem.CheckDirectoryExisting(fullDirPath);
             this.connectedUsers.GetConnectedUser(userName)
-                .CurrentDirectoryPath = fullDirPath;
+                .CurrentWorkingDirectoryPath = fullDirPath;
         }
 
         /// <summary>
@@ -298,7 +289,7 @@
             else
             {
                 string currentDir = this.connectedUsers
-                    .GetConnectedUser(userName).CurrentDirectoryPath;
+                    .GetConnectedUser(userName).CurrentWorkingDirectoryPath;
 
                 if (this.fileSystem.FindDirectory(currentDir) == null)
                 {
@@ -317,19 +308,16 @@
         }
 
         /// <summary>
-        /// Сгенерировать исключение, если пользователь
-        /// пытается удалить свою текущую директорию, или директорию,
-        /// родительскую по отношению к текущей.
+        /// Является ли <paramref name="fullPath"/> текущей директорией,
+        /// или директорией, родительской по отношению к текущей для
+        /// пользователя <paramref name="userName"/>.
         /// </summary>
-        /// <param name="userName">Имя пользователя.</param>
-        /// <param name="fullPath">Полный путь к директории, которую
-        /// пользователь собирается удалить/переместить.</param>
         private bool IsCurrentOrParentDirForUser(
             string userName,
             string fullPath)
         {
             string currentDir = this.connectedUsers
-                .GetConnectedUser(userName).CurrentDirectoryPath;
+                .GetConnectedUser(userName).CurrentWorkingDirectoryPath;
 
             return currentDir.ToLowerInvariant().Contains(fullPath.ToLowerInvariant());
         }

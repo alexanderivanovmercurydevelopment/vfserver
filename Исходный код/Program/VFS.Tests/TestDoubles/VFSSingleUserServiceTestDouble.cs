@@ -2,9 +2,6 @@
 {
     using VFS.Interfaces.Service;
 
-    /// <summary>
-    /// Объект, заменяющий <see cref="IVFSSingleUserService"/> при тестировании.
-    /// </summary>
     internal class VFSSingleUserServiceTestDouble : IVFSSingleUserService
     {
         public StandardOperationResult Connect(string userName)
@@ -32,7 +29,7 @@
                 null);
         }
 
-        public StandardOperationResult SetCurrentDirectory(string path)
+        public StandardOperationResult SetCurrentWorkingDirectory(string path)
         {
             return new StandardOperationResult(
                 "Теперь текущая директория - " + path,

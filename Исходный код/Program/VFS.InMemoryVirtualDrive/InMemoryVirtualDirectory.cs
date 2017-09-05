@@ -7,43 +7,20 @@
 
     using VFS.Interfaces.VirtualDrive;
 
-    /// <summary>
-    /// Виртуальная директория.
-    /// </summary>
     internal class InMemoryVirtualDirectory : IVirtualDirectory
     {
-        /// <summary>
-        /// Имя директории.
-        /// </summary>
         private readonly string name;
 
-        /// <summary>
-        /// Конфигурация виртуального диска.
-        /// </summary>
         private readonly InMemoryVirtualDriveConfig config;
 
-        /// <summary>
-        /// Дочерние папки.
-        /// </summary>
         private readonly List<InMemoryVirtualDirectory> childDirectories
             = new List<InMemoryVirtualDirectory>();
 
-        /// <summary>
-        /// Файлы.
-        /// </summary>
         private readonly List<InMemoryVirtualFile> files
             = new List<InMemoryVirtualFile>();
 
-        /// <summary>
-        /// Блокируемый объект (для параллельных операций).
-        /// </summary>
         private readonly object lockObj = new object();
 
-        /// <summary>
-        /// Создать виртуальную директорию.
-        /// </summary>
-        /// <param name="name">Имя директории.</param>
-        /// <param name="config">Конфигурация текущего виртуального диска.</param>
         internal InMemoryVirtualDirectory(
             string name, 
             InMemoryVirtualDriveConfig config)
@@ -66,15 +43,12 @@
             this.config = config;
         }
 
-        /// <summary>
-        /// Имя папки.
-        /// </summary>
         public string Name => this.name;
 
         /// <summary>
-        /// Дочерние папки.
+        /// Непосредственные дочерние папки (не рекурсивно).
         /// </summary>
-        public IEnumerable<IVirtualDirectory> Directories
+        public IEnumerable<IVirtualDirectory> ChildDirectories
         {
             get 
             { 
@@ -86,7 +60,7 @@
         }
 
         /// <summary>
-        /// Файлы.
+        /// Файлы непосредственно в директории (не рекурсивно).
         /// </summary>
         public IEnumerable<IVirtualFile> Files
         {
@@ -99,11 +73,6 @@
             }
         }
 
-        /// <summary>
-        /// Создать новый файл.
-        /// </summary>
-        /// <param name="fileName">Имя файла.</param>
-        /// <returns>Созданный файл.</returns>
         public IVirtualFile CreateFile(string fileName)
         {
             lock (this.lockObj)
@@ -123,11 +92,6 @@
             }
         }
 
-        /// <summary>
-        /// Создать новую папку.
-        /// </summary>
-        /// <param name="directoryName">Имя папки.</param>
-        /// <returns>Созданная папка.</returns>
         public IVirtualDirectory CreateDirectory(string directoryName)
         {
             lock (this.lockObj)
@@ -149,10 +113,6 @@
             }
         }
 
-        /// <summary>
-        /// Удалить файл.
-        /// </summary>
-        /// <param name="fileName">Имя удаляемого файла.</param>
         public void RemoveFile(string fileName)
         {
             lock (this.lockObj)
@@ -207,11 +167,6 @@
             }
         }
 
-        /// <summary>
-        /// Переместить дочернюю папку в другую папку.
-        /// </summary>
-        /// <param name="childDirName">Имя дочерней папки.</param>
-        /// <param name="destination">Папка назначения.</param>
         public void MoveDirectoryTo(
             string childDirName, 
             IVirtualDirectory destination)
@@ -253,11 +208,6 @@
             }
         }
 
-        /// <summary>
-        /// Переместить файл из папки в другую папку.
-        /// </summary>
-        /// <param name="childFileName">Имя дочернего файла.</param>
-        /// <param name="destination">Папка назначения.</param>
         public void MoveFileTo(
             string childFileName, 
             IVirtualDirectory destination)
@@ -295,14 +245,12 @@
                         childFileName,
                         destination);
                 }
-            }            
+            }
         }
 
         /// <summary>
-        /// Создать новую дочернюю папку - копию переданной.
+        /// Создать в директории новую папку - копию переданной.
         /// </summary>
-        /// <param name="copiedDirectory">Копируемая папка.</param>
-        /// <returns>Созданная копия.</returns>
         public IVirtualDirectory CopyDirectoryFrom(
             IVirtualDirectory copiedDirectory)
         {
@@ -323,7 +271,7 @@
                 }
 
                 InMemoryVirtualDirectory copy = inMemoryDirSource != null
-                    ? inMemoryDirSource.CreateCopy()
+                    ? inMemoryDirSource.CreateFullCopy()
                     : this.config.IntegrationBehaviour
                         .CreateDirCopy<InMemoryVirtualDirectory>(copiedDirectory);
 
@@ -335,8 +283,6 @@
         /// <summary>
         /// Создать в директории новый файл - копию переданного.
         /// </summary>
-        /// <param name="copiedFile">Копируемый файл.</param>
-        /// <returns>Созданная копия.</returns>
         public IVirtualFile CopyFileFrom(
             IVirtualFile copiedFile)
         {
@@ -370,7 +316,6 @@
         /// Попробовать привести <see cref="IVirtualDirectory"/> к типу
         /// <see cref="InMemoryVirtualDirectory"/>.
         /// </summary>
-        /// <param name="directory">Интерфейс директории.</param>
         /// <returns><see cref="InMemoryVirtualDirectory"/> или null.</returns>
         private static InMemoryVirtualDirectory TryCastToInMemoryVirtualDirectory(
             IVirtualDirectory directory)
@@ -391,9 +336,6 @@
             return inMemoryDestinationDir;
         }
 
-        /// <summary>
-        /// Очистить директорию, т.е. удалить всё содержимое.
-        /// </summary>
         private void ClearRecursive()
         {
             lock (this.lockObj)
@@ -413,11 +355,7 @@
             }
         }
 
-        /// <summary>
-        /// Получить полную копию директории.
-        /// </summary>
-        /// <returns>Созданная полная копия .</returns>
-        private InMemoryVirtualDirectory CreateCopy()
+        private InMemoryVirtualDirectory CreateFullCopy()
         {
             lock (this.lockObj)
             {
@@ -434,7 +372,7 @@
                 foreach (InMemoryVirtualDirectory directory
                     in this.childDirectories)
                 {
-                    copy.childDirectories.Add(directory.CreateCopy());
+                    copy.childDirectories.Add(directory.CreateFullCopy());
                 }
 
                 return copy;

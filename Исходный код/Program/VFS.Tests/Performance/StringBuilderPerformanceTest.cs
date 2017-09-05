@@ -31,7 +31,6 @@
         /// Получить время создания большой строки с помощью 
         /// <see cref="StringBuilder"/>.
         /// </summary>
-        /// <returns>Время создания большой строки.</returns>
         private TimeSpan GetStringBuilderTime()
         {
             DateTime startTime = DateTime.Now;
@@ -55,7 +54,6 @@
         /// Получить время создания большой строки с помощью 
         /// "<see cref="String"/> +=".
         /// </summary>
-        /// <returns>Время создания большой строки.</returns>
         private TimeSpan GetStringTime()
         {
             DateTime startTime = DateTime.Now;

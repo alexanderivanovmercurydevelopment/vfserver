@@ -17,9 +17,6 @@
     [TestClass]
     public class InMemoryVirtualDriveConcurrency
     {
-        /// <summary>
-        /// Количество пользователей.
-        /// </summary>
         private const int UsersCount = 150;
 
         /// <summary>
@@ -27,20 +24,14 @@
         /// </summary>
         private const int DirectoriesCount = 50;
 
-        /// <summary>
-        /// Виртуальный диск.
-        /// </summary>
-        InMemoryVirtualDrive drive;
+        private InMemoryVirtualDrive drive;
 
-        /// <summary>
-        /// Список ошибок создания директорий.
-        /// </summary>
-        List<Exception> createErrors;
+        private List<Exception> creationErrors;
 
         /// <summary>
         /// Список ошибок удаления директорий.
         /// </summary>
-        List<Exception> deleteErrors;
+        private List<Exception> deletionErrors;
 
         /// <summary>
         /// Тестирование параллельного добавления директорий.
@@ -50,26 +41,26 @@
         {
             this.Initialize();
 
-            this.CreateDirectories();
+            this.CreateDirectoriesInParallel();
             int expectedCreationErrorsCount =
                 InMemoryVirtualDriveConcurrency.DirectoriesCount *
                 (InMemoryVirtualDriveConcurrency.UsersCount - 1);
             Assert.AreEqual(
-                this.createErrors.Count, 
+                this.creationErrors.Count, 
                 expectedCreationErrorsCount);
             Assert.AreEqual(
-                this.drive.Directories.Count(), 
+                this.drive.ChildDirectories.Count(), 
                 InMemoryVirtualDriveConcurrency.DirectoriesCount);
-            Assert.IsTrue(this.createErrors.All(err => err.Message.StartsWith("Папка")));
+            Assert.IsTrue(this.creationErrors.All(err => err.Message.StartsWith("Папка")));
 
-            this.RemoveDirectories();
+            this.RemoveDirectoriesInParallel();
             int expectedDeletionErrorsCount =
                 expectedCreationErrorsCount;
             Assert.AreEqual(
-                this.deleteErrors.Count, 
+                this.deletionErrors.Count, 
                 expectedDeletionErrorsCount);
-            Assert.AreEqual(this.drive.Directories.Count(), 0);
-            Assert.IsTrue(this.deleteErrors.All(err => err.Message.StartsWith("В папке")));
+            Assert.AreEqual(this.drive.ChildDirectories.Count(), 0);
+            Assert.IsTrue(this.deletionErrors.All(err => err.Message.StartsWith("В папке")));
 
             this.Dispose();
         }
@@ -92,32 +83,23 @@
             return result;
         }
 
-        /// <summary>
-        /// Начать работу.
-        /// </summary>
         private void Initialize()
         {
             this.drive = InMemoryVirtualDriveConcurrency.GetNewVirtualDrive();
-            this.createErrors = new List<Exception>();
-            this.deleteErrors = new List<Exception>();
+            this.creationErrors = new List<Exception>();
+            this.deletionErrors = new List<Exception>();
         }
 
-        /// <summary>
-        /// Завершить работу.
-        /// </summary>
         private void Dispose()
         {
             this.drive?.Dispose();
 
             this.drive = null;
-            this.createErrors = null;
-            this.deleteErrors = null;
+            this.creationErrors = null;
+            this.deletionErrors = null;
         }
 
-        /// <summary>
-        /// Одновременное создание директорий.
-        /// </summary>
-        private void CreateDirectories()
+        private void CreateDirectoriesInParallel()
         {
             List<Task> tasks = new List<Task>();
 
@@ -138,7 +120,7 @@
                         catch (Exception ex)
                         {
                             Assert.IsTrue(ex.Message.StartsWith("Папка"));
-                            this.createErrors.Add(ex);
+                            this.creationErrors.Add(ex);
                         }
                     }
                 });
@@ -149,10 +131,7 @@
             Task.WaitAll(tasks.ToArray());
         }
 
-        /// <summary>
-        /// Одновременное удаление директорий.
-        /// </summary>
-        private void RemoveDirectories()
+        private void RemoveDirectoriesInParallel()
         {
             List<Task> tasks = new List<Task>();
 
@@ -173,7 +152,7 @@
                         catch (Exception ex)
                         {
                             Assert.IsTrue(ex.Message.StartsWith("В папке"));
-                            this.deleteErrors.Add(ex);
+                            this.deletionErrors.Add(ex);
                         }
                     }
                 });

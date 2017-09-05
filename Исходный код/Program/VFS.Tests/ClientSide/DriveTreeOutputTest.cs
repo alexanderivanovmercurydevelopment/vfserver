@@ -74,7 +74,6 @@
         /// <summary>
         /// Проверить, что внутренние коллекции не равны нулю.
         /// </summary>
-        /// <param name="dirStructureInfo">Информация о папке.</param>
         private void CheckCollectionsNotNullRecursive(
             IVFSDirectoryInfo dirStructureInfo)
         {

@@ -37,7 +37,7 @@
             }
             if (commandNameLower == ClientCommands.Cd.ToString().ToLowerInvariant())
             {
-                return new SetCurrentDirectoryCommand(vfsService);
+                return new SetCurrentWorkingDirectoryCommand(vfsService);
             }
             if (commandNameLower == ClientCommands.Rd.ToString().ToLowerInvariant())
             {

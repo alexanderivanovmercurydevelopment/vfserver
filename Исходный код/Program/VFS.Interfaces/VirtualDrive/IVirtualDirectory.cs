@@ -15,7 +15,7 @@
         /// <summary>
         /// Корневые папки.
         /// </summary>
-        IEnumerable<IVirtualDirectory> Directories { get; }
+        IEnumerable<IVirtualDirectory> ChildDirectories { get; }
 
         /// <summary>
         /// Корневые файлы.

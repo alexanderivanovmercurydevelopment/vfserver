@@ -5,11 +5,7 @@
     using VFS.Client.Commands;
     using VFS.Interfaces.Service;
 
-    /// <summary>
-    /// Класс клиентского приложения виртуального
-    /// файлового сервера.
-    /// </summary>
-    public class ClientApplication
+    internal class ClientApplication
     {
         /// <summary>
         /// Поставщик доступа к интерфейсу работы 
@@ -23,17 +19,8 @@
         /// </summary>
         private IVFSSingleUserService server;
 
-        /// <summary>
-        /// Подключение к серверу произведено.
-        /// </summary>
         private bool connected;
 
-        /// <summary>
-        /// Клиентское приложение для работы с 
-        /// виртуальным файловым сервером.
-        /// </summary>
-        /// <param name="provider">Поставщик доступа к интерфейсу
-        /// работы с виртуальным файловым сервером.</param>
         public ClientApplication(
             IVFSSingleUserServiceProvider provider)
         {
@@ -45,13 +32,6 @@
             this.provider = provider;
         }
 
-        /// <summary>
-        /// Подключиться к серверу.
-        /// </summary>
-        /// <param name="hostName">Имя сервера.</param>
-        /// <param name="port">Порт.</param>
-        /// <param name="userName">Имя пользователя.</param>
-        /// <returns>Сообщение о результате подключения.</returns>
         public string Connect(
             string hostName,
             int? port,
@@ -77,12 +57,6 @@
             }
         }
 
-        /// <summary>
-        /// Выполнить команду виртуального файлового сервера.
-        /// </summary>
-        /// <param name="commandString">Команда (например: "md C:\test").</param>
-        /// <returns>Результат выполнения команды (в т.ч. может быть
-        /// информация об ошибке сервера или подсказка).</returns>
         public StandardOperationResult TryPerformCommand(string commandString)
         {
             if (!this.connected)
@@ -114,9 +88,6 @@
                 ConsoleCommandParser.GetCommandParams(commandString));
         }
 
-        /// <summary>
-        /// Отключиться от сервера.
-        /// </summary>
         public void Disconnect()
         {
             if (this.connected)

@@ -17,9 +17,6 @@
     [TestClass]
     public class VFSParallelDirectoryCreationTest
     {
-        /// <summary>
-        /// Количество пользователей.
-        /// </summary>
         private const int UsersCount = 10;
 
         /// <summary>
@@ -32,15 +29,9 @@
         /// </summary>
         private IVirtualFileServer server;
 
-        /// <summary>
-        /// Список исключений.
-        /// </summary>
-        private readonly List<Exception> exceptions 
+        private readonly List<Exception> exceptionsOccured
             = new List<Exception>();
 
-        /// <summary>
-        /// Объект синхронизации.
-        /// </summary>
         private readonly object lockObject = new object();
 
         /// <summary>
@@ -57,11 +48,11 @@
 
             Assert.AreNotEqual(
                 VFSParallelDirectoryCreationTest.UsersCount - 1, 
-                this.exceptions.Count);
+                this.exceptionsOccured.Count);
 
             Assert.AreNotEqual(
                 1,
-                this.serverTestDouble.CreatedDirectories.Count);
+                this.serverTestDouble.CreatedDirectoriesNames.Count);
         }
 
         /// <summary>
@@ -72,7 +63,7 @@
         public void CreateDirectoriesWithSameNameWithSyncroniser()
         {
             this.serverTestDouble = new VirtualFileServerSlowTestDouble();
-            this.server = new SyncronizedVirtualFileServer(
+            this.server = new VFSSyncronizationDecorator(
                 this.serverTestDouble,
                 100);
 
@@ -80,13 +71,13 @@
 
             Assert.AreEqual(
                 VFSParallelDirectoryCreationTest.UsersCount - 1,
-                this.exceptions.Count);
+                this.exceptionsOccured.Count);
 
-            Assert.IsTrue(this.exceptions.All(ex => ex.Message == "Папка уже существует."));
+            Assert.IsTrue(this.exceptionsOccured.All(ex => ex.Message == "Папка уже существует."));
 
             Assert.AreEqual(
                 1,
-                this.serverTestDouble.CreatedDirectories.Count);
+                this.serverTestDouble.CreatedDirectoriesNames.Count);
         }
 
         /// <summary>
@@ -94,7 +85,7 @@
         /// </summary>
         private void CreateDirectoriesParallel()
         {
-            this.exceptions.Clear();
+            this.exceptionsOccured.Clear();
 
             List<Task> tasks = new List<Task>();
 
@@ -112,7 +103,7 @@
                     {
                         lock (this.lockObject)
                         {
-                            this.exceptions.Add(ex);
+                            this.exceptionsOccured.Add(ex);
                         }
                     }
                 });

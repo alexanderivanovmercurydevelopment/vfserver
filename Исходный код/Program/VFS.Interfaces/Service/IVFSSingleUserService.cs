@@ -43,7 +43,7 @@
         /// <param name="path">Путь к директории.</param>
         /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
-        StandardOperationResult SetCurrentDirectory(string path);
+        StandardOperationResult SetCurrentWorkingDirectory(string path);
 
         /// <summary>
         /// Удалить директорию.

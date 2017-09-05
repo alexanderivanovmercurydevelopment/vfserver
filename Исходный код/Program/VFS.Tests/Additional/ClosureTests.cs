@@ -13,9 +13,6 @@
     [TestClass]
     public class ClosureTests
     {
-        /// <summary>
-        /// Список чисел.
-        /// </summary>
         private readonly List<int> numbers = 
             new List<int>();
 

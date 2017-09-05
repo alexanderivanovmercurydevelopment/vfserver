@@ -56,12 +56,9 @@
             return service;
         }
 
-        /// <summary>
-        /// Освобождение ресурсов.
-        /// </summary>
         public void Dispose()
         {
             this.duplexFactory?.Close();
-        }        
+        }
     }
 }

@@ -20,7 +20,7 @@
         /// <summary>
         /// Список заблокированных файлов.
         /// </summary>
-        private readonly List<LockInfo> locks = new List<LockInfo>();
+        private readonly List<FileLockInfo> locks = new List<FileLockInfo>();
 
         /// <summary>
         /// Создать политику блокировки файлов.
@@ -82,7 +82,7 @@
                 }
             }
 
-            foreach (IVirtualDirectory dir in directory.Directories)
+            foreach (IVirtualDirectory dir in directory.ChildDirectories)
             {
                 this.ThrowIfCantRemoveDirectory(dir);
             }
@@ -110,14 +110,14 @@
         {
             VFSUser user = this.connectedUsers.GetConnectedUser(userName);
 
-            if (this.locks.Any(l => l.User == user && l.File == file))
+            if (this.locks.Any(l => l.BlockedBy == user && l.File == file))
             {
                 throw new InvalidOperationException(
                     "Файл " + file.Name + " уже заблокирован текущим пользователем (" + userName + ").\n"
                     + "Невозможно повторно заблокировать один и тот же файл.");
             }
 
-            this.locks.Add(new LockInfo(user, file));
+            this.locks.Add(new FileLockInfo(user, file));
         }
 
         /// <summary>
@@ -129,8 +129,8 @@
         {
             VFSUser user = this.connectedUsers.GetConnectedUser(userName);
 
-            LockInfo @lock = this.locks.FirstOrDefault(
-                l => l.User == user && l.File == file);
+            FileLockInfo @lock = this.locks.FirstOrDefault(
+                l => l.BlockedBy == user && l.File == file);
 
             if (@lock == null)
             {
@@ -180,13 +180,13 @@
                     Name = f.Name,
                     LockingUsers = this.locks
                         .Where(l => l.File == f)
-                        .Select(l => l.User.Name)
+                        .Select(l => l.BlockedBy.Name)
                         .ToList()
                 }));
 
             to.Directories = new List<VFSDirectoryInfo>();
 
-            foreach (IVirtualDirectory childDir in from.Directories)
+            foreach (IVirtualDirectory childDir in from.ChildDirectories)
             {
                 VFSDirectoryInfo childDirInfo = new VFSDirectoryInfo();
                 to.Directories.Add(childDirInfo);
@@ -204,8 +204,8 @@
             VFSUserEventArgs args)
         {
             // снятие блокировки с файлов, заблокированных этим пользователем
-            List<LockInfo> obsoleteLocks = this.locks.Where(
-                l => l.User == args.User)
+            List<FileLockInfo> obsoleteLocks = this.locks.Where(
+                l => l.BlockedBy == args.User)
                 .ToList();
 
             obsoleteLocks.ForEach(l => this.locks.Remove(l));

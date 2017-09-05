@@ -44,10 +44,6 @@
             return parts.ToArray();
         }
 
-        /// <summary>
-        /// Сгенерировать исключение, если команда пустая.
-        /// </summary>
-        /// <param name="command">Команда.</param>
         private static void ThrowIfEmpty(string command)
         {
             if (string.IsNullOrWhiteSpace(command))
@@ -58,11 +54,6 @@
             }
         }
 
-        /// <summary>
-        /// Сгенерировать исключение, если команда
-        /// состоит более чем из одной строки.
-        /// </summary>
-        /// <param name="command">Команда.</param>
         private static void ThrowIfMultiline(string command)
         {
             string[] strings = command.Split(

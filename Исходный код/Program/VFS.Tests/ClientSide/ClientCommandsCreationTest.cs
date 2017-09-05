@@ -7,6 +7,9 @@
     using VFS.Client.Commands;
     using VFS.Tests.TestDoubles;
 
+    /// <summary>
+    /// Тестирование создания пользовательских команд.
+    /// </summary>
     [TestClass]
     public class ClientCommandsCreationTest
     {

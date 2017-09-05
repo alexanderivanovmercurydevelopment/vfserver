@@ -15,17 +15,11 @@
     /// </summary>
     internal class VFSSingleUserServiceWCF : IVFSSingleUserService
     {
-        /// <summary>
-        /// Экземпляр виртуального файлового сервера.
-        /// </summary>
         private static readonly IVirtualFileServer server
-            = new SyncronizedVirtualFileServer(
+            = new VFSSyncronizationDecorator(
                 new VirtualFileServer(),
                 100);
 
-        /// <summary>
-        /// Имя пользователя.
-        /// </summary>
         private string connectedUserName;
 
         /// <summary>
@@ -33,11 +27,6 @@
         /// </summary>
         private Action<string> notifyAction;
 
-        /// <summary>
-        /// Начать сеанс работы с виртуальным файловым сервером.
-        /// </summary>
-        /// <param name="userName">Имя пользователя.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult Connect(
             string userName)
         {
@@ -62,10 +51,6 @@
             });
         }
 
-        /// <summary>
-        /// Завершить сеанс работы с виртуальным файловым сервером.
-        /// </summary>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult Quit()
         {
             return this.SafeExecute(() =>
@@ -82,9 +67,6 @@
             });
         }
 
-        /// <summary>
-        /// Подписаться на уведомления о действиях других пользователей.
-        /// </summary>
         public void SubscribeForNotifications()
         {
             if (this.notifyAction != null)
@@ -102,11 +84,6 @@
                 this.ServerOnOperationPerformed;
         }
 
-        /// <summary>
-        /// Создать директорию.
-        /// </summary>
-        /// <param name="path">Путь к создаваемой папке.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult MakeDirectory(
             string path)
         {
@@ -122,12 +99,7 @@
             });
         }
 
-        /// <summary>
-        /// Установить текущую директорию.
-        /// </summary>
-        /// <param name="path">Путь к директории.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
-        public StandardOperationResult SetCurrentDirectory(
+        public StandardOperationResult SetCurrentWorkingDirectory(
             string path)
         {
             return this.SafeExecute(() =>
@@ -141,12 +113,6 @@
             });
         }
 
-        /// <summary>
-        /// Удалить директорию.
-        /// </summary>
-        /// <param name="path">Путь к директории.</param>
-        /// <param name="recursive">Вместе со всеми входящими директориями.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult RemoveDirectory(
             string path, 
             bool recursive)
@@ -164,11 +130,6 @@
             });
         }
 
-        /// <summary>
-        /// Создать файл.
-        /// </summary>
-        /// <param name="path">Путь к файлу (включая имя файла).</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult MakeFile(
             string path)
         {
@@ -184,11 +145,6 @@
             });
         }
 
-        /// <summary>
-        /// Удалить файл.
-        /// </summary>
-        /// <param name="path">Путь к файлу (включая имя файла).</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult DeleteFile(
             string path)
         {
@@ -207,8 +163,6 @@
         /// <summary>
         /// Запретить удаление файла.
         /// </summary>
-        /// <param name="path">Путь к файлу (включая имя файла).</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult LockFile(
             string path)
         {
@@ -225,8 +179,6 @@
         /// <summary>
         /// Разрешить удаление файла.
         /// </summary>
-        /// <param name="path">Путь к файлу (включая имя файла).</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult UnlockFile(
             string path)
         {
@@ -240,12 +192,6 @@
             });
         }
 
-        /// <summary>
-        /// Копировать файл или директорию.
-        /// </summary>
-        /// <param name="sourcePath">Путь к копируемому файлу или директории.</param>
-        /// <param name="destinationPath">Путь к целевой директории.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult Copy(
             string sourcePath, 
             string destinationPath)
@@ -263,12 +209,6 @@
             });
         }
 
-        /// <summary>
-        /// Переместить файл или директорию.
-        /// </summary>
-        /// <param name="sourcePath">Путь к перемещаемому файлу или директории.</param>
-        /// <param name="destinationPath">Путь к целевой директории.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult Move(
             string sourcePath, 
             string destinationPath)
@@ -286,11 +226,6 @@
             });
         }
 
-        /// <summary>
-        /// Получить структуру папок и файлов определенного диска.
-        /// </summary>
-        /// <param name="drive">Буква диска.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         public StandardOperationResult GetDriveStructure(
             string drive)
         {
@@ -309,8 +244,6 @@
         /// Выполнить операцию, и вернуть нормальное сообщение
         /// об ошибке в случае сбоя операции.
         /// </summary>
-        /// <param name="operation">Операция.</param>
-        /// <returns>Стандартный результат операции.</returns>
         private StandardOperationResult SafeExecute(
             Func<StandardOperationResult> operation)
         {
@@ -326,11 +259,6 @@
             }
         }
 
-        /// <summary>
-        /// Обработчик события завершения операции сервера.
-        /// </summary>
-        /// <param name="sender">Источник события.</param>
-        /// <param name="e">Аргументы события.</param>
         private void ServerOnOperationPerformed(
             object sender,
             NotificationEventArgs e)

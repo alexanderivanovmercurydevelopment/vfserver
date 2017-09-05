@@ -15,44 +15,24 @@
     /// </summary>
     internal class VirtualFileSystem
     {
-        /// <summary>
-        /// Виртуальные диски.
-        /// </summary>
-
-        private readonly List<IVirtualDrive> drives
+        private readonly List<IVirtualDrive> virtualDrives
             = new List<IVirtualDrive>();
 
-        /// <summary>
-        /// Создать единую виртуальную файловую систему.
-        /// </summary>
         internal VirtualFileSystem()
         {
             this.AddInMemoryVirtualDrive("C:");
         }
 
-        /// <summary>
-        /// Проверить существование директории.
-        /// </summary>
-        /// <param name="fullPath">Полный путь к директории.</param>
         internal void CheckDirectoryExisting(string fullPath)
         {
             this.GetExistingDirectory(fullPath);
         }
 
-        /// <summary>
-        /// Получить информацию о структуре виртуального диска.
-        /// </summary>
-        /// <param name="driveName">Имя виртуального диска.</param>
-        /// <returns>Информация о структуре виртуального диска.</returns>
         internal IVirtualDirectory GetRootDirectory(string driveName)
         {
             return this.GetExistingDrive(driveName);
         }
 
-        /// <summary>
-        /// Создать новую директорию.
-        /// </summary>
-        /// <param name="directoryFullPath">Полный путь.</param>
         internal void CreateDirectory(string directoryFullPath)
         {
             this.ThrowIfContainsOnlyDriveName(directoryFullPath);
@@ -63,11 +43,6 @@
                 directoryFullPath.GetDirectoryOrFileName());
         }
 
-        /// <summary>
-        /// Удалить директорию.
-        /// </summary>
-        /// <param name="fullPath">Полный путь к директории.</param>
-        /// <param name="recursive">Вместе с дочерними папками.</param>
         internal void RemoveDirectory(string fullPath, bool recursive)
         {
             this.ThrowIfContainsOnlyDriveName(fullPath);
@@ -79,10 +54,6 @@
                 recursive);
         }
 
-        /// <summary>
-        /// Создать новый файл.
-        /// </summary>
-        /// <param name="fullFilePath">Полный путь к создаваемому файлу.</param>
         internal void CreateFile(string fullFilePath)
         {
             this.ThrowIfContainsOnlyDriveName(fullFilePath);
@@ -92,10 +63,6 @@
             directory.CreateFile(fullFilePath.GetDirectoryOrFileName());
         }
 
-        /// <summary>
-        /// Удалить файл.
-        /// </summary>
-        /// <param name="fullFilePath">Полный путь к файлу.</param>
         internal void RemoveFile(string fullFilePath)
         {
             this.ThrowIfContainsOnlyDriveName(fullFilePath);
@@ -105,11 +72,6 @@
             directory.RemoveFile(fullFilePath.GetDirectoryOrFileName());
         }
 
-        /// <summary>
-        /// Найти существующую директорию.
-        /// </summary>
-        /// <param name="fullDirectoryPath">Полный путь к существующей директории.</param>
-        /// <returns>Найденная директория.</returns>
         /// <exception cref="DirectoryNotFoundException">
         /// Директория не существует.
         /// </exception>
@@ -128,11 +90,6 @@
             return directory;
         }
 
-        /// <summary>
-        /// Найти существующий файл.
-        /// </summary>
-        /// <param name="fullFilePath">Полный путь к существующему файлу.</param>
-        /// <returns>Найденный файл.</returns>
         /// <exception cref="FileNotFoundException">
         /// Файл не существует.
         /// </exception>
@@ -149,17 +106,12 @@
             return file;
         }
 
-        /// <summary>
-        /// Копировать папку или файл в целевую папку.
-        /// </summary>
-        /// <param name="fullSource">Полный путь к папке или файлу.</param>
-        /// <param name="fullDestination">Полный путь к целевой папке.</param>
-        internal void Copy(string fullSource, string fullDestination)
+        internal void Copy(string fullSourcePath, string fullDestinationPath)
         {
             IVirtualDirectory destinationDir = 
-                this.GetExistingDirectory(fullDestination);
+                this.GetExistingDirectory(fullDestinationPath);
 
-            IVirtualDirectory sourceDirectory = this.FindDirectory(fullSource);
+            IVirtualDirectory sourceDirectory = this.FindDirectory(fullSourcePath);
             
             if (sourceDirectory != null)
             {
@@ -167,47 +119,37 @@
             }
             else
             {
-                IVirtualFile sourceFile = this.GetExistingFile(fullSource);
+                IVirtualFile sourceFile = this.GetExistingFile(fullSourcePath);
                 destinationDir.CopyFileFrom(sourceFile);
             }            
         }
 
-        /// <summary>
-        /// Переместить папку или файл в целевую папку.
-        /// </summary>
-        /// <param name="fullSource">Полный путь к папке или файлу.</param>
-        /// <param name="fullDestination">Полный путь к целевой папке.</param>
-        internal void Move(string fullSource, string fullDestination)
+        internal void Move(string fullSourcePath, string fullDestinationPath)
         {
-            this.ThrowIfContainsOnlyDriveName(fullSource);
+            this.ThrowIfContainsOnlyDriveName(fullSourcePath);
             IVirtualDirectory destinationDir =
-                this.GetExistingDirectory(fullDestination);
+                this.GetExistingDirectory(fullDestinationPath);
 
             IVirtualDirectory sourceParentDirectory = 
-                this.FindDirectory(fullSource.GetPathWithoutLastItem());
+                this.FindDirectory(fullSourcePath.GetPathWithoutLastItem());
 
             IVirtualDirectory sourceDirectory = 
-                this.FindDirectory(fullSource);
+                this.FindDirectory(fullSourcePath);
 
             if (sourceDirectory != null)
             {
                 sourceParentDirectory.MoveDirectoryTo(
-                    fullSource.GetDirectoryOrFileName(), 
+                    fullSourcePath.GetDirectoryOrFileName(), 
                     destinationDir);
             }
             else
             {
                 sourceParentDirectory.MoveFileTo(
-                    fullSource.GetDirectoryOrFileName(), 
+                    fullSourcePath.GetDirectoryOrFileName(), 
                     destinationDir);
             }        
         }
 
-        /// <summary>
-        /// Найти директорию по полному пути.
-        /// </summary>
-        /// <param name="fullDirectoryPath">Путь к директории.</param>
-        /// <returns>Найденная директория, или null.</returns>
         internal IVirtualDirectory FindDirectory(string fullDirectoryPath)
         {
             if (string.IsNullOrWhiteSpace(fullDirectoryPath))
@@ -232,11 +174,6 @@
             return drive.FindDirectory(fullDirectoryPath);
         }
 
-        /// <summary>
-        /// Найти файл по полному пути.
-        /// </summary>
-        /// <param name="fullFilePath">Полный путь к файлу.</param>
-        /// <returns>Найденный файл, или null.</returns>
         internal IVirtualFile FindFile(string fullFilePath)
         {
             this.ThrowIfContainsOnlyDriveName(fullFilePath);
@@ -261,7 +198,7 @@
                 "VFS.InMemoryVirtualDrive.ConfigExample.xml");
 
             inMemoryDrive.Initialize(xmlConfig, driveName);
-            this.drives.Add(inMemoryDrive);
+            this.virtualDrives.Add(inMemoryDrive);
         }
 
         /// <summary>
@@ -271,7 +208,7 @@
         /// <returns>Корневая папка диска.</returns>
         private IVirtualDrive GetExistingDrive(string driveName)
         {
-            IVirtualDrive drive = this.drives.FirstOrDefault(d =>
+            IVirtualDrive drive = this.virtualDrives.FirstOrDefault(d =>
                 d.Name.ToLowerInvariant() == driveName.ToLowerInvariant());
 
             if (drive == null)

@@ -6,22 +6,12 @@
     using VFS.Interfaces;
     using VFS.Interfaces.DriveStructureMessageFormat;
 
-    /// <summary>
-    /// Имитация виртуального файлового сервера, выполняющего 
-    /// длительные операции и корректно создающего новые папки.
-    /// </summary>
-    public class VirtualFileServerSlowTestDouble : IVirtualFileServer
+    internal class VirtualFileServerSlowTestDouble : IVirtualFileServer
     {
-        /// <summary>
-        /// Имена созданных папок.
-        /// </summary>
         private readonly List<string> createdFolderNames
             = new List<string>();
 
-        /// <summary>
-        /// Список имен созданных директорий.
-        /// </summary>
-        public List<string> CreatedDirectories => this.createdFolderNames;
+        public List<string> CreatedDirectoriesNames => this.createdFolderNames;
 
         /// <summary>
         /// Метод сам по себе - не потокобезопасный. 
@@ -29,8 +19,6 @@
         /// привести к некорректным результатам при одновременном создании
         /// нескольких папок с одинаковыми именами.
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="directoryPath"></param>
         public void CreateDirectory(string userName, string directoryPath)
         {
             if (this.createdFolderNames.Contains(directoryPath))
@@ -43,7 +31,7 @@
 
             this.createdFolderNames.Add(directoryPath);
         }
-                
+
         public event EventHandler<NotificationEventArgs> OperationPerformed;
 
         public void ConnectUser(string userName)

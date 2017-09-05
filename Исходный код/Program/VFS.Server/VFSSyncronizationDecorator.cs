@@ -9,16 +9,10 @@
     /// Обертка виртуального файлового сервера, позволяющая 
     /// работать с ним сразу многим пользователям.
     /// </summary>
-    public class SyncronizedVirtualFileServer : IVirtualFileServer
+    public class VFSSyncronizationDecorator : IVirtualFileServer
     {
-        /// <summary>
-        /// Экземпляр виртуального файлового сервера.
-        /// </summary>
         private readonly IVirtualFileServer vfServer;
 
-        /// <summary>
-        /// Максимальное количество одновременных запросов.
-        /// </summary>
         private readonly int maxParallelQueries;
 
         /// <summary>
@@ -26,9 +20,6 @@
         /// </summary>
         private int currentQueriesCount;
 
-        /// <summary>
-        /// Объект для синхронизации.
-        /// </summary>
         private readonly object syncObject = new object();
 
         /// <summary>
@@ -40,7 +31,7 @@
         /// Если количество одновременно выполняющихся запросов достигнет
         /// <paramref name="maxParallelQueries"/>, последующие запросы не будут выполняться.
         /// </remarks>
-        public SyncronizedVirtualFileServer(
+        public VFSSyncronizationDecorator(
             IVirtualFileServer virtualFileServer,
             int maxParallelQueries)
         {
@@ -271,9 +262,6 @@
         /// Выполнить функцию синхронно (т.е. после завершения выполнения
         /// других операций и функций).
         /// </summary>
-        /// <typeparam name="T">Тип результата функции.</typeparam>
-        /// <param name="function">Функция.</param>
-        /// <returns>Результат функции.</returns>
         private T SyncPerformFunction<T>(Func<T> function)
         {
             lock (this.syncObject)
@@ -290,7 +278,6 @@
         /// Выполнить операцию синхронно, т.е. после завершения
         /// выполнения других операций и функций.
         /// </summary>
-        /// <param name="action">Операция.</param>
         private void SyncPerformAction(Action action)
         {
             lock (this.syncObject)

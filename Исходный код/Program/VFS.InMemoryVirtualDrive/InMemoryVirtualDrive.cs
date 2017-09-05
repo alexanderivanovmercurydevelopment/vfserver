@@ -15,14 +15,8 @@
     /// </summary>
     public class InMemoryVirtualDrive : IVirtualDrive
     {
-        /// <summary>
-        /// Конфигурация виртуального диска.
-        /// </summary>
         private InMemoryVirtualDriveConfig config;
 
-        /// <summary>
-        /// Корневая директория.
-        /// </summary>
         private InMemoryVirtualDirectory root;
 
         /// <summary>
@@ -82,12 +76,12 @@
         /// <summary>
         /// Получить список директорий в корне диска.
         /// </summary>
-        public IEnumerable<IVirtualDirectory> Directories
+        public IEnumerable<IVirtualDirectory> ChildDirectories
         {
             get 
             {
                 this.ThrowIfNotInitialized();
-                return this.root.Directories; 
+                return this.root.ChildDirectories; 
             }
         }
 
@@ -238,7 +232,7 @@
             IVirtualDirectory foundDir = this.root;
             foreach (string lowerDirName in lowerDirNames)
             {
-                foundDir = foundDir.Directories.ToList()
+                foundDir = foundDir.ChildDirectories.ToList()
                     .FirstOrDefault(d =>
                         d.Name.ToLowerInvariant() == lowerDirName);
 
@@ -260,18 +254,11 @@
             this.root = null;
         }
 
-        /// <summary>
-        /// Получить корневую папку диска.
-        /// </summary>
         internal InMemoryVirtualDirectory GetRoot()
         {
             return this.root;
         }
 
-        /// <summary>
-        /// Сгенерировать исключение, если виртуальный
-        /// диск не инициализирован.
-        /// </summary>
         private void ThrowIfNotInitialized()
         {
             if (this.config == null || this.root == null)

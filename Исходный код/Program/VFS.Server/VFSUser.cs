@@ -4,24 +4,11 @@
 
     using VFS.Utilities;
 
-    /// <summary>
-    /// Пользователь виртуального файлового сервера.
-    /// </summary>
     internal class VFSUser
     {
-        /// <summary>
-        /// Путь к текущей папке пользователя.
-        /// </summary>
-        private string currentDirectoryPath;
+        private string currentWorkingDirectoryPath;
 
-        /// <summary>
-        /// Создать нового пользователя виртуального 
-        /// файлового сервера.
-        /// </summary>
-        /// <param name="name">Имя пользователя.</param>
-        /// <param name="currentDirectoryPath">Путь к текущей рабочей
-        /// папке пользователя.</param>
-        internal VFSUser(string name, string currentDirectoryPath)
+        internal VFSUser(string name, string currentWorkingDirectoryPath)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -30,30 +17,24 @@
                     "Имя пользователя не должно быть пустым.");
             }
 
-            currentDirectoryPath.ValidateCorrectPath();
+            currentWorkingDirectoryPath.ValidateCorrectPath();
 
             this.Name = name;
-            this.currentDirectoryPath = currentDirectoryPath;
+            this.currentWorkingDirectoryPath = currentWorkingDirectoryPath;
         }
 
-        /// <summary>
-        /// Имя пользователя.
-        /// </summary>
         internal string Name { get; }
 
-        /// <summary>
-        /// Путь к текущей папке пользователя.
-        /// </summary>
-        internal string CurrentDirectoryPath 
+        internal string CurrentWorkingDirectoryPath 
         {
             get
             {
-                return this.currentDirectoryPath;
+                return this.currentWorkingDirectoryPath;
             }
             set
             {
                 value.ValidateCorrectPath();
-                this.currentDirectoryPath = value;
+                this.currentWorkingDirectoryPath = value;
             }
         }
     }

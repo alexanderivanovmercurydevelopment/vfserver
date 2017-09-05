@@ -11,9 +11,6 @@
     /// </summary>
     public class ConsoleDriveStructureInfo
     {
-        /// <summary>
-        /// Информация о структуре диска.
-        /// </summary>
         private readonly DriveStructureInfo driveStructure;
 
         /// <summary>
@@ -49,10 +46,6 @@
             return result.ToString();
         }
 
-        /// <summary>
-        /// Произвести сортировку.
-        /// </summary>
-        /// <param name="directory">Директория.</param>
         private void SortRecursively(IVFSDirectoryInfo directory)
         {
             directory.Directories.Sort(
@@ -67,7 +60,7 @@
                     y.Name, 
                     StringComparison.OrdinalIgnoreCase));
 
-            foreach (IVFSDirectoryInfo childDir 
+            foreach (VFSDirectoryInfo childDir 
                 in directory.Directories)
             {
                 this.SortRecursively(childDir);
