@@ -1,6 +1,7 @@
 ﻿namespace VFS.Client
 {
     using System;
+    using System.Text;
 
     using VFS.Client.Commands;
     using VFS.Client.WCF;
@@ -17,6 +18,7 @@
         {
             try
             {
+                Program.SetupConsoleEncoding();
                 Program.WriteProgramDescription();
                 bool connected = Program.Connect();
 
@@ -36,6 +38,12 @@
                 Program.SafeDisconnect();
                 Program.Quit();
             }
+        }
+
+        private static void SetupConsoleEncoding()
+        {
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding = Encoding.Unicode;
         }
 
         private static void WriteProgramDescription()
