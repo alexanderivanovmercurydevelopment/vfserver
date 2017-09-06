@@ -20,7 +20,7 @@
         /// Подключить нового пользователя.
         /// </summary>
         /// <param name="userName">Имя пользователя.</param>
-        void  ConnectUser(string userName);
+        void ConnectUser(string userName);
 
         /// <summary>
         /// Изменить текущую директорию пользователя.

@@ -5,7 +5,9 @@
     internal class MakeFileCommand : VFSClientCommand
     {
         internal MakeFileCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 1;
 

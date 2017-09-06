@@ -58,7 +58,7 @@
         {
             this.ThrowIfContainsOnlyDriveName(fullFilePath);
             IVirtualDirectory directory = this.GetExistingDirectory(
-                 fullFilePath.GetPathWithoutLastItem());
+                fullFilePath.GetPathWithoutLastItem());
 
             directory.CreateFile(fullFilePath.GetDirectoryOrFileName());
         }
@@ -67,7 +67,7 @@
         {
             this.ThrowIfContainsOnlyDriveName(fullFilePath);
             IVirtualDirectory directory = this.GetExistingDirectory(
-                 fullFilePath.GetPathWithoutLastItem());
+                fullFilePath.GetPathWithoutLastItem());
 
             directory.RemoveFile(fullFilePath.GetDirectoryOrFileName());
         }
@@ -78,7 +78,7 @@
         internal IVirtualDirectory GetExistingDirectory(
             string fullDirectoryPath)
         {
-            IVirtualDirectory directory = 
+            IVirtualDirectory directory =
                 this.FindDirectory(fullDirectoryPath);
 
             if (directory == null)
@@ -108,11 +108,11 @@
 
         internal void Copy(string fullSourcePath, string fullDestinationPath)
         {
-            IVirtualDirectory destinationDir = 
+            IVirtualDirectory destinationDir =
                 this.GetExistingDirectory(fullDestinationPath);
 
             IVirtualDirectory sourceDirectory = this.FindDirectory(fullSourcePath);
-            
+
             if (sourceDirectory != null)
             {
                 destinationDir.CopyDirectoryFrom(sourceDirectory);
@@ -121,7 +121,7 @@
             {
                 IVirtualFile sourceFile = this.GetExistingFile(fullSourcePath);
                 destinationDir.CopyFileFrom(sourceFile);
-            }            
+            }
         }
 
         internal void Move(string fullSourcePath, string fullDestinationPath)
@@ -130,24 +130,24 @@
             IVirtualDirectory destinationDir =
                 this.GetExistingDirectory(fullDestinationPath);
 
-            IVirtualDirectory sourceParentDirectory = 
+            IVirtualDirectory sourceParentDirectory =
                 this.FindDirectory(fullSourcePath.GetPathWithoutLastItem());
 
-            IVirtualDirectory sourceDirectory = 
+            IVirtualDirectory sourceDirectory =
                 this.FindDirectory(fullSourcePath);
 
             if (sourceDirectory != null)
             {
                 sourceParentDirectory.MoveDirectoryTo(
-                    fullSourcePath.GetDirectoryOrFileName(), 
+                    fullSourcePath.GetDirectoryOrFileName(),
                     destinationDir);
             }
             else
             {
                 sourceParentDirectory.MoveFileTo(
-                    fullSourcePath.GetDirectoryOrFileName(), 
+                    fullSourcePath.GetDirectoryOrFileName(),
                     destinationDir);
-            }        
+            }
         }
 
         internal IVirtualDirectory FindDirectory(string fullDirectoryPath)

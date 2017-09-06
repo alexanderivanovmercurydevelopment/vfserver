@@ -17,6 +17,12 @@
             = new List<VFSUser>();
 
         /// <summary>
+        /// Список подключенных пользователей.
+        /// </summary>
+        internal IEnumerable<VFSUser> RegisteredUsers
+            => this.registeredUsers.ToList();
+
+        /// <summary>
         /// Событие отключения пользователя.
         /// </summary>
         public event EventHandler<VFSUserEventArgs> UserUnregistered;
@@ -84,11 +90,5 @@
             this.ThrowIfUserIsNotConnected(userName);
             return this.registeredUsers.First(u => u.Name == userName);
         }
-
-        /// <summary>
-        /// Список подключенных пользователей.
-        /// </summary>
-        internal IEnumerable<VFSUser> RegisteredUsers 
-            => this.registeredUsers.ToList();
     }
 }

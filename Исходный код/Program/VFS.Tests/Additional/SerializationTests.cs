@@ -26,8 +26,8 @@
                 Files = new List<VFSFileInfo>()
             };
 
-            drive.Directories.Add(new VFSDirectoryInfo { Name = "dir" });
-            drive.Files.Add(new VFSFileInfo { Name = "file" });
+            drive.Directories.Add(new VFSDirectoryInfo {Name = "dir"});
+            drive.Files.Add(new VFSFileInfo {Name = "file"});
 
             XmlUtilities.SerializeToXml(drive);
         }

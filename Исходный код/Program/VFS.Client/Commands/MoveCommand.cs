@@ -8,7 +8,9 @@
     internal class MoveCommand : VFSClientCommand
     {
         internal MoveCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 2;
 

@@ -5,7 +5,9 @@
     internal class RemoveDirectoryCommand : VFSClientCommand
     {
         internal RemoveDirectoryCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 1;
 

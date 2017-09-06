@@ -55,7 +55,7 @@
         /// <param name="childDirName">Имя дочерней папки.</param>
         /// <param name="destination">Папка назначения.</param>
         void MoveDirectoryTo(
-            string childDirName, 
+            string childDirName,
             IVirtualDirectory destination);
 
         /// <summary>
@@ -64,7 +64,7 @@
         /// <param name="childFileName">Имя дочернего файла.</param>
         /// <param name="destination">Папка назначения.</param>
         void MoveFileTo(
-            string childFileName, 
+            string childFileName,
             IVirtualDirectory destination);
 
         /// <summary>

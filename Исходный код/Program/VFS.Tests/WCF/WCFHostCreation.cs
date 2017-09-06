@@ -26,7 +26,7 @@
 
             File.AppendAllText(configPath, @"PortNumber = 8000");
 
-            WCFHost host = new WCFHost();
+            var host = new WCFHost();
             host.Start();
             host.Stop();
 

@@ -18,7 +18,7 @@
     public class VirtualFileServerPerformanceTests
     {
         private readonly PerformanceCharacteristics config
-            = new PerformanceCharacteristics()
+            = new PerformanceCharacteristics
             {
                 // характеристики заменены на меньшие для более быстрого прогона всех тестов
                 UsersCount = 1,
@@ -35,18 +35,18 @@
                 //RequestsPerUser = 10
             };
 
+        private readonly List<Exception> exceptionsOccurred = new List<Exception>();
+
         /// <summary>
         /// Имитация сервера.
         /// </summary>
         private readonly IVirtualFileServer server;
 
-        private int successRequestsCount;
+        private readonly object syncObject = new object();
 
         private int notificationsCount;
 
-        private readonly List<Exception> exceptionsOccurred = new List<Exception>();
-
-        private readonly object syncObject = new object();
+        private int successRequestsCount;
 
         /// <summary>
         /// Подготовка экземпляра класса тестирования
@@ -67,22 +67,20 @@
         {
             this.exceptionsOccurred.Clear();
 
-            for (int i = 1;
+            for (var i = 1;
                 i <= this.config.UsersCount;
                 i++)
-            {
                 this.server.OperationPerformed += (sender, args) =>
+                {
+                    lock (this.syncObject)
                     {
-                        lock (this.syncObject)
-                        {
-                            this.notificationsCount++;
-                        }
-                    };
-            }
+                        this.notificationsCount++;
+                    }
+                };
 
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
 
-            for (int userNumber = 1;
+            for (var userNumber = 1;
                 userNumber <= this.config.UsersCount;
                 userNumber++)
             {
@@ -110,7 +108,7 @@
         {
             try
             {
-                for (int i = 1;
+                for (var i = 1;
                     i <= this.config.RequestsPerUser;
                     i++)
                 {

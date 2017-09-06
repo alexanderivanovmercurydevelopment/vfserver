@@ -8,7 +8,9 @@
     internal class UnlockFileCommand : VFSClientCommand
     {
         internal UnlockFileCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 1;
 

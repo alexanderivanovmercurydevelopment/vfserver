@@ -8,7 +8,6 @@
     using VFS.Interfaces.VirtualDrive;
     using VFS.Utilities;
 
-    
     /// <summary>
     /// Класс тестирования виртуального диска, работающего с памятью.
     /// </summary>
@@ -19,22 +18,22 @@
         /// Инициализация виртуального диска некорректным именем.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentOutOfRangeException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void InvalidDriveNameTest()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             string config = this.GetDriveStandardConfig();
-            drive.Initialize(config, "C");// без двоеточия, нестандартное имя диска.
+            drive.Initialize(config, "C"); // без двоеточия, нестандартное имя диска.
         }
 
         /// <summary>
         /// Инициализация виртуального диска некорректным именем.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void InvalidConfigTest()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             drive.Initialize(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <InMemoryVirtualDrive>
   <MaxFileNameLength>100</MaxFileNameLength>
@@ -47,10 +46,10 @@
         /// Инициализация виртуального диска со стандартной конфигурацией.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void InitializeWithoutConfigTest()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             drive.Initialize(null, "D:");
         }
 
@@ -61,7 +60,7 @@
         [ExpectedException(typeof(ArgumentNullException))]
         public void InitializeWithEmptyConfigTest()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             drive.Initialize("   ", "D:");
         }
 
@@ -71,7 +70,7 @@
         [TestMethod]
         public void NormalInitialization()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             string config = this.GetDriveStandardConfig();
             drive.Initialize(config, "C:");
         }
@@ -82,7 +81,7 @@
         [TestMethod]
         public void DriveNameCheck()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             string config = this.GetDriveStandardConfig();
             drive.Initialize(config, "C:");
             Assert.AreEqual("C:", drive.Name);
@@ -105,7 +104,7 @@
         [TestMethod]
         public void FindDirectoryTest()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             drive.Initialize(this.GetDriveStandardConfig(), "C:");
             IVirtualDirectory rootDir = drive.CreateDirectory("dir1");
             IVirtualDirectory dir2 = rootDir.CreateDirectory("DIR2");
@@ -125,7 +124,7 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void FindDirectoryWithoutDriveNamePathTest()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             drive.Initialize(this.GetDriveStandardConfig(), "C:");
             IVirtualDirectory rootDir = drive.CreateDirectory("dir1");
             IVirtualDirectory dir2 = rootDir.CreateDirectory("DIR2");
@@ -137,10 +136,10 @@
         /// Некорректный путь к файлу.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void FindDirectoryWithInvalidPath()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             drive.Initialize(this.GetDriveStandardConfig(), "C:");
             IVirtualDirectory rootDir = drive.CreateDirectory("dir1");
             IVirtualDirectory dir2 = rootDir.CreateDirectory("DIR2");
@@ -152,10 +151,10 @@
         /// Поиск папки не на том диске.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void FindDirInAnotherDrive()
         {
-            InMemoryVirtualDrive drive = new InMemoryVirtualDrive();
+            var drive = new InMemoryVirtualDrive();
             drive.Initialize(this.GetDriveStandardConfig(), "C:");
             drive.CreateDirectory("dir1");
             Assert.IsNull(drive.FindDirectory("D:\\dir1\\DIR2\\dir3"));

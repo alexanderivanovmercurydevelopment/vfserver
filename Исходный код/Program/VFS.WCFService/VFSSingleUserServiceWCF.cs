@@ -40,8 +40,8 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.ConnectUser(userName);
-                
-                int usersCount = 
+
+                int usersCount =
                     VFSSingleUserServiceWCF.server.GetUsersCount();
 
                 this.connectedUserName = userName;
@@ -75,12 +75,12 @@
                     "Пользователь " + this.connectedUserName + " уже подписан на оповещения.");
             }
 
-            IVFSNotificationHandler handler =
+            var handler =
                 OperationContext.Current
-                .GetCallbackChannel<IVFSNotificationHandler>();
+                    .GetCallbackChannel<IVFSNotificationHandler>();
 
             this.notifyAction = handler.HandleNotification;
-            VFSSingleUserServiceWCF.server.OperationPerformed  += 
+            VFSSingleUserServiceWCF.server.OperationPerformed +=
                 this.ServerOnOperationPerformed;
         }
 
@@ -90,7 +90,7 @@
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.CreateDirectory(
-                    this.connectedUserName, 
+                    this.connectedUserName,
                     path);
 
                 return new StandardOperationResult(
@@ -114,7 +114,7 @@
         }
 
         public StandardOperationResult RemoveDirectory(
-            string path, 
+            string path,
             bool recursive)
         {
             return this.SafeExecute(() =>
@@ -193,13 +193,13 @@
         }
 
         public StandardOperationResult Copy(
-            string sourcePath, 
+            string sourcePath,
             string destinationPath)
         {
             return this.SafeExecute(() =>
             {
                 VFSSingleUserServiceWCF.server.Copy(
-                    this.connectedUserName, 
+                    this.connectedUserName,
                     sourcePath,
                     destinationPath);
 
@@ -210,7 +210,7 @@
         }
 
         public StandardOperationResult Move(
-            string sourcePath, 
+            string sourcePath,
             string destinationPath)
         {
             return this.SafeExecute(() =>
@@ -282,7 +282,7 @@
         }
 
         /// <summary>
-        /// (Не тестировалось) Попытка корректного завершения 
+        /// (Не тестировалось) Попытка корректного завершения
         /// работы с сервером при сбое клиента.
         /// </summary>
         ~VFSSingleUserServiceWCF()
@@ -291,7 +291,7 @@
             {
                 try
                 {
-                    VFSSingleUserServiceWCF.server.OperationPerformed 
+                    VFSSingleUserServiceWCF.server.OperationPerformed
                         -= this.ServerOnOperationPerformed;
 
                     VFSSingleUserServiceWCF.server
@@ -300,7 +300,8 @@
                 // ReSharper disable once EmptyGeneralCatchClause
                 // Prevent any error during finalization.
                 catch
-                { }
+                {
+                }
             }
         }
     }

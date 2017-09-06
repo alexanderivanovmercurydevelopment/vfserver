@@ -37,7 +37,7 @@
         }
 
         /// <summary>
-        /// Имя файла или папки не является 
+        /// Имя файла или папки не является
         /// </summary>
         [TestMethod]
         public void PathContainsDriveName()
@@ -64,7 +64,7 @@
         /// Тест получения пути без последнего файла или папки.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetPathWithoutLastItemEmpty()
         {
             "c:".GetPathWithoutLastItem();

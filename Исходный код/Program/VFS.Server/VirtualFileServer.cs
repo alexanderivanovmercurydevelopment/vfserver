@@ -16,23 +16,23 @@
     public class VirtualFileServer : IVirtualFileServer
     {
         private const string CantRemoveCurrentDirectory = "Нельзя удалить или переместить текущую директорию, "
-            + "или директорию, родительскую по отношению к текущей.";
+                                                          + "или директорию, родительскую по отношению к текущей.";
 
-        private readonly VirtualFileSystem fileSystem;
+        private readonly VFSConfig config;
 
         private readonly VFSConnectedUsers connectedUsers;
+
+        private readonly VirtualFileSystem fileSystem;
 
         /// <summary>
         /// Политика блокировки удаления файлов.
         /// </summary>
         private readonly VFSLockingPolicy lockingPolicy;
 
-        private readonly VFSConfig config;
-
         /// <summary>
         /// Создать виртуальный файловый сервер.
         /// </summary>
-        public VirtualFileServer() 
+        public VirtualFileServer()
         {
             this.connectedUsers = new VFSConnectedUsers();
             this.lockingPolicy = new VFSLockingPolicy(
@@ -62,7 +62,7 @@
         /// <param name="userName">Имя подключенного пользователя.</param>
         /// <param name="directoryPath">Путь к новой текущей директории.</param>
         public void ChangeUsersCurrentDirectory(
-            string userName, 
+            string userName,
             string directoryPath)
         {
             string fullDirPath = this.GetFullPath(userName, directoryPath);
@@ -115,7 +115,7 @@
         /// <param name="userName">Имя подключенного пользователя.</param>
         /// <param name="directoryPath">Путь и имя создаваемой директории.</param>
         public void CreateDirectory(
-            string userName, 
+            string userName,
             string directoryPath)
         {
             string fullPath = this.GetFullPath(userName, directoryPath);
@@ -132,8 +132,8 @@
         /// <param name="directoryPath">Путь к удаляемой папке.</param>
         /// <param name="recursive">Удалить, даже если есть подпапки.</param>
         public void RemoveDirectory(
-            string userName, 
-            string directoryPath, 
+            string userName,
+            string directoryPath,
             bool recursive)
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
@@ -158,7 +158,7 @@
         /// <param name="userName">Имя подключенного пользователя.</param>
         /// <param name="filePath">Путь к файлу.</param>
         public void CreateFile(
-            string userName, 
+            string userName,
             string filePath)
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
@@ -175,7 +175,7 @@
         /// <param name="userName">Имя подключенного пользователя.</param>
         /// <param name="filePath">Путь к удаляемому файлу.</param>
         public void RemoveFile(
-            string userName, 
+            string userName,
             string filePath)
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
@@ -194,7 +194,7 @@
         /// <param name="userName">Имя подключенного пользователя.</param>
         /// <param name="filePath">Путь к удаляемому файлу.</param>
         public void LockFile(
-            string userName, 
+            string userName,
             string filePath)
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
@@ -212,7 +212,7 @@
         /// <param name="userName">Имя подключенного пользователя.</param>
         /// <param name="filePath">Путь к файлу.</param>
         public void UnlockFile(
-            string userName, 
+            string userName,
             string filePath)
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
@@ -231,8 +231,8 @@
         /// <param name="sourcePath">Путь к копируемой папке или файлу.</param>
         /// <param name="destinationPath">Путь к целевой папке.</param>
         public void Copy(
-            string userName, 
-            string sourcePath, 
+            string userName,
+            string sourcePath,
             string destinationPath)
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
@@ -251,8 +251,8 @@
         /// <param name="sourcePath">Путь к перемещаемой папке или файлу.</param>
         /// <param name="destinationPath">Путь к целевой папке.</param>
         public void Move(
-            string userName, 
-            string sourcePath, 
+            string userName,
+            string sourcePath,
             string destinationPath)
         {
             this.connectedUsers.ThrowIfUserIsNotConnected(userName);
@@ -286,31 +286,28 @@
             {
                 return path;
             }
-            else
+            string currentDir = this.connectedUsers
+                .GetConnectedUser(userName).CurrentWorkingDirectoryPath;
+
+            if (this.fileSystem.FindDirectory(currentDir) == null)
             {
-                string currentDir = this.connectedUsers
-                    .GetConnectedUser(userName).CurrentWorkingDirectoryPath;
-
-                if (this.fileSystem.FindDirectory(currentDir) == null)
-                {
-                    throw new DirectoryNotFoundException(
-                        "Рабочая директория пользователя " + userName + " удалена.\n"
-                        + "Для корректной работы нужно изменить рабочую директорию.");
-                }
-
-                if (!currentDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                {
-                    currentDir += Path.DirectorySeparatorChar;
-                }
-
-                return currentDir + path;
+                throw new DirectoryNotFoundException(
+                    "Рабочая директория пользователя " + userName + " удалена.\n"
+                    + "Для корректной работы нужно изменить рабочую директорию.");
             }
+
+            if (!currentDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                currentDir += Path.DirectorySeparatorChar;
+            }
+
+            return currentDir + path;
         }
 
         /// <summary>
-        /// Является ли <paramref name="fullPath"/> текущей директорией,
+        /// Является ли <paramref name="fullPath" /> текущей директорией,
         /// или директорией, родительской по отношению к текущей для
-        /// пользователя <paramref name="userName"/>.
+        /// пользователя <paramref name="userName" />.
         /// </summary>
         private bool IsCurrentOrParentDirForUser(
             string userName,
@@ -333,11 +330,11 @@
             if (this.OperationPerformed != null)
             {
                 Task.Factory.StartNew(() =>
-                    {
-                        this.OperationPerformed(
-                            this,
-                            new NotificationEventArgs(notification, userName));
-                    });
+                {
+                    this.OperationPerformed(
+                        this,
+                        new NotificationEventArgs(notification, userName));
+                });
             }
         }
     }

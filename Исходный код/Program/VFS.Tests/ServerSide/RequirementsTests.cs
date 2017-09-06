@@ -1,15 +1,18 @@
 ﻿// ReSharper disable UnusedVariable
 // названия директорий и другие переменные могут использоваться
 // просто для наглядности.
+
 namespace VFS.Tests.ServerSide
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using VFS.Interfaces;
+    using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Server;
 
     /// <summary>
@@ -33,7 +36,7 @@ namespace VFS.Tests.ServerSide
         /// Негативное тестирование подключения.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void ConnectionNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -57,7 +60,7 @@ namespace VFS.Tests.ServerSide
         /// Негативное тестирование отключения.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void DisconnectNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -76,12 +79,12 @@ namespace VFS.Tests.ServerSide
             server.CreateDirectory("User1", "c:\\dir1");
             server.CreateDirectory("User1", "dir2");
             server.CreateDirectory("User1", "C:\\dir2\\dir3");
-            
-            var dirs = server.GetDriveStructure("C:").Directories;
+
+            List<VFSDirectoryInfo> dirs = server.GetDriveStructure("C:").Directories;
 
             Assert.AreEqual(2, dirs.Count);
 
-            var dir3 = dirs.First(d => d.Name == "dir2")
+            VFSDirectoryInfo dir3 = dirs.First(d => d.Name == "dir2")
                 .Directories.First();
 
             Assert.AreEqual("dir3", dir3.Name);
@@ -91,7 +94,7 @@ namespace VFS.Tests.ServerSide
         /// Негативное тестирование создания директории.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(DirectoryNotFoundException))]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
         public void MakeDirNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -114,9 +117,9 @@ namespace VFS.Tests.ServerSide
             server.ChangeUsersCurrentDirectory("User1", "c:\\temp\\dir2");
             server.CreateDirectory("User1", "dir3");
 
-            var drive = server.GetDriveStructure("C:");
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
 
-            var thirdDir = drive
+            VFSDirectoryInfo thirdDir = drive
                 .Directories.First(d => d.Name == "temp")
                 .Directories.First(d => d.Name == "dir2")
                 .Directories.First(d => d.Name == "dir3");
@@ -141,13 +144,13 @@ namespace VFS.Tests.ServerSide
             server.CreateDirectory("User1", "dir11");
             server.CreateDirectory("User2", "dir22");
 
-            var drive = server.GetDriveStructure("c:");
+            DriveStructureInfo drive = server.GetDriveStructure("c:");
 
-            var dir11 = drive
+            VFSDirectoryInfo dir11 = drive
                 .Directories.First(d => d.Name == "dir1")
                 .Directories.First(d => d.Name == "dir11");
 
-            var dir22 = drive
+            VFSDirectoryInfo dir22 = drive
                 .Directories.First(d => d.Name == "dir2")
                 .Directories.First(d => d.Name == "dir22");
         }
@@ -164,7 +167,7 @@ namespace VFS.Tests.ServerSide
             server.CreateFile("User1", "c:\\dir1\\1.txt");
             server.RemoveDirectory("User1", "c:\\dir1", false);
 
-            var drive = server.GetDriveStructure("c:");
+            DriveStructureInfo drive = server.GetDriveStructure("c:");
             Assert.AreEqual(0, drive.Directories.Count);
         }
 
@@ -179,7 +182,7 @@ namespace VFS.Tests.ServerSide
             server.CreateDirectory("User1", "dir1");
             server.CreateDirectory("User1", "c:\\dIr1\\dir2");
             server.ChangeUsersCurrentDirectory("User1", "dir1\\dir2");
-            
+
             try
             {
                 server.RemoveDirectory("User1", "c:\\DIR1\\dir2", false);
@@ -192,7 +195,7 @@ namespace VFS.Tests.ServerSide
             }
 
             server.ChangeUsersCurrentDirectory("User1", "c:");
-            
+
             try
             {
                 server.RemoveDirectory("User1", "dir1", false);
@@ -217,7 +220,7 @@ namespace VFS.Tests.ServerSide
             server.CreateDirectory("User1", "c:\\dIr1\\dir2");
             server.RemoveDirectory("User1", "dir1", true);
 
-            var drive = server.GetDriveStructure("C:");
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
 
             Assert.AreEqual(0, drive.Directories.Count);
         }
@@ -235,17 +238,17 @@ namespace VFS.Tests.ServerSide
             server.CreateFile("User1", "test\\2.txt");
             server.CreateFile("User1", "3.txt");
 
-            var drive = server.GetDriveStructure("c:");
+            DriveStructureInfo drive = server.GetDriveStructure("c:");
 
-            var file1 = drive
+            VFSFileInfo file1 = drive
                 .Directories.First(d => d.Name == "test")
                 .Files.First(f => f.Name == "1.txt");
 
-            var file2 = drive
+            VFSFileInfo file2 = drive
                 .Directories.First(d => d.Name == "test")
                 .Files.First(f => f.Name == "2.txt");
 
-            var file3 = drive
+            VFSFileInfo file3 = drive
                 .Files.First(f => f.Name == "3.txt");
         }
 
@@ -253,7 +256,7 @@ namespace VFS.Tests.ServerSide
         /// Негативное тестирование создания файла.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void MakeFileNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -273,7 +276,7 @@ namespace VFS.Tests.ServerSide
             server.CreateFile("User1", "1.txt");
             server.RemoveFile("User1", "1.txt");
 
-            var drive = server.GetDriveStructure("c:");
+            DriveStructureInfo drive = server.GetDriveStructure("c:");
             Assert.AreEqual(0, drive.Directories.Count);
         }
 
@@ -281,7 +284,7 @@ namespace VFS.Tests.ServerSide
         /// Негативное тестирование удаления файла.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(FileNotFoundException))]
+        [ExpectedException(typeof(FileNotFoundException))]
         public void DeleteFileNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -302,7 +305,7 @@ namespace VFS.Tests.ServerSide
             server.LockFile("User2", "1.txt");
             server.LockFile("User1", "1.txt");
 
-            var drive = server.GetDriveStructure("c:");
+            DriveStructureInfo drive = server.GetDriveStructure("c:");
 
             Assert.IsTrue(drive.Files.First().LockingUsers.Contains("User1"));
             Assert.IsTrue(drive.Files.First().LockingUsers.Contains("User2"));
@@ -323,7 +326,7 @@ namespace VFS.Tests.ServerSide
         /// Удаление директории с заблокированными файлами.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void RemoveDirWithLockingFiles()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -358,7 +361,7 @@ namespace VFS.Tests.ServerSide
             {
                 Assert.IsTrue(ex is InvalidOperationException);
 
-                var drive = server.GetDriveStructure("C:");
+                DriveStructureInfo drive = server.GetDriveStructure("C:");
                 Assert.IsTrue(drive.Directories.Any(d => d.Name == "dir1"));
             }
 
@@ -397,7 +400,7 @@ namespace VFS.Tests.ServerSide
         /// Негативное тестирование блокировки файла.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void LockFileNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -405,7 +408,7 @@ namespace VFS.Tests.ServerSide
             server.CreateFile("User1", "1.txt");
             server.LockFile("User1", "1.txt");
             server.LockFile("User1", "1.txt");
-        }        
+        }
 
         /// <summary>
         /// Позитивное тестирование разблокировки файла.
@@ -424,7 +427,7 @@ namespace VFS.Tests.ServerSide
             server.UnlockFile("User2", "1.txt");
             server.RemoveFile("User1", "1.txt");
 
-            var drive = server.GetDriveStructure("C:");
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
             Assert.AreEqual(0, drive.Files.Count);
         }
 
@@ -442,14 +445,14 @@ namespace VFS.Tests.ServerSide
             server.LockFile("User1", "1.txt");
             server.UnlockFile("User1", "1.txt");
 
-            var drive = server.GetDriveStructure("C:");
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
 
             Assert.IsTrue(drive.Files.First().LockingUsers.Contains("User2"));
             Assert.IsFalse(drive.Files.First().LockingUsers.Contains("User1"));
         }
 
         /// <summary>
-        /// Блокировка файлов должна сниматься, когда 
+        /// Блокировка файлов должна сниматься, когда
         /// пользователь отключается от сервера.
         /// </summary>
         [TestMethod]
@@ -460,11 +463,11 @@ namespace VFS.Tests.ServerSide
             server.CreateFile("User1", "1.txt");
             server.LockFile("User1", "1.txt");
             server.DisconnectUser("User1");
-            
-            var drive = server.GetDriveStructure("C:");
+
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
 
             Assert.IsTrue(drive.Files.First(f => f.Name == "1.txt")
-                .LockingUsers.Count == 0);
+                              .LockingUsers.Count == 0);
         }
 
         /// <summary>
@@ -483,18 +486,18 @@ namespace VFS.Tests.ServerSide
             server.Copy("User1", "1.txt", "destination");
             server.Copy("User1", "source", "destination");
 
-            var drive = server.GetDriveStructure("C:");
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
 
             // всё скопировалось
-            var newFile1 = drive.Directories.First(d => d.Name == "destination")
+            VFSFileInfo newFile1 = drive.Directories.First(d => d.Name == "destination")
                 .Files.First(f => f.Name == "1.txt");
-            var newFile2 = drive.Directories.First(d => d.Name == "destination")
+            VFSFileInfo newFile2 = drive.Directories.First(d => d.Name == "destination")
                 .Directories.First(d => d.Name == "source")
                 .Files.First(f => f.Name == "2.txt");
 
             // старые папки и файлы остались
-            var oldFile1 = drive.Files.First(f => f.Name == "1.txt");
-            var oldFile2 = drive.Directories.First(d => d.Name == "source")
+            VFSFileInfo oldFile1 = drive.Files.First(f => f.Name == "1.txt");
+            VFSFileInfo oldFile2 = drive.Directories.First(d => d.Name == "source")
                 .Files.First(f => f.Name == "2.txt");
         }
 
@@ -502,7 +505,7 @@ namespace VFS.Tests.ServerSide
         /// Destination не может указывать на имя файла.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(DirectoryNotFoundException))]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
         public void CopyNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -528,12 +531,12 @@ namespace VFS.Tests.ServerSide
             server.Move("User1", "1.txt", "destination");
             server.Move("User1", "source", "destination");
 
-            var drive = server.GetDriveStructure("C:");
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
 
             // всё переместилось
-            var newFile1 = drive.Directories.First(d => d.Name == "destination")
+            VFSFileInfo newFile1 = drive.Directories.First(d => d.Name == "destination")
                 .Files.First(f => f.Name == "1.txt");
-            var newFile2 = drive.Directories.First(d => d.Name == "destination")
+            VFSFileInfo newFile2 = drive.Directories.First(d => d.Name == "destination")
                 .Directories.First(d => d.Name == "source")
                 .Files.First(f => f.Name == "2.txt");
 
@@ -546,7 +549,7 @@ namespace VFS.Tests.ServerSide
         /// Негативное тестирование перемещения файла или папки.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(DirectoryNotFoundException))]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
         public void MoveNegative()
         {
             IVirtualFileServer server = this.CreateStandardServer();
@@ -569,12 +572,12 @@ namespace VFS.Tests.ServerSide
             server.CreateFile("User1", "1.txt");
             server.CreateFile("User1", "c:\\dir1\\dir2\\2.txt");
 
-            var drive = server.GetDriveStructure("C:");
+            DriveStructureInfo drive = server.GetDriveStructure("C:");
 
-            var dir1 = drive.Directories.First(d => d.Name == "dir1");
-            var dir2 = dir1.Directories.First(d => d.Name == "dir2");
-            var file1 = drive.Files.First(f => f.Name == "1.txt");
-            var file2 = dir2.Files.First(f => f.Name == "2.txt");
+            VFSDirectoryInfo dir1 = drive.Directories.First(d => d.Name == "dir1");
+            VFSDirectoryInfo dir2 = dir1.Directories.First(d => d.Name == "dir2");
+            VFSFileInfo file1 = drive.Files.First(f => f.Name == "1.txt");
+            VFSFileInfo file2 = dir2.Files.First(f => f.Name == "2.txt");
         }
 
         private IVirtualFileServer CreateStandardServer()

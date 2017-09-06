@@ -1,8 +1,8 @@
 ﻿namespace VFS.Tests.Bugs
 {
-    using VFS.Server;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using VFS.Server;
 
     /// <summary>
     /// Тестирование перемещения папки или файла на диск C:
@@ -16,7 +16,7 @@
         [TestMethod]
         public void MoveFileToDriveC()
         {
-            VirtualFileServer server = new VirtualFileServer();
+            var server = new VirtualFileServer();
             server.ConnectUser("User1");
             server.CreateDirectory("User1", "dir1");
             server.CreateFile("User1", "dir1\\1.txt");
@@ -29,7 +29,7 @@
         [TestMethod]
         public void MoveDirToDriveC()
         {
-            VirtualFileServer server = new VirtualFileServer();
+            var server = new VirtualFileServer();
             server.ConnectUser("User1");
             server.CreateDirectory("User1", "dir1");
             server.CreateDirectory("User1", "dir1\\dir2");

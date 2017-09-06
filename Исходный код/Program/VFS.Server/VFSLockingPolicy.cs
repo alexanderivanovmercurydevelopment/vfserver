@@ -47,7 +47,7 @@
         /// <param name="fullSource">Полный путь к файлу или папке.</param>
         /// <param name="virtualFileSystem">Виртуальная файловая система.</param>
         internal void ThrowIfCantRemove(
-            string fullSource, 
+            string fullSource,
             VirtualFileSystem virtualFileSystem)
         {
             IVirtualFile file = virtualFileSystem.FindFile(fullSource);
@@ -73,19 +73,15 @@
             IVirtualDirectory directory)
         {
             foreach (IVirtualFile file in directory.Files)
-            {
                 if (this.IsFileLocked(file))
                 {
                     throw new InvalidOperationException(
                         "Невозможно удалить директорию " + directory.Name + ". "
                         + " Файл " + file.Name + " заблокирован для удаления");
                 }
-            }
 
             foreach (IVirtualDirectory dir in directory.ChildDirectories)
-            {
                 this.ThrowIfCantRemoveDirectory(dir);
-            }
         }
 
         /// <summary>
@@ -142,7 +138,7 @@
         }
 
         /// <summary>
-        /// Сформировать информацию о директории, включающую 
+        /// Сформировать информацию о директории, включающую
         /// информацию о блокировках.
         /// </summary>
         /// <param name="directory">Директория.</param>
@@ -150,7 +146,7 @@
         internal DriveStructureInfo GetDirStructureWithLockingInfo(
             IVirtualDirectory directory)
         {
-            DriveStructureInfo root = new DriveStructureInfo();
+            var root = new DriveStructureInfo();
             this.AppendDirAndFileInfos(directory, root);
             return root;
         }
@@ -175,8 +171,8 @@
         {
             to.Name = from.Name;
             to.Files = new List<VFSFileInfo>(from.Files.Select(f =>
-                new VFSFileInfo() 
-                { 
+                new VFSFileInfo
+                {
                     Name = f.Name,
                     LockingUsers = this.locks
                         .Where(l => l.File == f)
@@ -188,7 +184,7 @@
 
             foreach (IVirtualDirectory childDir in from.ChildDirectories)
             {
-                VFSDirectoryInfo childDirInfo = new VFSDirectoryInfo();
+                var childDirInfo = new VFSDirectoryInfo();
                 to.Directories.Add(childDirInfo);
                 this.AppendDirAndFileInfos(childDir, childDirInfo);
             }
@@ -200,13 +196,13 @@
         /// <param name="sender">Источник события.</param>
         /// <param name="args">Аргументы события.</param>
         private void ConnectedUsersOnUserUnregistered(
-            object sender, 
+            object sender,
             VFSUserEventArgs args)
         {
             // снятие блокировки с файлов, заблокированных этим пользователем
-            List<FileLockInfo> obsoleteLocks = this.locks.Where(
-                l => l.BlockedBy == args.User)
-                .ToList();
+            List<FileLockInfo> obsoleteLocks =
+                this.locks.Where(l => l.BlockedBy == args.User)
+                    .ToList();
 
             obsoleteLocks.ForEach(l => this.locks.Remove(l));
         }

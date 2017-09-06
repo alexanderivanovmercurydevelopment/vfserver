@@ -13,7 +13,7 @@
     {
         private static ClientApplication application;
 
-        static void Main()
+        private static void Main()
         {
             try
             {
@@ -99,15 +99,15 @@
         {
             string[] hostNameAndPort =
                 parameters[0].Split(
-                    new[] { ':' },
+                    new[] {':'},
                     StringSplitOptions.RemoveEmptyEntries);
 
-            int port = 0;
+            var port = 0;
             bool portIsTyped = hostNameAndPort.Length == 2
-                && int.TryParse(hostNameAndPort[1], out port);
+                               && int.TryParse(hostNameAndPort[1], out port);
 
             Program.application = new ClientApplication(new WCFBasedServiceProvider());
-            
+
             Console.WriteLine(Program.application.Connect(
                 hostNameAndPort[0],
                 portIsTyped ? new int?(port) : null,
@@ -119,7 +119,7 @@
         /// </summary>
         private static void PerformCommands()
         {
-            while(true)
+            while (true)
             {
                 string command = Console.ReadLine();
 
@@ -129,7 +129,7 @@
                     return;
                 }
 
-                StandardOperationResult result = 
+                StandardOperationResult result =
                     Program.application.TryPerformCommand(command);
 
                 Console.WriteLine(result.Succeed ? result.ResultMessage : result.ErrorMessage);

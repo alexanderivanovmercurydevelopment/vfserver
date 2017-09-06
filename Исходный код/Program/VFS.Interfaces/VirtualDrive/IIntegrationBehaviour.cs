@@ -33,7 +33,7 @@
         /// <typeparam name="TResult">Тип результата (копии).</typeparam>
         /// <param name="source">Копируемая директория.</param>
         /// <returns>Копия директории.</returns>
-        TResult CreateDirCopy<TResult>(IVirtualDirectory source) 
+        TResult CreateDirCopy<TResult>(IVirtualDirectory source)
             where TResult : IVirtualDirectory;
 
         /// <summary>

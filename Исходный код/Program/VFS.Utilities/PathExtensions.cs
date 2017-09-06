@@ -49,11 +49,11 @@
         public static string GetLowerDriveName(this string path)
         {
             path.ValidateCorrectPath();
-            
+
             Debug.Assert(path != null, "path != null");
             string root = Path.GetPathRoot(path)
                 .Trim()
-                .Replace(Path.DirectorySeparatorChar.ToString(), string.Empty);           
+                .Replace(Path.DirectorySeparatorChar.ToString(), string.Empty);
 
             if (!root.Contains(":") || root.Length > 2)
             {
@@ -66,7 +66,7 @@
         }
 
         /// <summary>
-        /// Получить путь без последней папки или файла 
+        /// Получить путь без последней папки или файла
         /// (и без последнего разделителя).
         /// </summary>
         /// <param name="path">Путь.</param>
@@ -90,8 +90,8 @@
                     "Путь содержит только имя файла/папки.");
             }
 
-            return Path.GetDirectoryName(path) 
-                ?? Path.GetFileName(path);
+            return Path.GetDirectoryName(path)
+                   ?? Path.GetFileName(path);
         }
 
         /// <summary>
@@ -127,11 +127,11 @@
             }
 
             List<string> dirOrDriveNames = path.Split(
-                new [] { Path.DirectorySeparatorChar },
-                StringSplitOptions.None)
+                    new[] {Path.DirectorySeparatorChar},
+                    StringSplitOptions.None)
                 .ToList();
 
-            if (String.IsNullOrWhiteSpace(dirOrDriveNames.Last()))
+            if (string.IsNullOrWhiteSpace(dirOrDriveNames.Last()))
             {
                 dirOrDriveNames.RemoveAt(dirOrDriveNames.Count - 1);
             }
@@ -141,7 +141,7 @@
                 return false;
             }
 
-            List<string> checkedStrings = new List<string>(dirOrDriveNames);
+            var checkedStrings = new List<string>(dirOrDriveNames);
 
             try
             {

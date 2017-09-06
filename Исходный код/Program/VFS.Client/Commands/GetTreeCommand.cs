@@ -8,7 +8,9 @@
     internal class GetTreeCommand : VFSClientCommand
     {
         internal GetTreeCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 0;
 
@@ -29,7 +31,7 @@
 
             try
             {
-                ConsoleDriveStructureInfo consoleResult =
+                var consoleResult =
                     new ConsoleDriveStructureInfo(result.ResultMessage);
 
                 return new StandardOperationResult(

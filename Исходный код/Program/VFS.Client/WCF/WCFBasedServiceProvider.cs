@@ -24,11 +24,11 @@
         /// <param name="port">Порт.</param>
         /// <param name="notificationHandler">Обработчик оповещений
         /// виртуального файлового сервера.</param>
-        /// <returns>Интерфейс доступа пользователя к виртуальному 
+        /// <returns>Интерфейс доступа пользователя к виртуальному
         /// файловому серверу.</returns>
         public IVFSSingleUserService CreateVFSService(
-            string serverName, 
-            int? port, 
+            string serverName,
+            int? port,
             IVFSNotificationHandler notificationHandler)
         {
             if (port == null)
@@ -38,9 +38,9 @@
                     "Необходимо указать порт.");
             }
 
-            Uri tcpUri = new Uri("net.tcp://" + serverName + ":" + port + "/VFSSingleUserServiceWCF");
+            var tcpUri = new Uri("net.tcp://" + serverName + ":" + port + "/VFSSingleUserServiceWCF");
 
-            EndpointAddress address = new EndpointAddress(tcpUri);
+            var address = new EndpointAddress(tcpUri);
 
             Binding binding = new NetTcpBinding();
 
@@ -49,7 +49,7 @@
             binding.SendTimeout = TimeSpan.FromMinutes(3);
             binding.ReceiveTimeout = TimeSpan.FromHours(10);
 
-            InstanceContext instanceContext = new InstanceContext(notificationHandler);
+            var instanceContext = new InstanceContext(notificationHandler);
             this.duplexFactory = new DuplexChannelFactory<IVFSSingleUserService>(instanceContext, binding, address);
             IVFSSingleUserService service = this.duplexFactory.CreateChannel();
             service.SubscribeForNotifications();

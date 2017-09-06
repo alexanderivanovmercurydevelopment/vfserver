@@ -8,14 +8,14 @@
         {
             return new StandardOperationResult(
                 "Подключено. Имя пользователя: " + userName,
-                null);            
+                null);
         }
 
         public StandardOperationResult Quit()
         {
             return new StandardOperationResult(
                 "Выход произведен.",
-                null);    
+                null);
         }
 
         public void SubscribeForNotifications()
@@ -39,7 +39,7 @@
         public StandardOperationResult RemoveDirectory(string path, bool recursive)
         {
             string message = "Директория - " + path + " удалена";
-            
+
             if (recursive)
             {
                 message += " вместе со всеми подпапками.";
@@ -92,7 +92,7 @@
 
         public StandardOperationResult GetDriveStructure(string drive)
         {
-            string message = @"<?xml version=""1.0"" encoding=""utf-8"" ?> 
+            var message = @"<?xml version=""1.0"" encoding=""utf-8"" ?> 
 <DriveStructure driveName=""C:"">
   <Directories>
     <Directory name=""Dir1"">

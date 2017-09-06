@@ -29,7 +29,7 @@
                     "Хостинг WCF уже запущен.");
             }
 
-            Uri[] adrbase = { new Uri(WCFHost.GetTcpServiceUri()) };
+            Uri[] adrbase = {new Uri(WCFHost.GetTcpServiceUri())};
             this.serviceHost = new ServiceHost(typeof(VFSSingleUserServiceWCF), adrbase);
 
             this.SetMetadataBehavior();
@@ -61,7 +61,7 @@
         }
 
         /// <summary>
-        /// Получить URI для mex (с другим портом, чтобы позволить 
+        /// Получить URI для mex (с другим портом, чтобы позволить
         /// указывать MaxConnections для TCP-биндинга).
         /// </summary>
         /// <returns>URI для mex.</returns>
@@ -76,12 +76,12 @@
         /// <returns>Номер порта.</returns>
         private static int GetPortNumber()
         {
-            string serviceFolderPath = 
+            string serviceFolderPath =
                 Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 
             string configText = File.ReadAllText(
-                serviceFolderPath 
-                + Path.DirectorySeparatorChar 
+                serviceFolderPath
+                + Path.DirectorySeparatorChar
                 + "config.txt");
 
             string stringPortNumber = configText.Split('=')[1].Trim();
@@ -94,7 +94,7 @@
         /// </summary>
         private void SetMetadataBehavior()
         {
-            ServiceMetadataBehavior mBehave = new ServiceMetadataBehavior();
+            var mBehave = new ServiceMetadataBehavior();
             this.serviceHost.Description.Behaviors.Add(mBehave);
         }
 
@@ -103,7 +103,7 @@
         /// </summary>
         private void AddTcpServiceEndpoint()
         {
-            NetTcpBinding tcpb = new NetTcpBinding()
+            var tcpb = new NetTcpBinding
             {
                 CloseTimeout = TimeSpan.FromMinutes(3),
                 OpenTimeout = TimeSpan.FromMinutes(3),

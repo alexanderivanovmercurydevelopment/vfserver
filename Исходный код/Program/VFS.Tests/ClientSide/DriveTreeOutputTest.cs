@@ -5,7 +5,7 @@
     using VFS.Client;
     using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Utilities;
-    
+
     /// <summary>
     /// Тестирование вывода структуры папок и файлов.
     /// </summary>
@@ -32,15 +32,15 @@
         [TestMethod]
         public void DriveTreeConsoleOutputTest()
         {
-            string xml =  this.GetDriveStructureExample();
+            string xml = this.GetDriveStructureExample();
 
-            ConsoleDriveStructureInfo info = 
+            var info =
                 new ConsoleDriveStructureInfo(xml);
 
             string result = info.GetConsoleFriendlyString();
 
             Assert.AreEqual(
-                result, 
+                result,
                 DriveTreeOutputTest.ExpectedConsoleOutput);
         }
 
@@ -53,7 +53,7 @@
         {
             string xml = this.GetDriveStructureExample();
 
-            DriveStructureInfo structureInfo =
+            var structureInfo =
                 XmlUtilities.DeserializeFromXml<DriveStructureInfo>(
                     xml);
 
@@ -68,7 +68,7 @@
         {
             return AppResourceReader.GetResource(
                 typeof(DriveStructureInfo).Assembly,
-                "VFS.Interfaces.DriveStructureMessageFormat.Example.xml");            
+                "VFS.Interfaces.DriveStructureMessageFormat.Example.xml");
         }
 
         /// <summary>
@@ -80,16 +80,12 @@
             Assert.IsNotNull(dirStructureInfo.Files);
             Assert.IsNotNull(dirStructureInfo.Directories);
 
-            foreach (VFSDirectoryInfo childDir 
+            foreach (VFSDirectoryInfo childDir
                 in dirStructureInfo.Directories)
-            {
                 this.CheckCollectionsNotNullRecursive(childDir);
-            }
 
             foreach (VFSFileInfo childFile in dirStructureInfo.Files)
-            {
                 Assert.IsNotNull(childFile.LockingUsers);
-            }
         }
     }
 }

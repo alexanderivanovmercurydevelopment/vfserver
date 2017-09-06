@@ -18,10 +18,10 @@
         /// текущую директорию.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(InvalidOperationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void UserCantRemoveCurrentDir()
         {
-            VirtualFileServer server = new VirtualFileServer();
+            var server = new VirtualFileServer();
             server.ConnectUser("User1");
             server.CreateDirectory("User1", "dir1");
             server.ChangeUsersCurrentDirectory("User1", "dir1");
@@ -36,7 +36,7 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void UserCantRemoveParentOfCurrentDir()
         {
-            VirtualFileServer server = new VirtualFileServer();
+            var server = new VirtualFileServer();
             server.ConnectUser("User1");
             server.CreateDirectory("User1", "dir1");
             server.CreateDirectory("User1", "dir1\\dir2");
@@ -52,7 +52,7 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void UserCantMoveCurrentDir()
         {
-            VirtualFileServer server = new VirtualFileServer();
+            var server = new VirtualFileServer();
             server.ConnectUser("User1");
             server.CreateDirectory("User1", "dir1");
             server.ChangeUsersCurrentDirectory("User1", "dir1");
@@ -69,7 +69,7 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void UserCantMoveParentOfCurrentDir()
         {
-            VirtualFileServer server = new VirtualFileServer();
+            var server = new VirtualFileServer();
             server.ConnectUser("User1");
             server.CreateDirectory("User1", "dir1");
             server.CreateDirectory("User1", "dir1\\dir2");
@@ -86,7 +86,7 @@
         [TestMethod]
         public void CurrentDirWasRemoved()
         {
-            VirtualFileServer server = new VirtualFileServer();
+            var server = new VirtualFileServer();
             server.ConnectUser("User1");
             server.CreateDirectory("User1", "dir1");
             server.CreateDirectory("User1", "dir1\\dir2");

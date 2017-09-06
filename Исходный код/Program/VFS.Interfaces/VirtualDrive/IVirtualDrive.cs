@@ -14,7 +14,7 @@
         /// <param name="driveName">Имя диска (например, "C:").</param>
         /// <remarks>У каждой реализации виртуального диска предполагается
         /// свой формат конфигурационных данных, схему которого можно
-        /// получить, вызвав <see cref="GetXmlConfigSchema"/>.</remarks>
+        /// получить, вызвав <see cref="GetXmlConfigSchema" />.</remarks>
         void Initialize(string xmlConfig, string driveName);
 
         /// <summary>

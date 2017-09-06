@@ -20,7 +20,7 @@
         public void NonexistentCommandCreationTest()
         {
             VFSClientCommand command = CommandCreator.CreateCommand(
-                "fakecommand", 
+                "fakecommand",
                 new VFSSingleUserServiceTestDouble());
 
             Assert.IsNull(command);
@@ -30,7 +30,7 @@
         /// Создание пустой команды.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void EmptyCommandCreationTest()
         {
             CommandCreator.CreateCommand(
@@ -43,7 +43,7 @@
         /// к виртуальному файловому серверу.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void CreateCommandWithoutVFSService()
         {
             CommandCreator.CreateCommand("md", null);
@@ -55,12 +55,12 @@
         [TestMethod]
         public void StandardCommandsCreationTest()
         {
-            foreach (var value in Enum.GetValues(typeof(ClientCommands)))
+            foreach (object value in Enum.GetValues(typeof(ClientCommands)))
             {
-                VFSClientCommand command = 
+                VFSClientCommand command =
                     CommandCreator.CreateCommand(
-                         Enum.GetName(typeof(ClientCommands), value), 
-                         new VFSSingleUserServiceTestDouble());
+                        Enum.GetName(typeof(ClientCommands), value),
+                        new VFSSingleUserServiceTestDouble());
 
                 Assert.IsNotNull(command);
             }

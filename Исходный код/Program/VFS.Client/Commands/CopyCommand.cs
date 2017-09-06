@@ -5,7 +5,9 @@
     internal class CopyCommand : VFSClientCommand
     {
         internal CopyCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 2;
 

@@ -8,7 +8,9 @@
     internal class DeleteTreeCommand : VFSClientCommand
     {
         internal DeleteTreeCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 1;
 

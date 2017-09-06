@@ -6,21 +6,20 @@
     using VFS.Interfaces.DriveStructureMessageFormat;
 
     /// <summary>
-    /// Обертка виртуального файлового сервера, позволяющая 
+    /// Обертка виртуального файлового сервера, позволяющая
     /// работать с ним сразу многим пользователям.
     /// </summary>
     public class VFSSyncronizationDecorator : IVirtualFileServer
     {
-        private readonly IVirtualFileServer vfServer;
-
         private readonly int maxParallelQueries;
+
+        private readonly object syncObject = new object();
+        private readonly IVirtualFileServer vfServer;
 
         /// <summary>
         /// Текущее количество выполняющихся запросов.
         /// </summary>
         private int currentQueriesCount;
-
-        private readonly object syncObject = new object();
 
         /// <summary>
         /// Создать обертку-"синхронизатор" виртуального файлового сервера.
@@ -29,7 +28,7 @@
         /// <param name="maxParallelQueries">Максимальное количество параллельных запросов.</param>
         /// <remarks>
         /// Если количество одновременно выполняющихся запросов достигнет
-        /// <paramref name="maxParallelQueries"/>, последующие запросы не будут выполняться.
+        /// <paramref name="maxParallelQueries" />, последующие запросы не будут выполняться.
         /// </remarks>
         public VFSSyncronizationDecorator(
             IVirtualFileServer virtualFileServer,
@@ -58,15 +57,9 @@
         /// </summary>
         public event EventHandler<NotificationEventArgs> OperationPerformed
         {
-            add
-            {
-                this.vfServer.OperationPerformed += value;
-            }
+            add { this.vfServer.OperationPerformed += value; }
 
-            remove
-            {
-                this.vfServer.OperationPerformed -= value;
-            }
+            remove { this.vfServer.OperationPerformed -= value; }
         }
 
         /// <summary>
@@ -76,10 +69,7 @@
         public void ConnectUser(
             string userName)
         {
-            this.SyncPerformAction(() => 
-            { 
-                this.vfServer.ConnectUser(userName); 
-            });
+            this.SyncPerformAction(() => { this.vfServer.ConnectUser(userName); });
         }
 
         /// <summary>
@@ -91,10 +81,7 @@
             string userName,
             string directoryPath)
         {
-            this.SyncPerformAction(() => 
-            { 
-                this.vfServer.ChangeUsersCurrentDirectory(userName, directoryPath); 
-            });           
+            this.SyncPerformAction(() => { this.vfServer.ChangeUsersCurrentDirectory(userName, directoryPath); });
         }
 
         /// <summary>
@@ -104,10 +91,7 @@
         public void DisconnectUser(
             string userName)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.DisconnectUser(userName);
-            });                      
+            this.SyncPerformAction(() => { this.vfServer.DisconnectUser(userName); });
         }
 
         /// <summary>
@@ -117,7 +101,7 @@
         public int GetUsersCount()
         {
             return this.SyncPerformFunction(
-                () => this.vfServer.GetUsersCount());            
+                () => this.vfServer.GetUsersCount());
         }
 
         /// <summary>
@@ -141,10 +125,7 @@
             string userName,
             string directoryPath)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.CreateDirectory(userName, directoryPath);
-            });            
+            this.SyncPerformAction(() => { this.vfServer.CreateDirectory(userName, directoryPath); });
         }
 
         /// <summary>
@@ -158,10 +139,7 @@
             string directoryPath,
             bool recursive)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.RemoveDirectory(userName, directoryPath, recursive);
-            });
+            this.SyncPerformAction(() => { this.vfServer.RemoveDirectory(userName, directoryPath, recursive); });
         }
 
         /// <summary>
@@ -173,10 +151,7 @@
             string userName,
             string filePath)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.CreateFile(userName, filePath);
-            });
+            this.SyncPerformAction(() => { this.vfServer.CreateFile(userName, filePath); });
         }
 
         /// <summary>
@@ -188,10 +163,7 @@
             string userName,
             string filePath)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.RemoveFile(userName, filePath);
-            });
+            this.SyncPerformAction(() => { this.vfServer.RemoveFile(userName, filePath); });
         }
 
         /// <summary>
@@ -203,10 +175,7 @@
             string userName,
             string filePath)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.LockFile(userName, filePath);
-            });
+            this.SyncPerformAction(() => { this.vfServer.LockFile(userName, filePath); });
         }
 
         /// <summary>
@@ -218,10 +187,7 @@
             string userName,
             string filePath)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.UnlockFile(userName, filePath);
-            });
+            this.SyncPerformAction(() => { this.vfServer.UnlockFile(userName, filePath); });
         }
 
         /// <summary>
@@ -235,10 +201,7 @@
             string sourcePath,
             string destinationPath)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.Copy(userName, sourcePath, destinationPath);
-            });
+            this.SyncPerformAction(() => { this.vfServer.Copy(userName, sourcePath, destinationPath); });
         }
 
         /// <summary>
@@ -252,10 +215,7 @@
             string sourcePath,
             string destinationPath)
         {
-            this.SyncPerformAction(() =>
-            {
-                this.vfServer.Move(userName, sourcePath, destinationPath);
-            });            
+            this.SyncPerformAction(() => { this.vfServer.Move(userName, sourcePath, destinationPath); });
         }
 
         /// <summary>

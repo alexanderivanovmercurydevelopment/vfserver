@@ -5,7 +5,7 @@
     /// <summary>
     /// Интерфейс доступа ОДНОГО клиента к операциям сервера.
     /// </summary>
-    [ServiceContract (CallbackContract=typeof(IVFSNotificationHandler))]
+    [ServiceContract(CallbackContract = typeof(IVFSNotificationHandler))]
     public interface IVFSSingleUserService
     {
         /// <summary>

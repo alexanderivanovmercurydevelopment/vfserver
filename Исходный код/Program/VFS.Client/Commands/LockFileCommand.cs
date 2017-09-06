@@ -8,7 +8,9 @@
     internal class LockFileCommand : VFSClientCommand
     {
         internal LockFileCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 1;
 

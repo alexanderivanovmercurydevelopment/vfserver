@@ -8,18 +8,18 @@
     internal class ClientApplication
     {
         /// <summary>
-        /// Поставщик доступа к интерфейсу работы 
+        /// Поставщик доступа к интерфейсу работы
         /// с виртуальным файловым сервером.
         /// </summary>
         private readonly IVFSSingleUserServiceProvider provider;
 
+        private bool connected;
+
         /// <summary>
-        /// Интерфейс доступа пользователя к виртуальному 
+        /// Интерфейс доступа пользователя к виртуальному
         /// файловому серверу.
         /// </summary>
         private IVFSSingleUserService server;
-
-        private bool connected;
 
         public ClientApplication(
             IVFSSingleUserServiceProvider provider)
@@ -42,7 +42,7 @@
                 port,
                 new ConsoleNotificationHandler());
 
-            StandardOperationResult result = 
+            StandardOperationResult result =
                 this.server.Connect(userName);
 
             if (result.Succeed)
@@ -50,11 +50,9 @@
                 this.connected = true;
                 return result.ResultMessage;
             }
-            else
-            {
-                throw new InvalidOperationException(
-                    "Ошибка подключения: " + result.ErrorMessage);
-            }
+
+            throw new InvalidOperationException(
+                "Ошибка подключения: " + result.ErrorMessage);
         }
 
         public StandardOperationResult TryPerformCommand(string commandString)
@@ -64,10 +62,10 @@
                 throw new InvalidOperationException(
                     "Подключение к серверу не произведено");
             }
-            else if (string.IsNullOrWhiteSpace(commandString))
+            if (string.IsNullOrWhiteSpace(commandString))
             {
                 return new StandardOperationResult(
-                    null, 
+                    null,
                     "Введена пустая команда.");
             }
 
@@ -96,6 +94,6 @@
                 this.provider.Dispose();
                 this.connected = false;
             }
-        }        
+        }
     }
 }

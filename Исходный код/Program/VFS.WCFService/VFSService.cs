@@ -31,7 +31,7 @@
         /// </summary>
         protected override void OnStop()
         {
-            this.wcfHost.Stop();     
+            this.wcfHost.Stop();
         }
     }
 }

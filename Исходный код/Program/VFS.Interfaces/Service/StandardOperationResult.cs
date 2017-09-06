@@ -33,12 +33,12 @@
                     + " Операция либо выполнена, либо не выполнена.");
             }
 
-            this.ResultMessage = 
+            this.ResultMessage =
                 string.IsNullOrWhiteSpace(resultMessage)
                     ? null
                     : resultMessage;
 
-            this.ErrorMessage = 
+            this.ErrorMessage =
                 string.IsNullOrWhiteSpace(errorMessage)
                     ? null
                     : errorMessage;

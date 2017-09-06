@@ -19,13 +19,15 @@
             string resourcePath)
         {
             using (Stream stream = assembly.GetManifestResourceStream(resourcePath))
+            {
                 if (stream != null)
                 {
-                    using (StreamReader reader = new StreamReader(stream))
+                    using (var reader = new StreamReader(stream))
                     {
                         return reader.ReadToEnd();
                     }
                 }
+            }
 
             return null;
         }

@@ -24,7 +24,7 @@
         public int MaxDirectoryNameLength { get; set; }
 
         /// <summary>
-        /// Поведение интеграции с другими реализациями 
+        /// Поведение интеграции с другими реализациями
         /// виртуальных дисков.
         /// </summary>
         [XmlIgnore]

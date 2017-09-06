@@ -1,17 +1,17 @@
-﻿using System.ServiceProcess;
-
-namespace VFS.WCFService
+﻿namespace VFS.WCFService
 {
-    static class Program
+    using System.ServiceProcess;
+
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        private static void Main()
         {
-            var servicesToRun = new ServiceBase[] 
-            { 
-                new VFSService() 
+            var servicesToRun = new ServiceBase[]
+            {
+                new VFSService()
             };
 
             ServiceBase.Run(servicesToRun);

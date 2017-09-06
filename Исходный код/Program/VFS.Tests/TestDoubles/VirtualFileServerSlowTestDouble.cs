@@ -2,26 +2,24 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
 
     using VFS.Interfaces;
     using VFS.Interfaces.DriveStructureMessageFormat;
 
     internal class VirtualFileServerSlowTestDouble : IVirtualFileServer
     {
-        private readonly List<string> createdFolderNames
-            = new List<string>();
-
-        public List<string> CreatedDirectoriesNames => this.createdFolderNames;
+        public List<string> CreatedDirectoriesNames { get; } = new List<string>();
 
         /// <summary>
-        /// Метод сам по себе - не потокобезопасный. 
+        /// Метод сам по себе - не потокобезопасный.
         /// Использование данного сервера без обертки-"синхронизатора" должно
         /// привести к некорректным результатам при одновременном создании
         /// нескольких папок с одинаковыми именами.
         /// </summary>
         public void CreateDirectory(string userName, string directoryPath)
         {
-            if (this.createdFolderNames.Contains(directoryPath))
+            if (this.CreatedDirectoriesNames.Contains(directoryPath))
             {
                 throw new InvalidOperationException(
                     "Папка уже существует.");
@@ -29,7 +27,7 @@
 
             this.PerformSlowOperation();
 
-            this.createdFolderNames.Add(directoryPath);
+            this.CreatedDirectoriesNames.Add(directoryPath);
         }
 
         public event EventHandler<NotificationEventArgs> OperationPerformed;
@@ -98,10 +96,10 @@
 
         private void PerformSlowOperation()
         {
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
 
             this.OperationPerformed?.Invoke(
-                this, 
+                this,
                 new NotificationEventArgs("Операция выполнена успешно.", "noUser"));
         }
     }

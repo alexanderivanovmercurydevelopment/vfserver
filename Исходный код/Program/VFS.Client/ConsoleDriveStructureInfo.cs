@@ -2,7 +2,7 @@
 {
     using System;
     using System.Text;
-    
+
     using VFS.Interfaces.DriveStructureMessageFormat;
     using VFS.Utilities;
 
@@ -22,7 +22,7 @@
         /// </param>
         public ConsoleDriveStructureInfo(string xmlDriveInfo)
         {
-            DriveStructureInfo driveStrInfo =
+            var driveStrInfo =
                 XmlUtilities.DeserializeFromXml<DriveStructureInfo>(
                     xmlDriveInfo);
 
@@ -37,7 +37,7 @@
         {
             this.SortRecursively(this.driveStructure);
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             result.AppendLine(this.driveStructure.Name);
             this.GetPresentationStringRecursively(
                 this.driveStructure,
@@ -50,29 +50,27 @@
         {
             directory.Directories.Sort(
                 (x, y) => string.Compare(
-                    x.Name, 
-                    y.Name, 
+                    x.Name,
+                    y.Name,
                     StringComparison.OrdinalIgnoreCase));
 
             directory.Files.Sort(
                 (x, y) => string.Compare(
-                    x.Name, 
-                    y.Name, 
+                    x.Name,
+                    y.Name,
                     StringComparison.OrdinalIgnoreCase));
 
-            foreach (VFSDirectoryInfo childDir 
+            foreach (VFSDirectoryInfo childDir
                 in directory.Directories)
-            {
                 this.SortRecursively(childDir);
-            }
         }
 
         /// <summary>
-        /// Получить строку представления информации о папке и 
+        /// Получить строку представления информации о папке и
         /// её содержимом.
         /// </summary>
         /// <param name="directory">Папка.</param>
-        /// <param name="beginningLeftString">Символы, которые 
+        /// <param name="beginningLeftString">Символы, которые
         /// должны выводится слева перед именем папки/файла.</param>
         /// <param name="currentResult">Текущая строка представления
         /// информации о структуре папок и файлов.</param>
@@ -82,18 +80,18 @@
             StringBuilder currentResult)
         {
             int directoriesCount = directory.Directories.Count;
-            for (int i = 0; i < directoriesCount; i++)
+            for (var i = 0; i < directoriesCount; i++)
             {
-                IVFSDirectoryInfo childDir = 
+                IVFSDirectoryInfo childDir =
                     directory.Directories[i];
 
                 currentResult.AppendLine(
                     beginningLeftString + "|_" + childDir.Name);
 
-                string additionalLeftString = 
-                    ((i == directoriesCount - 1) && (directory.Files.Count == 0))
-                    ? "  "
-                    : "| ";
+                string additionalLeftString =
+                    i == directoriesCount - 1 && directory.Files.Count == 0
+                        ? "  "
+                        : "| ";
 
                 this.GetPresentationStringRecursively(
                     childDir,
@@ -111,10 +109,10 @@
                     str += "[LOCKED by ";
 
                     int lockingUsersCount = childFile.LockingUsers.Count;
-                    for (int i = 0; i < lockingUsersCount; i++)
+                    for (var i = 0; i < lockingUsersCount; i++)
                     {
                         str += childFile.LockingUsers[i];
-                        
+
                         if (i != lockingUsersCount - 1)
                         {
                             str += ",";

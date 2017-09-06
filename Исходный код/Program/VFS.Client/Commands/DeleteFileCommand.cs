@@ -5,7 +5,9 @@
     internal class DeleteFileCommand : VFSClientCommand
     {
         internal DeleteFileCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 1;
 

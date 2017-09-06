@@ -19,7 +19,7 @@
             ConsoleCommandParser.ThrowIfEmpty(command);
             ConsoleCommandParser.ThrowIfMultiline(command);
 
-            string[] parts = 
+            string[] parts =
                 ConsoleCommandParser.GetAllCommandParts(command);
 
             return parts[0];
@@ -37,7 +37,7 @@
 
             List<string> parts =
                 ConsoleCommandParser.GetAllCommandParts(command)
-                .ToList();
+                    .ToList();
 
             parts.Remove(parts.First());
 
@@ -57,7 +57,7 @@
         private static void ThrowIfMultiline(string command)
         {
             string[] strings = command.Split(
-                new[] { '\n' }, 
+                new[] {'\n'},
                 StringSplitOptions.None);
 
             if (strings.Length > 1)
@@ -76,7 +76,7 @@
         private static string[] GetAllCommandParts(string command)
         {
             return command.Split(
-                new[] { ' ' },
+                new[] {' '},
                 StringSplitOptions.RemoveEmptyEntries);
         }
     }

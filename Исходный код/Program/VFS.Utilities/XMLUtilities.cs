@@ -18,11 +18,11 @@
         /// <returns>Строка XML, в которую преобразован объект.</returns>
         public static T DeserializeFromXml<T>(string xml)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            var serializer = new XmlSerializer(typeof(T));
 
             using (TextReader reader = new StringReader(xml))
             {
-                return (T)serializer.Deserialize(reader);
+                return (T) serializer.Deserialize(reader);
             }
         }
 
@@ -34,9 +34,9 @@
         /// <returns>XML-представление объекта.</returns>
         public static string SerializeToXml<T>(T @object)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            
-            using (StringWriter stringWriter = new StringWriter())
+            var serializer = new XmlSerializer(typeof(T));
+
+            using (var stringWriter = new StringWriter())
             {
                 serializer.Serialize(stringWriter, @object);
                 return stringWriter.ToString(); // Your XML
@@ -51,9 +51,9 @@
         /// <returns>True - валидация прошла успешно, false - нет.</returns>
         public static bool ValidateXml(string xml, string xsd)
         {
-            bool result = true;
+            var result = true;
 
-            XmlSchemaSet schemas = new XmlSchemaSet();
+            var schemas = new XmlSchemaSet();
 
             using (TextReader reader = new StringReader(xsd))
             {
@@ -62,15 +62,12 @@
                     (o, e) => { result = false; });
 
                 schemas.Add(schema);
-            }            
+            }
 
             XDocument doc = XDocument.Parse(xml);
 
-            doc.Validate(schemas, (o, e) =>
-            {
-                result = false;
-            });
-            
+            doc.Validate(schemas, (o, e) => { result = false; });
+
             return result;
         }
     }

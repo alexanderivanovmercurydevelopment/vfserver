@@ -13,7 +13,7 @@
     [TestClass]
     public class ClosureTests
     {
-        private readonly List<int> numbers = 
+        private readonly List<int> numbers =
             new List<int>();
 
         /// <summary>
@@ -22,10 +22,10 @@
         [TestMethod]
         public void ClosureTest()
         {
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
 
-            int startNumber = 1;
-            int tasksNumber = 20;
+            var startNumber = 1;
+            var tasksNumber = 20;
 
             for (int i = startNumber; i <= tasksNumber; i++)
             {
@@ -37,12 +37,10 @@
             Task.WaitAll(tasks.ToArray());
 
             for (int i = startNumber; i <= tasksNumber; i++)
-            {
                 lock (this.numbers)
                 {
                     Assert.IsTrue(this.numbers.Contains(i));
                 }
-            }
         }
 
         /// <summary>
@@ -50,10 +48,10 @@
         /// </summary>
         private int ParallelOperation(
             int number)
-        {            
+        {
             int num = this.PerformFunction(() => this.GetSameNumber(number));
-            
-            lock(this.numbers)
+
+            lock (this.numbers)
             {
                 Assert.IsFalse(this.numbers.Contains(num));
                 this.numbers.Add(num);

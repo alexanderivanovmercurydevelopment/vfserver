@@ -24,14 +24,14 @@
         /// </summary>
         private const int DirectoriesCount = 50;
 
-        private InMemoryVirtualDrive drive;
-
         private List<Exception> creationErrors;
 
         /// <summary>
         /// Список ошибок удаления директорий.
         /// </summary>
         private List<Exception> deletionErrors;
+
+        private InMemoryVirtualDrive drive;
 
         /// <summary>
         /// Тестирование параллельного добавления директорий.
@@ -46,10 +46,10 @@
                 InMemoryVirtualDriveConcurrency.DirectoriesCount *
                 (InMemoryVirtualDriveConcurrency.UsersCount - 1);
             Assert.AreEqual(
-                this.creationErrors.Count, 
+                this.creationErrors.Count,
                 expectedCreationErrorsCount);
             Assert.AreEqual(
-                this.drive.ChildDirectories.Count(), 
+                this.drive.ChildDirectories.Count(),
                 InMemoryVirtualDriveConcurrency.DirectoriesCount);
             Assert.IsTrue(this.creationErrors.All(err => err.Message.StartsWith("Папка")));
 
@@ -57,7 +57,7 @@
             int expectedDeletionErrorsCount =
                 expectedCreationErrorsCount;
             Assert.AreEqual(
-                this.deletionErrors.Count, 
+                this.deletionErrors.Count,
                 expectedDeletionErrorsCount);
             Assert.AreEqual(this.drive.ChildDirectories.Count(), 0);
             Assert.IsTrue(this.deletionErrors.All(err => err.Message.StartsWith("В папке")));
@@ -72,7 +72,7 @@
         /// <returns>Готовый к работе виртуальный файловый диск.</returns>
         private static InMemoryVirtualDrive GetNewVirtualDrive()
         {
-            InMemoryVirtualDrive result = new InMemoryVirtualDrive();
+            var result = new InMemoryVirtualDrive();
 
             string xmlConfig = AppResourceReader.GetResource(
                 typeof(InMemoryVirtualDrive).Assembly,
@@ -101,18 +101,17 @@
 
         private void CreateDirectoriesInParallel()
         {
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
 
-            for (int taskNumber = 1; 
-                taskNumber <= InMemoryVirtualDriveConcurrency.UsersCount; 
+            for (var taskNumber = 1;
+                taskNumber <= InMemoryVirtualDriveConcurrency.UsersCount;
                 taskNumber++)
             {
                 Task task = Task.Factory.StartNew(() =>
                 {
-                    for (int dirName = 1; 
-                        dirName <= InMemoryVirtualDriveConcurrency.DirectoriesCount; 
+                    for (var dirName = 1;
+                        dirName <= InMemoryVirtualDriveConcurrency.DirectoriesCount;
                         dirName++)
-                    {
                         try
                         {
                             this.drive.CreateDirectory(dirName.ToString());
@@ -122,7 +121,6 @@
                             Assert.IsTrue(ex.Message.StartsWith("Папка"));
                             this.creationErrors.Add(ex);
                         }
-                    }
                 });
 
                 tasks.Add(task);
@@ -133,18 +131,17 @@
 
         private void RemoveDirectoriesInParallel()
         {
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
 
-            for (int taskNumber = 1; 
-                taskNumber <= InMemoryVirtualDriveConcurrency.UsersCount; 
+            for (var taskNumber = 1;
+                taskNumber <= InMemoryVirtualDriveConcurrency.UsersCount;
                 taskNumber++)
             {
                 Task task = Task.Factory.StartNew(() =>
                 {
-                    for (int dirName = 1;
+                    for (var dirName = 1;
                         dirName <= InMemoryVirtualDriveConcurrency.DirectoriesCount;
                         dirName++)
-                    {
                         try
                         {
                             this.drive.RemoveDirectory(dirName.ToString(), false);
@@ -154,7 +151,6 @@
                             Assert.IsTrue(ex.Message.StartsWith("В папке"));
                             this.deletionErrors.Add(ex);
                         }
-                    }
                 });
 
                 tasks.Add(task);

@@ -16,7 +16,7 @@
         /// Тест получения названия команды из пустой строки команды.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetCommandNameFromEmptyCommand()
         {
             ConsoleCommandParser.GetCommandName("   ");
@@ -26,7 +26,7 @@
         /// Тест получения параметров из пустой строки команды.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetCommandParamsFromEmptyCommand()
         {
             ConsoleCommandParser.GetCommandParams("    ");
@@ -55,7 +55,7 @@
         [TestMethod]
         public void GetCommandParamsTests()
         {
-            string[] commandParams = 
+            string[] commandParams =
                 ConsoleCommandParser.GetCommandParams("  mjj 1    2   3,_4");
 
             Assert.AreEqual(commandParams[0], "1");
@@ -70,11 +70,11 @@
         }
 
         /// <summary>
-        /// Проверка получения имени команды, содержащей 
+        /// Проверка получения имени команды, содержащей
         /// более одной строки.
         /// </summary>
         [TestMethod]
-        [ExpectedException (typeof(ArgumentOutOfRangeException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void MultilineCommandNameParseTest()
         {
             ConsoleCommandParser.GetCommandName("dsfsdf \n fdfsdfs");

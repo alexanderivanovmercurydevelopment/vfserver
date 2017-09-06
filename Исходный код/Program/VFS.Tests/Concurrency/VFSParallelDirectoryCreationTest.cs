@@ -19,20 +19,20 @@
     {
         private const int UsersCount = 10;
 
-        /// <summary>
-        /// Имитация сервера (для проверки созданных директорий).
-        /// </summary>
-        private VirtualFileServerSlowTestDouble serverTestDouble;
-            
+        private readonly List<Exception> exceptionsOccured
+            = new List<Exception>();
+
+        private readonly object lockObject = new object();
+
         /// <summary>
         /// Имитация сервера (для создания директорий).
         /// </summary>
         private IVirtualFileServer server;
 
-        private readonly List<Exception> exceptionsOccured
-            = new List<Exception>();
-
-        private readonly object lockObject = new object();
+        /// <summary>
+        /// Имитация сервера (для проверки созданных директорий).
+        /// </summary>
+        private VirtualFileServerSlowTestDouble serverTestDouble;
 
         /// <summary>
         /// Создание одной и той же папки из разных потоков
@@ -47,7 +47,7 @@
             this.CreateDirectoriesParallel();
 
             Assert.AreNotEqual(
-                VFSParallelDirectoryCreationTest.UsersCount - 1, 
+                VFSParallelDirectoryCreationTest.UsersCount - 1,
                 this.exceptionsOccured.Count);
 
             Assert.AreNotEqual(
@@ -87,9 +87,9 @@
         {
             this.exceptionsOccured.Clear();
 
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
 
-            for (int userNumber = 1;
+            for (var userNumber = 1;
                 userNumber <= VFSParallelDirectoryCreationTest.UsersCount;
                 userNumber++)
             {

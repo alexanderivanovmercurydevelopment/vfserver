@@ -25,12 +25,9 @@
 
         internal string Name { get; }
 
-        internal string CurrentWorkingDirectoryPath 
+        internal string CurrentWorkingDirectoryPath
         {
-            get
-            {
-                return this.currentWorkingDirectoryPath;
-            }
+            get { return this.currentWorkingDirectoryPath; }
             set
             {
                 value.ValidateCorrectPath();

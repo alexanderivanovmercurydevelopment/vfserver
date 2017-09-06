@@ -2,19 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.IO;
+    using System.Linq;
 
     using VFS.Interfaces.VirtualDrive;
 
     internal class InMemoryVirtualDirectory : IVirtualDirectory
     {
-        private readonly string name;
-
-        private readonly InMemoryVirtualDriveConfig config;
-
         private readonly List<InMemoryVirtualDirectory> childDirectories
             = new List<InMemoryVirtualDirectory>();
+
+        private readonly InMemoryVirtualDriveConfig config;
 
         private readonly List<InMemoryVirtualFile> files
             = new List<InMemoryVirtualFile>();
@@ -22,7 +20,7 @@
         private readonly object lockObj = new object();
 
         internal InMemoryVirtualDirectory(
-            string name, 
+            string name,
             InMemoryVirtualDriveConfig config)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -39,22 +37,22 @@
                     + config.MaxDirectoryNameLength + ".");
             }
 
-            this.name = name;
+            this.Name = name;
             this.config = config;
         }
 
-        public string Name => this.name;
+        public string Name { get; }
 
         /// <summary>
         /// Непосредственные дочерние папки (не рекурсивно).
         /// </summary>
         public IEnumerable<IVirtualDirectory> ChildDirectories
         {
-            get 
-            { 
+            get
+            {
                 lock (this.lockObj)
                 {
-                    return this.childDirectories.ToList(); 
+                    return this.childDirectories.ToList();
                 }
             }
         }
@@ -64,11 +62,11 @@
         /// </summary>
         public IEnumerable<IVirtualFile> Files
         {
-            get 
-            { 
+            get
+            {
                 lock (this.lockObj)
                 {
-                    return this.files.ToList(); 
+                    return this.files.ToList();
                 }
             }
         }
@@ -77,13 +75,13 @@
         {
             lock (this.lockObj)
             {
-                if (this.files.Any((f) => f.Name == fileName))
+                if (this.files.Any(f => f.Name == fileName))
                 {
                     throw new InvalidOperationException(
-                        "Файл с именем " + fileName + " уже существует в папке " + this.name);
+                        "Файл с именем " + fileName + " уже существует в папке " + this.Name);
                 }
 
-                InMemoryVirtualFile newFile = new InMemoryVirtualFile(
+                var newFile = new InMemoryVirtualFile(
                     fileName, this.config);
 
                 this.files.Add(newFile);
@@ -102,7 +100,7 @@
                         "Папка " + directoryName + " уже существует.");
                 }
 
-                InMemoryVirtualDirectory newDirectory =
+                var newDirectory =
                     new InMemoryVirtualDirectory(
                         directoryName,
                         this.config);
@@ -123,7 +121,7 @@
                 if (file == null)
                 {
                     throw new FileNotFoundException(
-                        "Файла " + fileName + " не существует в папке " + this.name + ".");
+                        "Файла " + fileName + " не существует в папке " + this.Name + ".");
                 }
 
                 this.files.Remove(file);
@@ -134,10 +132,10 @@
         /// Удалить дочернюю папку.
         /// </summary>
         /// <param name="directoryName">Имя удаляемой папки.</param>
-        /// <param name="recursive">Если папка содержит подпапки, удалить 
+        /// <param name="recursive">Если папка содержит подпапки, удалить
         /// также и подпапки.</param>
         /// <exception cref="InvalidOperationException">
-        /// Если параметр <paramref name="recursive"/> равен false, 
+        /// Если параметр <paramref name="recursive" /> равен false,
         /// а папка содержит подпапки.
         /// </exception>
         public void RemoveDirectory(string directoryName, bool recursive)
@@ -150,7 +148,7 @@
                 if (directory == null)
                 {
                     throw new DirectoryNotFoundException(
-                        "В папке " + this.name + " не существует папки " + directoryName);
+                        "В папке " + this.Name + " не существует папки " + directoryName);
                 }
 
                 bool containsDirectories = directory.childDirectories.Count > 0;
@@ -168,30 +166,30 @@
         }
 
         public void MoveDirectoryTo(
-            string childDirName, 
+            string childDirName,
             IVirtualDirectory destination)
         {
             lock (this.lockObj)
-            {               
+            {
                 InMemoryVirtualDirectory copiedDir = this.childDirectories
-                    .FirstOrDefault(d => d.name == childDirName);
+                    .FirstOrDefault(d => d.Name == childDirName);
 
                 if (copiedDir == null)
                 {
                     throw new DirectoryNotFoundException(
-                        "В папке " + this.name + " отсутствует папка " + childDirName + ".");
+                        "В папке " + this.Name + " отсутствует папка " + childDirName + ".");
                 }
 
-                InMemoryVirtualDirectory inMemoryDestinationDir = 
+                InMemoryVirtualDirectory inMemoryDestinationDir =
                     InMemoryVirtualDirectory.TryCastToInMemoryVirtualDirectory(destination);
 
                 if (inMemoryDestinationDir != null)
                 {
-                    if (inMemoryDestinationDir.childDirectories.Any(d => d.name == childDirName))
+                    if (inMemoryDestinationDir.childDirectories.Any(d => d.Name == childDirName))
                     {
                         throw new InvalidOperationException(
                             "Директория " + childDirName + " уже существует.");
-                    }                        
+                    }
 
                     // папка не будут удалена, просто перемещена в другую папку.
                     inMemoryDestinationDir.childDirectories.Add(copiedDir);
@@ -209,18 +207,18 @@
         }
 
         public void MoveFileTo(
-            string childFileName, 
+            string childFileName,
             IVirtualDirectory destination)
         {
             lock (this.lockObj)
             {
                 InMemoryVirtualFile copiedFile = this.files
-                .FirstOrDefault(f => f.Name == childFileName);
+                    .FirstOrDefault(f => f.Name == childFileName);
 
                 if (copiedFile == null)
                 {
                     throw new FileNotFoundException(
-                        "В папке " + this.name + " отсутствует файл " + childFileName + ".");
+                        "В папке " + this.Name + " отсутствует файл " + childFileName + ".");
                 }
 
                 InMemoryVirtualDirectory inMemoryDestinationDir =
@@ -232,7 +230,7 @@
                     {
                         throw new InvalidOperationException(
                             "Файл " + childFileName + " уже существует.");
-                    }     
+                    }
 
                     inMemoryDestinationDir.files.Add(copiedFile);
                     this.files.Remove(copiedFile);
@@ -262,7 +260,7 @@
                         "Директория " + copiedDirectory.Name + " уже существует.");
                 }
 
-                InMemoryVirtualDirectory inMemoryDirSource
+                var inMemoryDirSource
                     = copiedDirectory as InMemoryVirtualDirectory;
 
                 if (inMemoryDirSource == null)
@@ -294,7 +292,7 @@
                         "Файл " + copiedFile.Name + " уже существует.");
                 }
 
-                InMemoryVirtualFile inMemoryFileSource
+                var inMemoryFileSource
                     = copiedFile as InMemoryVirtualFile;
 
                 if (inMemoryFileSource == null)
@@ -313,19 +311,19 @@
         }
 
         /// <summary>
-        /// Попробовать привести <see cref="IVirtualDirectory"/> к типу
-        /// <see cref="InMemoryVirtualDirectory"/>.
+        /// Попробовать привести <see cref="IVirtualDirectory" /> к типу
+        /// <see cref="InMemoryVirtualDirectory" />.
         /// </summary>
-        /// <returns><see cref="InMemoryVirtualDirectory"/> или null.</returns>
+        /// <returns><see cref="InMemoryVirtualDirectory" /> или null.</returns>
         private static InMemoryVirtualDirectory TryCastToInMemoryVirtualDirectory(
             IVirtualDirectory directory)
         {
-            InMemoryVirtualDirectory inMemoryDestinationDir
+            var inMemoryDestinationDir
                 = directory as InMemoryVirtualDirectory;
 
             if (inMemoryDestinationDir == null)
             {
-                InMemoryVirtualDrive drive = directory as InMemoryVirtualDrive;
+                var drive = directory as InMemoryVirtualDrive;
 
                 if (drive != null)
                 {
@@ -349,9 +347,7 @@
 
                 foreach (InMemoryVirtualFile file
                     in this.files.ToArray())
-                {
                     this.files.Remove(file);
-                }
             }
         }
 
@@ -359,21 +355,17 @@
         {
             lock (this.lockObj)
             {
-                InMemoryVirtualDirectory copy =
-                    new InMemoryVirtualDirectory(this.name, this.config);
+                var copy =
+                    new InMemoryVirtualDirectory(this.Name, this.config);
 
                 foreach (InMemoryVirtualFile file
                     in this.files)
-                {
                     copy.files.Add(
                         new InMemoryVirtualFile(file.Name, this.config));
-                }
 
                 foreach (InMemoryVirtualDirectory directory
                     in this.childDirectories)
-                {
                     copy.childDirectories.Add(directory.CreateFullCopy());
-                }
 
                 return copy;
             }

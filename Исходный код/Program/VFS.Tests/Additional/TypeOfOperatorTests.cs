@@ -24,8 +24,12 @@
             Assert.IsTrue(a is IA);
         }
 
-        private interface IA { }
+        private interface IA
+        {
+        }
 
-        private class A : IA { }
+        private class A : IA
+        {
+        }
     }
 }

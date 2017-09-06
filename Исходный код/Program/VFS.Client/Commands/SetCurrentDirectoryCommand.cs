@@ -5,7 +5,9 @@
     internal class SetCurrentWorkingDirectoryCommand : VFSClientCommand
     {
         internal SetCurrentWorkingDirectoryCommand(IVFSSingleUserService vfsService)
-            : base(vfsService) { }
+            : base(vfsService)
+        {
+        }
 
         protected override int MinParametersCount => 1;
 

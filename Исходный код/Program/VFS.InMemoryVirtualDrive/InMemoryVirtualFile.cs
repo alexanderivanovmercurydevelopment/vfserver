@@ -10,7 +10,7 @@
     internal class InMemoryVirtualFile : IVirtualFile
     {
         internal InMemoryVirtualFile(
-            string name, 
+            string name,
             InMemoryVirtualDriveConfig config)
         {
             if (string.IsNullOrWhiteSpace(name))

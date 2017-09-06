@@ -2,20 +2,21 @@
 {
     using System;
     using System.Text;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Тестирование производительности <see cref="StringBuilder"/> 
-    /// в сравнении со <see cref="String"/> при поэтапном создании
+    /// Тестирование производительности <see cref="StringBuilder" />
+    /// в сравнении со <see cref="string" /> при поэтапном создании
     /// очень длинных строк.
     /// </summary>
     [TestClass]
     public class StringBuilderPerformanceTest
     {
         /// <summary>
-        /// Тест построения длинной строки с помощью 
-        /// <see cref="StringBuilder"/> и с помощью 
-        /// "<see cref="String"/> +=".
+        /// Тест построения длинной строки с помощью
+        /// <see cref="StringBuilder" /> и с помощью
+        /// "<see cref="string" /> +=".
         /// </summary>
         [TestMethod]
         public void StringBuilderVsStringPerformanceTest()
@@ -24,23 +25,21 @@
             TimeSpan standardStringTime = this.GetStringTime();
 
             Assert.IsTrue(
-                (standardStringTime - stringBuilderTime) > TimeSpan.FromMilliseconds(500));
+                standardStringTime - stringBuilderTime > TimeSpan.FromMilliseconds(500));
         }
 
         /// <summary>
-        /// Получить время создания большой строки с помощью 
-        /// <see cref="StringBuilder"/>.
+        /// Получить время создания большой строки с помощью
+        /// <see cref="StringBuilder" />.
         /// </summary>
         private TimeSpan GetStringBuilderTime()
         {
             DateTime startTime = DateTime.Now;
 
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
-            for (int i = 0; i <= 10000; i++)
-            {
+            for (var i = 0; i <= 10000; i++)
                 builder.Append("fsdfsdfsdfdsf");
-            }
 
             // ReSharper disable once UnusedVariable
             // для тестирования производительности StringBuilder.ToString() метода.
@@ -51,21 +50,19 @@
         }
 
         /// <summary>
-        /// Получить время создания большой строки с помощью 
-        /// "<see cref="String"/> +=".
+        /// Получить время создания большой строки с помощью
+        /// "<see cref="String" /> +=".
         /// </summary>
         private TimeSpan GetStringTime()
         {
             DateTime startTime = DateTime.Now;
-            
+
             // ReSharper disable once NotAccessedVariable
             // для тестирования производительности простой конкатенации.
             string result = string.Empty;
 
-            for (int i = 0; i <= 10000; i++)
-            {
+            for (var i = 0; i <= 10000; i++)
                 result += "fsdfsdfsdfdsf";
-            }
 
             TimeSpan resultTime = DateTime.Now - startTime;
             return resultTime;

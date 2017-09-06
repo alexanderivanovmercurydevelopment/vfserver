@@ -53,7 +53,7 @@
                     xmlConfig);
 
             this.root = new InMemoryVirtualDirectory(
-                "root", 
+                "root",
                 this.config);
         }
 
@@ -78,10 +78,10 @@
         /// </summary>
         public IEnumerable<IVirtualDirectory> ChildDirectories
         {
-            get 
+            get
             {
                 this.ThrowIfNotInitialized();
-                return this.root.ChildDirectories; 
+                return this.root.ChildDirectories;
             }
         }
 
@@ -90,10 +90,10 @@
         /// </summary>
         public IEnumerable<IVirtualFile> Files
         {
-            get 
+            get
             {
                 this.ThrowIfNotInitialized();
-                return this.root.Files; 
+                return this.root.Files;
             }
         }
 
@@ -135,7 +135,7 @@
         /// <param name="name">Имя директории.</param>
         /// <param name="recursive">Вместе с дочерними подпапками.</param>
         /// <exception cref="InvalidOperationException">
-        /// Если параметр <paramref name="recursive"/>=false, а 
+        /// Если параметр <paramref name="recursive" />=false, а
         /// директория содержит подпапки.
         /// </exception>
         public void RemoveDirectory(string name, bool recursive)
@@ -150,7 +150,7 @@
         /// <param name="childDirName">Имя папки из корня диска.</param>
         /// <param name="destination">Папка назначения.</param>
         public void MoveDirectoryTo(
-            string childDirName, 
+            string childDirName,
             IVirtualDirectory destination)
         {
             this.ThrowIfNotInitialized();
@@ -163,7 +163,7 @@
         /// <param name="childFileName">Имя файла в корне диска.</param>
         /// <param name="destination">Папка назначения.</param>
         public void MoveFileTo(
-            string childFileName, 
+            string childFileName,
             IVirtualDirectory destination)
         {
             this.ThrowIfNotInitialized();
@@ -217,10 +217,10 @@
             }
 
             string[] lowerDirNames = fullPath.ToLowerInvariant().Replace(
-                this.Name.ToLowerInvariant() + Path.DirectorySeparatorChar, 
-                string.Empty)
+                    this.Name.ToLowerInvariant() + Path.DirectorySeparatorChar,
+                    string.Empty)
                 .Split(
-                    new [] { Path.DirectorySeparatorChar },
+                    new[] {Path.DirectorySeparatorChar},
                     StringSplitOptions.RemoveEmptyEntries);
 
             if (lowerDirNames.Length == 0
