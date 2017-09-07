@@ -20,9 +20,8 @@
             {
                 Program.SetupConsoleEncoding();
                 Program.WriteProgramDescription();
-                bool connected = Program.Connect();
 
-                if (connected)
+                if (Program.Connect())
                 {
                     Program.WriteCommandsDescription();
                     Program.PerformCommands();
