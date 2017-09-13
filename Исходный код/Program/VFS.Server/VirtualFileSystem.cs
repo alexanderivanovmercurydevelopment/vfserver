@@ -224,7 +224,7 @@
         /// Сгенерировать исключение, если полный путь содержит только имя диска.
         /// </summary>
         /// <param name="fullPath">Полный путь.</param>
-        // ReSharper disable once UnusedParameter.Local Весь метод используется только с целью проверки.
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local Весь метод используется только с целью проверки.
         private void ThrowIfContainsOnlyDriveName(string fullPath)
         {
             if (!fullPath.Contains(Path.DirectorySeparatorChar)

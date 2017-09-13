@@ -33,13 +33,9 @@
         }
 
         public string Connect(
-            string hostName,
-            int? port,
             string userName)
         {
             this.server = this.provider.CreateVFSService(
-                hostName,
-                port,
                 new ConsoleNotificationHandler());
 
             StandardOperationResult result =

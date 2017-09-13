@@ -1,7 +1,6 @@
 ﻿namespace VFS.Tests.WCF
 {
-    using System;
-    using System.IO;
+    using System.ServiceModel;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,18 +18,24 @@
         [TestMethod]
         public void CreateWCFHost()
         {
-            string configPath =
-                Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)
-                + Path.DirectorySeparatorChar
-                + "config.txt";
-
-            File.AppendAllText(configPath, @"PortNumber = 8000");
-
             var host = new WCFHost();
-            host.Start();
-            host.Stop();
 
-            File.Delete(configPath);
+            try
+            {
+                host.Start();
+            }
+            // ReSharper disable once RedundantCatchClause Объяснение причины исключения.
+            catch (AddressAlreadyInUseException)
+            {
+                // см. VFS.Tests.App.config - в нём должны быть указаны свободные порты, 
+                // по-возможности, отличные от используемых в реальном приложении.
+                // Данное исключение может вызываться, если порты заняты, или если порты
+                // совпадают с теми, которые указаны в App.config службы Windows, и 
+                // эта служба запущена.
+                throw;
+            }
+
+            host.Stop();
         }
     }
 }

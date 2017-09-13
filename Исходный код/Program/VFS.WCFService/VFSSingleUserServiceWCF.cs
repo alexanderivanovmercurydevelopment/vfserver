@@ -9,10 +9,7 @@
     using VFS.Server;
     using VFS.Utilities;
 
-    /// <summary>
-    /// Сервис для работы одного пользователя с виртуальным
-    /// файловым сервером.
-    /// </summary>
+    /// <inheritdoc />
     internal class VFSSingleUserServiceWCF : IVFSSingleUserService
     {
         private static readonly IVirtualFileServer server

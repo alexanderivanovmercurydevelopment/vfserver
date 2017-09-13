@@ -75,7 +75,7 @@
         private static bool Connect()
         {
             Console.WriteLine("Введите команду подключения и нажмите Enter.");
-            Console.WriteLine("Пример: connect localhost:9000 Alexandr");
+            Console.WriteLine("Пример: connect Alexandr");
 
             while (true)
             {
@@ -90,35 +90,22 @@
                     string[] parameters =
                         ConsoleCommandParser.GetCommandParams(command);
 
-                    if (parameters.Length == 2)
+                    if (parameters.Length == 1)
                     {
-                        Program.Connect(parameters);
+                        Program.Connect(parameters[0]);
                         return true;
                     }
                 }
 
-                Console.WriteLine("Команда connect введена неверно. Пример: connect localhost:9000 Alexandr.");
+                Console.WriteLine("Команда connect введена неверно. Пример: connect Alexandr.");
             }
         }
 
-        /// <param name="parameters">Параметры команды подключения.</param>
-        private static void Connect(string[] parameters)
+        /// <param name="userName">Имя подключаемого пользователя.</param>
+        private static void Connect(string userName)
         {
-            string[] hostNameAndPort =
-                parameters[0].Split(
-                    new[] {':'},
-                    StringSplitOptions.RemoveEmptyEntries);
-
-            var port = 0;
-            bool portIsTyped = hostNameAndPort.Length == 2
-                               && int.TryParse(hostNameAndPort[1], out port);
-
             Program.application = new ClientApplication(new WCFBasedServiceProvider());
-
-            Console.WriteLine(Program.application.Connect(
-                hostNameAndPort[0],
-                portIsTyped ? new int?(port) : null,
-                parameters[1]));
+            Console.WriteLine(Program.application.Connect(userName));
         }
 
         /// <summary>
