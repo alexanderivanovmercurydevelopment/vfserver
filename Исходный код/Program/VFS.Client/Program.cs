@@ -18,6 +18,7 @@
         {
             try
             {
+                Program.SetupEmergencyExit();
                 Program.SetupConsoleEncoding();
                 Program.WriteProgramDescription();
 
@@ -159,6 +160,18 @@
             Console.WriteLine("Работа с виртуальным файловым сервером завершена.");
             Console.WriteLine("Для выхода нажмите Enter.");
             Console.ReadLine();
+        }
+
+        private static void SetupEmergencyExit()
+        {
+            EmergencyExitingHandler.SetConsoleCtrlHandler(Program.HandleExit, true);
+        }
+
+        private static bool HandleExit(EmergencyExitingHandler.CtrlType sig)
+        {
+            Console.WriteLine("Отключение пользователя...");
+            Program.SafeDisconnect();
+            return true;
         }
     }
 }

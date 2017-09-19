@@ -67,6 +67,7 @@
     <Compile Include="Commands\VFSClientCommand.cs" />
     <Compile Include="ConsoleDriveStructureInfo.cs" />
     <Compile Include="ConsoleNotificationHandler.cs" />
+    <Compile Include="EmergencyExitingHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WCF\WCFBasedServiceProvider.cs" />
