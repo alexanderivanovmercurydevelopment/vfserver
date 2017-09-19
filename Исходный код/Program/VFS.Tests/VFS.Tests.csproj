@@ -22,7 +22,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\VFS.Tests.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,6 +69,7 @@
     <Compile Include="ServerSide\RequirementsTests.cs" />
     <Compile Include="TestDoubles\VFSSingleUserServiceTestDouble.cs" />
     <Compile Include="TestDoubles\VirtualFileServerSlowTestDouble.cs" />
+    <Compile Include="Utilities\ServiceLocatorTests.cs" />
     <Compile Include="WCF\WCFHostCreation.cs" />
   </ItemGroup>
   <ItemGroup>

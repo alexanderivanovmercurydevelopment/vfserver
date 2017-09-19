@@ -52,8 +52,15 @@
         /// <exception cref="InvalidOperationException">
         /// Попытка зарегистрировать более одного экземпляра для одного и того же типа.
         /// </exception>
-        public void RegisterSharedInstance<T>(T sharedInstance)
+        public void RegisterService<T>(T sharedInstance)
         {
+            if (sharedInstance == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(sharedInstance),
+                    "Невозможно зарегистрировать сервис. Экземпляр сервиса не должен быть null.");
+            }
+
             if (this.sharedInstances.ContainsKey(typeof(T)))
             {
                 throw new InvalidOperationException(
@@ -68,7 +75,7 @@
         /// </summary>
         /// <typeparam name="T">Тип, экземпляр которого запрашивается.</typeparam>
         /// <returns>Зарегистрированный для общего использования экземпляр</returns>
-        public T GetSharedInstance<T>()
+        public T GetService<T>()
         {
             if (!this.sharedInstances.ContainsKey(typeof(T)))
             {
