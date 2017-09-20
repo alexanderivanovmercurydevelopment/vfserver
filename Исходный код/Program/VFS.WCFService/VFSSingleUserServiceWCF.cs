@@ -96,6 +96,17 @@
             });
         }
 
+        public StandardOperationResult GetCurrentWorkingDirectoryPath()
+        {
+            return this.SafeExecute(() =>
+            {
+                string directoryPath = VFSSingleUserServiceWCF.server
+                    .GetUsersCurrentWorkingDirectoryPath(this.connectedUserName);
+
+                return new StandardOperationResult(directoryPath, null);
+            });
+        }
+
         public StandardOperationResult SetCurrentWorkingDirectory(
             string path)
         {

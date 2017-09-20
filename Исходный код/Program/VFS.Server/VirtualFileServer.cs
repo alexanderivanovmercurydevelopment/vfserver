@@ -10,9 +10,7 @@
     using VFS.Interfaces.VirtualDrive;
     using VFS.Utilities;
 
-    /// <summary>
-    /// Виртуальный файловый сервер.
-    /// </summary>
+    /// <inheritdoc chref="IVirtualFileServer" />
     public class VirtualFileServer : IVirtualFileServer
     {
         private const string CantRemoveCurrentDirectory = "Нельзя удалить или переместить текущую директорию, "
@@ -46,21 +44,14 @@
         /// </summary>
         public event EventHandler<NotificationEventArgs> OperationPerformed;
 
-        /// <summary>
-        /// Подключить нового пользователя.
-        /// </summary>
-        /// <param name="userName">Имя еще не подключенного пользователя.</param>
+        /// <inheritdoc/>
         public void ConnectUser(
             string userName)
         {
             this.connectedUsers.RegisterUser(userName, this.config.DefaultDirPath);
         }
 
-        /// <summary>
-        /// Изменить текущую директорию пользователя.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="directoryPath">Путь к новой текущей директории.</param>
+        /// <inheritdoc/>
         public void ChangeUsersCurrentDirectory(
             string userName,
             string directoryPath)
@@ -71,30 +62,27 @@
                 .CurrentWorkingDirectoryPath = fullDirPath;
         }
 
-        /// <summary>
-        /// Отключить пользователя.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
+        /// <inheritdoc />
+        public string GetUsersCurrentWorkingDirectoryPath(string userName)
+        {
+            return this.connectedUsers.GetConnectedUser(userName)
+                .CurrentWorkingDirectoryPath;
+        }
+
+        /// <inheritdoc />
         public void DisconnectUser(
             string userName)
         {
             this.connectedUsers.UnregisterUser(userName);
         }
 
-        /// <summary>
-        /// Получить общее количество подключенных пользователей.
-        /// </summary>
-        /// <returns>Общее количество подключенных пользователей.</returns>
+        /// <inheritdoc />
         public int GetUsersCount()
         {
             return this.connectedUsers.RegisteredUsers.Count();
         }
 
-        /// <summary>
-        /// Получить информацию о структуре диска.
-        /// </summary>
-        /// <param name="driveName">Имя диска.</param>
-        /// <returns>Информация о структуре диска.</returns>
+        /// <inheritdoc/>
         public DriveStructureInfo GetDriveStructure(
             string driveName)
         {
@@ -109,11 +97,7 @@
                 rootDirectory);
         }
 
-        /// <summary>
-        /// Создать папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="directoryPath">Путь и имя создаваемой директории.</param>
+        /// <inheritdoc/>
         public void CreateDirectory(
             string userName,
             string directoryPath)
@@ -125,12 +109,7 @@
                 userName);
         }
 
-        /// <summary>
-        /// Удалить папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="directoryPath">Путь к удаляемой папке.</param>
-        /// <param name="recursive">Удалить, даже если есть подпапки.</param>
+        /// <inheritdoc/>
         public void RemoveDirectory(
             string userName,
             string directoryPath,
@@ -152,11 +131,7 @@
                 userName);
         }
 
-        /// <summary>
-        /// Создать файл.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к файлу.</param>
+        /// <inheritdoc/>
         public void CreateFile(
             string userName,
             string filePath)
@@ -169,11 +144,7 @@
                 userName);
         }
 
-        /// <summary>
-        /// Удалить файл.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к удаляемому файлу.</param>
+        /// <inheritdoc/>
         public void RemoveFile(
             string userName,
             string filePath)
@@ -188,11 +159,7 @@
                 userName);
         }
 
-        /// <summary>
-        /// Запретить удаление файла.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к удаляемому файлу.</param>
+        /// <inheritdoc/>
         public void LockFile(
             string userName,
             string filePath)
@@ -206,11 +173,7 @@
                 userName);
         }
 
-        /// <summary>
-        /// Снять запрет удаления файла.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к файлу.</param>
+        /// <inheritdoc/>
         public void UnlockFile(
             string userName,
             string filePath)
@@ -224,12 +187,7 @@
                 userName);
         }
 
-        /// <summary>
-        /// Копировать папку или файл в целевую папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="sourcePath">Путь к копируемой папке или файлу.</param>
-        /// <param name="destinationPath">Путь к целевой папке.</param>
+        /// <inheritdoc/>
         public void Copy(
             string userName,
             string sourcePath,
@@ -244,12 +202,7 @@
                 userName);
         }
 
-        /// <summary>
-        /// Переместить папку или файл в другую папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="sourcePath">Путь к перемещаемой папке или файлу.</param>
-        /// <param name="destinationPath">Путь к целевой папке.</param>
+        /// <inheritdoc/>
         public void Move(
             string userName,
             string sourcePath,

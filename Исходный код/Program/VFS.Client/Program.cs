@@ -116,6 +116,11 @@
         {
             while (true)
             {
+                StandardOperationResult currentDir =
+                    Program.application.GetCurrentWorkingDirectory();
+
+                Console.Write($"{currentDir.ResultMessage ?? currentDir.ErrorMessage}>");
+
                 string command = Console.ReadLine();
 
                 if (!string.IsNullOrWhiteSpace(command)
@@ -130,7 +135,6 @@
                 Console.WriteLine(result.Succeed ? result.ResultMessage : result.ErrorMessage);
 
                 Console.WriteLine();
-                Console.WriteLine("Введите следующую команду. (quit - выход)");
             }
         }
 

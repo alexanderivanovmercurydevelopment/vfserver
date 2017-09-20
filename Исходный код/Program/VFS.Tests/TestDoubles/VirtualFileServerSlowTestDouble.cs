@@ -42,6 +42,12 @@
             this.PerformSlowOperation();
         }
 
+        public string GetUsersCurrentWorkingDirectoryPath(string userName)
+        {
+            this.PerformSlowOperation();
+            return null;
+        }
+
         public void DisconnectUser(string userName)
         {
             this.PerformSlowOperation();

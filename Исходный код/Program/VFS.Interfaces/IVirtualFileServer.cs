@@ -32,6 +32,13 @@
             string directoryPath);
 
         /// <summary>
+        /// Получить полный путь к текущей рабочей папке пользователя.
+        /// </summary>
+        /// <param name="userName">Имя пользователя.</param>
+        string GetUsersCurrentWorkingDirectoryPath(
+            string userName);
+
+        /// <summary>
         /// Отключить пользователя.
         /// </summary>
         /// <param name="userName">Имя пользователя.</param>

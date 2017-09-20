@@ -8,6 +8,7 @@
     {
         public void HandleNotification(string notification)
         {
+            Console.WriteLine();
             Console.WriteLine(notification);
         }
     }

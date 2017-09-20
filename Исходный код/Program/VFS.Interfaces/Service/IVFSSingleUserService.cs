@@ -12,14 +12,12 @@
         /// Начать сеанс работы с виртуальным файловым сервером.
         /// </summary>
         /// <param name="userName">Имя пользователя.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult Connect(string userName);
 
         /// <summary>
         /// Завершить сеанс работы с виртуальным файловым сервером.
         /// </summary>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult Quit();
 
@@ -33,15 +31,19 @@
         /// Создать директорию.
         /// </summary>
         /// <param name="path">Путь к создаваемой папке.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult MakeDirectory(string path);
+
+        /// <summary>
+        /// Получить полный путь к текущей рабочей директории пользователя.
+        /// </summary>
+        [OperationContract]
+        StandardOperationResult GetCurrentWorkingDirectoryPath();
 
         /// <summary>
         /// Установить текущую директорию.
         /// </summary>
         /// <param name="path">Путь к директории.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult SetCurrentWorkingDirectory(string path);
 
@@ -50,7 +52,6 @@
         /// </summary>
         /// <param name="path">Путь к директории.</param>
         /// <param name="recursive">Вместе со всеми входящими директориями.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult RemoveDirectory(string path, bool recursive);
 
@@ -58,7 +59,6 @@
         /// Создать файл.
         /// </summary>
         /// <param name="path">Путь к файлу (включая имя файла).</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult MakeFile(string path);
 
@@ -66,7 +66,6 @@
         /// Удалить файл.
         /// </summary>
         /// <param name="path">Путь к файлу (включая имя файла).</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult DeleteFile(string path);
 
@@ -74,7 +73,6 @@
         /// Запретить удаление файла.
         /// </summary>
         /// <param name="path">Путь к файлу (включая имя файла).</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult LockFile(string path);
 
@@ -91,7 +89,6 @@
         /// </summary>
         /// <param name="sourcePath">Путь к копируемому файлу или директории.</param>
         /// <param name="destinationPath">Путь к целевой директории.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult Copy(
             string sourcePath,
@@ -102,7 +99,6 @@
         /// </summary>
         /// <param name="sourcePath">Путь к перемещаемому файлу или директории.</param>
         /// <param name="destinationPath">Путь к целевой директории.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult Move(
             string sourcePath,
@@ -112,7 +108,6 @@
         /// Получить структуру папок и файлов определенного диска.
         /// </summary>
         /// <param name="drive">Буква диска.</param>
-        /// <returns>Стандартный результат выполнения операции.</returns>
         [OperationContract]
         StandardOperationResult GetDriveStructure(string drive);
     }

@@ -5,6 +5,7 @@
     using VFS.Interfaces;
     using VFS.Interfaces.DriveStructureMessageFormat;
 
+    /// <inheritdoc/>
     /// <summary>
     /// Обертка виртуального файлового сервера, позволяющая
     /// работать с ним сразу многим пользователям.
@@ -62,21 +63,14 @@
             remove { this.vfServer.OperationPerformed -= value; }
         }
 
-        /// <summary>
-        /// Подключить нового пользователя.
-        /// </summary>
-        /// <param name="userName">Имя еще не подключенного пользователя.</param>
+        /// <inheritdoc/>
         public void ConnectUser(
             string userName)
         {
             this.SyncPerformAction(() => { this.vfServer.ConnectUser(userName); });
         }
 
-        /// <summary>
-        /// Изменить текущую директорию пользователя.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="directoryPath">Путь к новой текущей директории.</param>
+        /// <inheritdoc/>
         public void ChangeUsersCurrentDirectory(
             string userName,
             string directoryPath)
@@ -84,31 +78,27 @@
             this.SyncPerformAction(() => { this.vfServer.ChangeUsersCurrentDirectory(userName, directoryPath); });
         }
 
-        /// <summary>
-        /// Отключить пользователя.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
+        /// <inheritdoc/>
+        public string GetUsersCurrentWorkingDirectoryPath(string userName)
+        {
+            return this.SyncPerformFunction(() => this.vfServer.GetUsersCurrentWorkingDirectoryPath(userName));
+        }
+
+        /// <inheritdoc/>
         public void DisconnectUser(
             string userName)
         {
             this.SyncPerformAction(() => { this.vfServer.DisconnectUser(userName); });
         }
 
-        /// <summary>
-        /// Получить общее количество подключенных пользователей.
-        /// </summary>
-        /// <returns>Общее количество подключенных пользователей.</returns>
+        /// <inheritdoc/>
         public int GetUsersCount()
         {
             return this.SyncPerformFunction(
                 () => this.vfServer.GetUsersCount());
         }
 
-        /// <summary>
-        /// Получить информацию о структуре диска.
-        /// </summary>
-        /// <param name="driveName">Имя диска.</param>
-        /// <returns>Информация о структуре диска.</returns>
+        /// <inheritdoc/>
         public DriveStructureInfo GetDriveStructure(
             string driveName)
         {
@@ -116,11 +106,7 @@
                 () => this.vfServer.GetDriveStructure(driveName));
         }
 
-        /// <summary>
-        /// Создать папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="directoryPath">Путь и имя создаваемой директории.</param>
+        /// <inheritdoc/>
         public void CreateDirectory(
             string userName,
             string directoryPath)
@@ -128,12 +114,7 @@
             this.SyncPerformAction(() => { this.vfServer.CreateDirectory(userName, directoryPath); });
         }
 
-        /// <summary>
-        /// Удалить папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="directoryPath">Путь к удаляемой папке.</param>
-        /// <param name="recursive">Удалить, даже если есть подпапки.</param>
+        /// <inheritdoc/>
         public void RemoveDirectory(
             string userName,
             string directoryPath,
@@ -142,11 +123,7 @@
             this.SyncPerformAction(() => { this.vfServer.RemoveDirectory(userName, directoryPath, recursive); });
         }
 
-        /// <summary>
-        /// Создать файл.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к файлу.</param>
+        /// <inheritdoc/>
         public void CreateFile(
             string userName,
             string filePath)
@@ -154,11 +131,7 @@
             this.SyncPerformAction(() => { this.vfServer.CreateFile(userName, filePath); });
         }
 
-        /// <summary>
-        /// Удалить файл.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к удаляемому файлу.</param>
+        /// <inheritdoc/>
         public void RemoveFile(
             string userName,
             string filePath)
@@ -166,11 +139,7 @@
             this.SyncPerformAction(() => { this.vfServer.RemoveFile(userName, filePath); });
         }
 
-        /// <summary>
-        /// Запретить удаление файла.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к удаляемому файлу.</param>
+        /// <inheritdoc/>
         public void LockFile(
             string userName,
             string filePath)
@@ -178,11 +147,7 @@
             this.SyncPerformAction(() => { this.vfServer.LockFile(userName, filePath); });
         }
 
-        /// <summary>
-        /// Снять запрет удаления файла.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="filePath">Путь к файлу.</param>
+        /// <inheritdoc/>
         public void UnlockFile(
             string userName,
             string filePath)
@@ -190,12 +155,7 @@
             this.SyncPerformAction(() => { this.vfServer.UnlockFile(userName, filePath); });
         }
 
-        /// <summary>
-        /// Копировать папку или файл в целевую папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="sourcePath">Путь к копируемой папке или файлу.</param>
-        /// <param name="destinationPath">Путь к целевой папке.</param>
+        /// <inheritdoc/>
         public void Copy(
             string userName,
             string sourcePath,
@@ -204,12 +164,7 @@
             this.SyncPerformAction(() => { this.vfServer.Copy(userName, sourcePath, destinationPath); });
         }
 
-        /// <summary>
-        /// Переместить папку или файл в другую папку.
-        /// </summary>
-        /// <param name="userName">Имя подключенного пользователя.</param>
-        /// <param name="sourcePath">Путь к перемещаемой папке или файлу.</param>
-        /// <param name="destinationPath">Путь к целевой папке.</param>
+        /// <inheritdoc/>
         public void Move(
             string userName,
             string sourcePath,

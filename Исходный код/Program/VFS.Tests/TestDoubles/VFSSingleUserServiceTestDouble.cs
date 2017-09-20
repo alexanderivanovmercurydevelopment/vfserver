@@ -29,6 +29,13 @@
                 null);
         }
 
+        public StandardOperationResult GetCurrentWorkingDirectoryPath()
+        {
+            return new StandardOperationResult(
+                "C:/Test/Test",
+                null);
+        }
+
         public StandardOperationResult SetCurrentWorkingDirectory(string path)
         {
             return new StandardOperationResult(

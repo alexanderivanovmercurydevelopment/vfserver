@@ -51,6 +51,11 @@
                 "Ошибка подключения: " + result.ErrorMessage);
         }
 
+        public StandardOperationResult GetCurrentWorkingDirectory()
+        {
+            return this.server.GetCurrentWorkingDirectoryPath();
+        }
+
         public StandardOperationResult TryPerformCommand(string commandString)
         {
             if (!this.connected)
