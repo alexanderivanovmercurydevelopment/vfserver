@@ -8,7 +8,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using VFS.Interfaces;
-    using VFS.Server;
     using VFS.Tests.TestDoubles;
 
     /// <summary>
@@ -54,9 +53,7 @@
         /// </summary>
         public VirtualFileServerPerformanceTests()
         {
-            this.server = new VFSSyncronizationDecorator(
-                new VirtualFileServerSlowTestDouble(),
-                this.config.MaxParallelQueries);
+            this.server = new VirtualFileServerSlowTestDouble();
         }
 
         /// <summary>

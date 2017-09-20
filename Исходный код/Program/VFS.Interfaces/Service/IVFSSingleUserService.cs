@@ -1,6 +1,7 @@
 ﻿namespace VFS.Interfaces.Service
 {
     using System.ServiceModel;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Интерфейс доступа ОДНОГО клиента к операциям сервера.
@@ -110,5 +111,17 @@
         /// <param name="drive">Буква диска.</param>
         [OperationContract]
         StandardOperationResult GetDriveStructure(string drive);
+
+        /// <summary>
+        /// Загрузить данные в файл.
+        /// </summary>
+        [OperationContract]
+        Task<StandardOperationResult> UploadFileAsync(string filePath, string fileData);
+
+        /// <summary>
+        /// Получить данные из файла.
+        /// </summary>
+        [OperationContract]
+        Task<StandardOperationResult> DownloadFileAsync(string filePath);
     }
 }

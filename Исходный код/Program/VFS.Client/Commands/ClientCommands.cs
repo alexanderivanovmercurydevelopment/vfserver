@@ -59,6 +59,16 @@
         /// <summary>
         /// Получить информацию о дереве каталогов.
         /// </summary>
-        Print
+        Print,
+
+        /// <summary>
+        /// Загрузить данные в файл.
+        /// </summary>
+        Upload,
+
+        /// <summary>
+        /// Загрузить данные из файла.
+        /// </summary>
+        Download
     }
 }

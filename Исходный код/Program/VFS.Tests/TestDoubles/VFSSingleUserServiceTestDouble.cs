@@ -1,5 +1,7 @@
 ﻿namespace VFS.Tests.TestDoubles
 {
+    using System.Threading.Tasks;
+
     using VFS.Interfaces.Service;
 
     internal class VFSSingleUserServiceTestDouble : IVFSSingleUserService
@@ -118,6 +120,22 @@
             return new StandardOperationResult(
                 message,
                 null);
+        }
+
+        public async Task<StandardOperationResult> UploadFileAsync(
+            string filePath,
+            string fileData)
+        {
+            return await Task.FromResult(new StandardOperationResult(
+                "Данные успешно загружены в файл " + filePath,
+                null));
+        }
+
+        public async Task<StandardOperationResult> DownloadFileAsync(string filePath)
+        {
+            return await Task.FromResult(new StandardOperationResult(
+                "Данные успешно загружены из файла файл " + filePath,
+                null));
         }
     }
 }

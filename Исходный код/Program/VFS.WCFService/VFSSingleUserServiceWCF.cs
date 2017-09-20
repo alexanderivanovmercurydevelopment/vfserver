@@ -2,6 +2,7 @@
 {
     using System;
     using System.ServiceModel;
+    using System.Threading.Tasks;
 
     using VFS.Interfaces;
     using VFS.Interfaces.DriveStructureMessageFormat;
@@ -12,10 +13,7 @@
     /// <inheritdoc />
     internal class VFSSingleUserServiceWCF : IVFSSingleUserService
     {
-        private static readonly IVirtualFileServer server
-            = new VFSSyncronizationDecorator(
-                new VirtualFileServer(),
-                100);
+        private static readonly IVirtualFileServer server = new VirtualFileServer();
 
         private string connectedUserName;
 
@@ -248,6 +246,37 @@
             });
         }
 
+        public async Task<StandardOperationResult> UploadFileAsync(
+            string filePath,
+            string fileData)
+        {
+            return await this.SafeExecuteAsync(async () =>
+            {
+                await VFSSingleUserServiceWCF.server.UploadFileAsync(
+                    this.connectedUserName,
+                    filePath,
+                    fileData);
+
+                return new StandardOperationResult(
+                    "Данные успешно загружены",
+                    null);
+            });
+        }
+
+        public async Task<StandardOperationResult> DownloadFileAsync(string filePath)
+        {
+            return await this.SafeExecuteAsync(async () =>
+            {
+                string result = await VFSSingleUserServiceWCF.server.DownloadFileAsync(
+                    this.connectedUserName,
+                    filePath);
+
+                return new StandardOperationResult(
+                    result,
+                    null);
+            });
+        }
+
         /// <summary>
         /// Выполнить операцию, и вернуть нормальное сообщение
         /// об ошибке в случае сбоя операции.
@@ -258,6 +287,25 @@
             try
             {
                 return operation();
+            }
+            catch (Exception ex)
+            {
+                return new StandardOperationResult(
+                    null,
+                    ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить операцию, и вернуть нормальное сообщение
+        /// об ошибке в случае сбоя операции.
+        /// </summary>
+        private async Task<StandardOperationResult> SafeExecuteAsync(
+            Func<Task<StandardOperationResult>> operation)
+        {
+            try
+            {
+                return await operation();
             }
             catch (Exception ex)
             {

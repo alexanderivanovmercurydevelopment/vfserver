@@ -75,6 +75,14 @@
             {
                 return new GetTreeCommand(vfsService);
             }
+            if (commandNameLower == ClientCommands.Upload.ToString().ToLowerInvariant())
+            {
+                return new UploadCommand(vfsService);
+            }
+            if (commandNameLower == ClientCommands.Download.ToString().ToLowerInvariant())
+            {
+                return new DownloadCommand(vfsService);
+            }
 
             return null;
         }

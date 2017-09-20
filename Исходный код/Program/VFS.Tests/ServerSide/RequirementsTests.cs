@@ -582,9 +582,7 @@ namespace VFS.Tests.ServerSide
 
         private IVirtualFileServer CreateStandardServer()
         {
-            return new VFSSyncronizationDecorator(
-                new VirtualFileServer(),
-                100);
+            return new VirtualFileServer();
         }
     }
 }

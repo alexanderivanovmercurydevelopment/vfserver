@@ -98,7 +98,7 @@
         }
 
         /// <summary>
-        /// Заблокировать файл для удаления.
+        /// Заблокировать файл.
         /// </summary>
         /// <param name="userName">Имя пользователя.</param>
         /// <param name="file">Файл.</param>
@@ -117,11 +117,32 @@
         }
 
         /// <summary>
-        /// Разблокировать удаление файла.
+        /// Разблокировать файл.
         /// </summary>
         /// <param name="userName">Имя пользователя.</param>
         /// <param name="file">Файл.</param>
         internal void UnlockFile(string userName, IVirtualFile file)
+        {
+            VFSUser user = this.connectedUsers.GetConnectedUser(userName);
+
+            FileLockInfo @lock = this.locks.FirstOrDefault(
+                l => l.BlockedBy == user && l.File == file);
+
+            if (@lock == null)
+            {
+                throw new InvalidOperationException(
+                    "Пользователь " + userName + " не блокировал файл " + file.Name);
+            }
+
+            this.locks.Remove(@lock);
+        }
+
+        /// <summary>
+        /// Разблокировать файл, если он заблокирован этим пользователем.
+        /// </summary>
+        /// <param name="userName">Имя пользователя.</param>
+        /// <param name="file">Файл.</param>
+        internal void SafeUnlockFile(string userName, IVirtualFile file)
         {
             VFSUser user = this.connectedUsers.GetConnectedUser(userName);
 
@@ -152,11 +173,11 @@
         }
 
         /// <summary>
-        /// Признак того, что файл заблокирован для удаления.
+        /// Признак того, что файл заблокирован.
         /// </summary>
         /// <param name="file">Файл.</param>
         /// <returns>True - файл заблокирован, false - нет.</returns>
-        private bool IsFileLocked(IVirtualFile file)
+        internal bool IsFileLocked(IVirtualFile file)
         {
             return this.locks.Any(l => l.File == file);
         }

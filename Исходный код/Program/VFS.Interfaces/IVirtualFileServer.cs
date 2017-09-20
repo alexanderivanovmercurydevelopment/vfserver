@@ -1,6 +1,7 @@
 ﻿namespace VFS.Interfaces
 {
     using System;
+    using System.Threading.Tasks;
 
     using VFS.Interfaces.DriveStructureMessageFormat;
 
@@ -135,5 +136,15 @@
             string userName,
             string sourcePath,
             string destinationPath);
+
+        /// <summary>
+        /// Загрузить данные в файл.
+        /// </summary>
+        Task UploadFileAsync(string userName, string filePath, string data);
+
+        /// <summary>
+        /// Получить данные из файла.
+        /// </summary>
+        Task<string> DownloadFileAsync(string userName, string filePath);
     }
 }

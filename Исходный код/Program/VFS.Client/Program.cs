@@ -66,6 +66,8 @@
             Console.WriteLine("COPY [Drive:]source [Drive:]destination - копировать файл или папку");
             Console.WriteLine("MOVE [Drive:]source [Drive:]destination - переместить файл или папку");
             Console.WriteLine("PRINT Drive: - вывести на экран дерево каталогов диска");
+            Console.WriteLine("UPLOAD destinationFilePath stringFileData - загрузить данные в файл");
+            Console.WriteLine("DOWNLOAD vfsFilePath - получить данные из файла");
             Console.WriteLine("quit - выход");
         }
 

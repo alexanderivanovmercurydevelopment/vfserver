@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LockInfo.cs" />
-    <Compile Include="VFSSyncronizationDecorator.cs" />
     <Compile Include="VFSConfig.cs" />
     <Compile Include="VFSConnectedUsers.cs" />
     <Compile Include="VFSUser.cs" />

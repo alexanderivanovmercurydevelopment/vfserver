@@ -3,12 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using VFS.Interfaces;
     using VFS.Interfaces.DriveStructureMessageFormat;
 
     internal class VirtualFileServerSlowTestDouble : IVirtualFileServer
     {
+        private const int Delay = 500;
+
         public List<string> CreatedDirectoriesNames { get; } = new List<string>();
 
         /// <summary>
@@ -100,13 +103,29 @@
             this.PerformSlowOperation();
         }
 
+        public async Task UploadFileAsync(string userName, string filePath, string data)
+        {
+            await this.PerformSlowOperationAsync();
+        }
+
+        public async Task<string> DownloadFileAsync(string userName, string filePath)
+        {
+            await this.PerformSlowOperationAsync();
+            return null;
+        }
+
         private void PerformSlowOperation()
         {
-            Thread.Sleep(500);
+            Thread.Sleep(VirtualFileServerSlowTestDouble.Delay);
 
             this.OperationPerformed?.Invoke(
                 this,
                 new NotificationEventArgs("Операция выполнена успешно.", "noUser"));
+        }
+
+        private async Task PerformSlowOperationAsync()
+        {
+            await Task.Delay(VirtualFileServerSlowTestDouble.Delay);
         }
     }
 }

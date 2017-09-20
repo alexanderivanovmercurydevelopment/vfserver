@@ -27,6 +27,8 @@
         /// </summary>
         private readonly VFSLockingPolicy lockingPolicy;
 
+        private readonly object syncObject = new object();
+
         /// <summary>
         /// Создать виртуальный файловый сервер.
         /// </summary>
@@ -48,7 +50,10 @@
         public void ConnectUser(
             string userName)
         {
-            this.connectedUsers.RegisterUser(userName, this.config.DefaultDirPath);
+            lock (this.syncObject)
+            {
+                this.connectedUsers.RegisterUser(userName, this.config.DefaultDirPath);
+            }
         }
 
         /// <inheritdoc/>
@@ -56,45 +61,60 @@
             string userName,
             string directoryPath)
         {
-            string fullDirPath = this.GetFullPath(userName, directoryPath);
-            this.fileSystem.CheckDirectoryExisting(fullDirPath);
-            this.connectedUsers.GetConnectedUser(userName)
-                .CurrentWorkingDirectoryPath = fullDirPath;
+            lock (this.syncObject)
+            {
+                string fullDirPath = this.GetFullPath(userName, directoryPath);
+                this.fileSystem.CheckDirectoryExisting(fullDirPath);
+                this.connectedUsers.GetConnectedUser(userName)
+                    .CurrentWorkingDirectoryPath = fullDirPath;
+            }
         }
 
         /// <inheritdoc />
         public string GetUsersCurrentWorkingDirectoryPath(string userName)
         {
-            return this.connectedUsers.GetConnectedUser(userName)
-                .CurrentWorkingDirectoryPath;
+            lock (this.syncObject)
+            {
+                return this.connectedUsers.GetConnectedUser(userName)
+                    .CurrentWorkingDirectoryPath;
+            }
         }
 
         /// <inheritdoc />
         public void DisconnectUser(
             string userName)
         {
-            this.connectedUsers.UnregisterUser(userName);
+            lock (this.syncObject)
+            {
+                this.connectedUsers.UnregisterUser(userName);
+            }
         }
 
         /// <inheritdoc />
         public int GetUsersCount()
         {
-            return this.connectedUsers.RegisteredUsers.Count();
+            lock (this.syncObject)
+            {
+                return this.connectedUsers.RegisteredUsers.Count();
+            }
         }
 
         /// <inheritdoc/>
         public DriveStructureInfo GetDriveStructure(
             string driveName)
         {
-            if (string.IsNullOrWhiteSpace(driveName))
+            lock (this.syncObject)
             {
-                driveName = "C:"; // диск C: по-умолчанию присутствует в системе.
-            }
+                if (string.IsNullOrWhiteSpace(driveName))
+                {
+                    driveName = "C:"; // диск C: по-умолчанию присутствует в системе.
+                }
 
-            IVirtualDirectory rootDirectory
-                = this.fileSystem.GetRootDirectory(driveName);
-            return this.lockingPolicy.GetDirStructureWithLockingInfo(
-                rootDirectory);
+                IVirtualDirectory rootDirectory
+                    = this.fileSystem.GetRootDirectory(driveName);
+                return this.lockingPolicy.GetDirStructureWithLockingInfo(
+                    rootDirectory);
+            }
         }
 
         /// <inheritdoc/>
@@ -102,11 +122,14 @@
             string userName,
             string directoryPath)
         {
-            string fullPath = this.GetFullPath(userName, directoryPath);
-            this.fileSystem.CreateDirectory(fullPath);
-            this.RaiseOperationPerformedAsync(
-                "Пользователь " + userName + " создал папку " + fullPath,
-                userName);
+            lock (this.syncObject)
+            {
+                string fullPath = this.GetFullPath(userName, directoryPath);
+                this.fileSystem.CreateDirectory(fullPath);
+                this.RaiseOperationPerformedAsync(
+                    "Пользователь " + userName + " создал папку " + fullPath,
+                    userName);
+            }
         }
 
         /// <inheritdoc/>
@@ -115,20 +138,23 @@
             string directoryPath,
             bool recursive)
         {
-            this.connectedUsers.ThrowIfUserIsNotConnected(userName);
-            string fullPath = this.GetFullPath(userName, directoryPath);
-
-            if (this.IsCurrentOrParentDirForUser(userName, fullPath))
+            lock (this.syncObject)
             {
-                throw new InvalidOperationException(VirtualFileServer.CantRemoveCurrentDirectory);
-            }
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullPath = this.GetFullPath(userName, directoryPath);
 
-            IVirtualDirectory directory = this.fileSystem.GetExistingDirectory(fullPath);
-            this.lockingPolicy.ThrowIfCantRemoveDirectory(directory);
-            this.fileSystem.RemoveDirectory(fullPath, recursive);
-            this.RaiseOperationPerformedAsync(
-                "Пользователь " + userName + " удалил папку " + fullPath,
-                userName);
+                if (this.IsCurrentOrParentDirForUser(userName, fullPath))
+                {
+                    throw new InvalidOperationException(VirtualFileServer.CantRemoveCurrentDirectory);
+                }
+
+                IVirtualDirectory directory = this.fileSystem.GetExistingDirectory(fullPath);
+                this.lockingPolicy.ThrowIfCantRemoveDirectory(directory);
+                this.fileSystem.RemoveDirectory(fullPath, recursive);
+                this.RaiseOperationPerformedAsync(
+                    "Пользователь " + userName + " удалил папку " + fullPath,
+                    userName);
+            }
         }
 
         /// <inheritdoc/>
@@ -136,12 +162,15 @@
             string userName,
             string filePath)
         {
-            this.connectedUsers.ThrowIfUserIsNotConnected(userName);
-            string fullFilePath = this.GetFullPath(userName, filePath);
-            this.fileSystem.CreateFile(fullFilePath);
-            this.RaiseOperationPerformedAsync(
-                "Пользователь " + userName + " создал файл " + fullFilePath,
-                userName);
+            lock (this.syncObject)
+            {
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullFilePath = this.GetFullPath(userName, filePath);
+                this.fileSystem.CreateFile(fullFilePath);
+                this.RaiseOperationPerformedAsync(
+                    "Пользователь " + userName + " создал файл " + fullFilePath,
+                    userName);
+            }
         }
 
         /// <inheritdoc/>
@@ -149,14 +178,17 @@
             string userName,
             string filePath)
         {
-            this.connectedUsers.ThrowIfUserIsNotConnected(userName);
-            string fullFilePath = this.GetFullPath(userName, filePath);
-            IVirtualFile file = this.fileSystem.GetExistingFile(fullFilePath);
-            this.lockingPolicy.ThrowIfCantRemoveFile(file);
-            this.fileSystem.RemoveFile(fullFilePath);
-            this.RaiseOperationPerformedAsync(
-                "Пользователь " + userName + " удалил файл " + fullFilePath,
-                userName);
+            lock (this.syncObject)
+            {
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullFilePath = this.GetFullPath(userName, filePath);
+                IVirtualFile file = this.fileSystem.GetExistingFile(fullFilePath);
+                this.lockingPolicy.ThrowIfCantRemoveFile(file);
+                this.fileSystem.RemoveFile(fullFilePath);
+                this.RaiseOperationPerformedAsync(
+                    "Пользователь " + userName + " удалил файл " + fullFilePath,
+                    userName);
+            }
         }
 
         /// <inheritdoc/>
@@ -164,13 +196,16 @@
             string userName,
             string filePath)
         {
-            this.connectedUsers.ThrowIfUserIsNotConnected(userName);
-            string fullPath = this.GetFullPath(userName, filePath);
-            IVirtualFile file = this.fileSystem.GetExistingFile(fullPath);
-            this.lockingPolicy.LockFile(userName, file);
-            this.RaiseOperationPerformedAsync(
-                "Файл " + fullPath + " заблокирован на удаление пользователем " + userName,
-                userName);
+            lock (this.syncObject)
+            {
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullPath = this.GetFullPath(userName, filePath);
+                IVirtualFile file = this.fileSystem.GetExistingFile(fullPath);
+                this.lockingPolicy.LockFile(userName, file);
+                this.RaiseOperationPerformedAsync(
+                    "Файл " + fullPath + " заблокирован на удаление пользователем " + userName,
+                    userName);
+            }
         }
 
         /// <inheritdoc/>
@@ -178,13 +213,16 @@
             string userName,
             string filePath)
         {
-            this.connectedUsers.ThrowIfUserIsNotConnected(userName);
-            string fullPath = this.GetFullPath(userName, filePath);
-            IVirtualFile file = this.fileSystem.GetExistingFile(fullPath);
-            this.lockingPolicy.UnlockFile(userName, file);
-            this.RaiseOperationPerformedAsync(
-                "Файл " + fullPath + " разблокирован для удаления пользователем " + userName,
-                userName);
+            lock (this.syncObject)
+            {
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullPath = this.GetFullPath(userName, filePath);
+                IVirtualFile file = this.fileSystem.GetExistingFile(fullPath);
+                this.lockingPolicy.UnlockFile(userName, file);
+                this.RaiseOperationPerformedAsync(
+                    "Файл " + fullPath + " разблокирован для удаления пользователем " + userName,
+                    userName);
+            }
         }
 
         /// <inheritdoc/>
@@ -193,13 +231,16 @@
             string sourcePath,
             string destinationPath)
         {
-            this.connectedUsers.ThrowIfUserIsNotConnected(userName);
-            string fullSource = this.GetFullPath(userName, sourcePath);
-            string fullDestination = this.GetFullPath(userName, destinationPath);
-            this.fileSystem.Copy(fullSource, fullDestination);
-            this.RaiseOperationPerformedAsync(
-                "Пользователь " + userName + " скопировал " + fullSource + " в " + fullDestination,
-                userName);
+            lock (this.syncObject)
+            {
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullSource = this.GetFullPath(userName, sourcePath);
+                string fullDestination = this.GetFullPath(userName, destinationPath);
+                this.fileSystem.Copy(fullSource, fullDestination);
+                this.RaiseOperationPerformedAsync(
+                    "Пользователь " + userName + " скопировал " + fullSource + " в " + fullDestination,
+                    userName);
+            }
         }
 
         /// <inheritdoc/>
@@ -208,20 +249,91 @@
             string sourcePath,
             string destinationPath)
         {
-            this.connectedUsers.ThrowIfUserIsNotConnected(userName);
-            string fullSource = this.GetFullPath(userName, sourcePath);
-
-            if (this.IsCurrentOrParentDirForUser(userName, fullSource))
+            lock (this.syncObject)
             {
-                throw new InvalidOperationException(VirtualFileServer.CantRemoveCurrentDirectory);
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullSource = this.GetFullPath(userName, sourcePath);
+
+                if (this.IsCurrentOrParentDirForUser(userName, fullSource))
+                {
+                    throw new InvalidOperationException(VirtualFileServer.CantRemoveCurrentDirectory);
+                }
+
+                string fullDestination = this.GetFullPath(userName, destinationPath);
+                this.lockingPolicy.ThrowIfCantRemove(fullSource, this.fileSystem);
+                this.fileSystem.Move(fullSource, fullDestination);
+                this.RaiseOperationPerformedAsync(
+                    "Пользователь " + userName + " переместил " + fullSource + " в " + fullDestination,
+                    userName);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task UploadFileAsync(string userName, string filePath, string data)
+        {
+            IVirtualFile file;
+
+            lock (this.syncObject)
+            {
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullPath = this.GetFullPath(userName, filePath);
+                file = this.fileSystem.GetExistingFile(fullPath);
+
+                if (this.lockingPolicy.IsFileLocked(file))
+                {
+                    throw new InvalidOperationException(
+                        "Невозможно загрузить данные в файл " + fullPath 
+                        + ". Файл заблокирован, или используется другим пользователем.");
+                }
+
+                this.lockingPolicy.LockFile(userName, file);
             }
 
-            string fullDestination = this.GetFullPath(userName, destinationPath);
-            this.lockingPolicy.ThrowIfCantRemove(fullSource, this.fileSystem);
-            this.fileSystem.Move(fullSource, fullDestination);
-            this.RaiseOperationPerformedAsync(
-                "Пользователь " + userName + " переместил " + fullSource + " в " + fullDestination,
-                userName);
+            try
+            {
+                await file.WriteDataAsync(data);
+            }
+            finally
+            {
+                lock (this.syncObject)
+                {
+                    this.lockingPolicy.SafeUnlockFile(userName, file);
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<string> DownloadFileAsync(string userName, string filePath)
+        {
+            IVirtualFile file;
+
+            lock (this.syncObject)
+            {
+                this.connectedUsers.ThrowIfUserIsNotConnected(userName);
+                string fullPath = this.GetFullPath(userName, filePath);
+                file = this.fileSystem.GetExistingFile(fullPath);
+
+                if (this.lockingPolicy.IsFileLocked(file))
+                {
+                    throw new InvalidOperationException(
+                        "Невозможно загрузить данные из файла " + fullPath
+                        + ". Файл заблокирован, или используется другим пользователем.");
+                }
+
+                this.lockingPolicy.LockFile(userName, file);
+            }
+
+            try
+            {
+                return await file.GetDataAsync();
+            }
+            finally
+            {
+                lock (this.syncObject)
+                {
+                    this.lockingPolicy.SafeUnlockFile(userName, file);
+                }
+            }
         }
 
         /// <summary>
