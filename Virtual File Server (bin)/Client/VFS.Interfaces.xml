@@ -11,6 +11,11 @@
             <remarks>ПУТЬ К ФАЙЛУ ИЛИ ДИРЕКТОРИИ - ВЕЗДЕ - ЛИБО ПОЛНЫЙ ПУТЬ,
             ЛИБО ПУТЬ ОТНОСИТЕЛЬНО ТЕКУЩЕЙ РАБОЧЕЙ ДИРЕКТОРИИ ПОЛЬЗОВАТЕЛЯ.</remarks>
         </member>
+        <member name="E:VFS.Interfaces.IVirtualFileServer.OperationPerformed">
+            <summary>
+            Событие завершения выполнения какой-либо операции.
+            </summary>
+        </member>
         <member name="M:VFS.Interfaces.IVirtualFileServer.ConnectUser(System.String)">
             <summary>
             Подключить нового пользователя.
@@ -23,6 +28,12 @@
             </summary>
             <param name="userName">Имя пользователя.</param>
             <param name="directoryPath">Путь к новой текущей директории.</param>
+        </member>
+        <member name="M:VFS.Interfaces.IVirtualFileServer.GetUsersCurrentWorkingDirectoryPath(System.String)">
+            <summary>
+            Получить полный путь к текущей рабочей папке пользователя.
+            </summary>
+            <param name="userName">Имя пользователя.</param>
         </member>
         <member name="M:VFS.Interfaces.IVirtualFileServer.DisconnectUser(System.String)">
             <summary>
@@ -102,14 +113,34 @@
             <param name="sourcePath">Путь к перемещаемой папке или файлу.</param>
             <param name="destinationPath">Путь к целевой папке.</param>
         </member>
-        <member name="E:VFS.Interfaces.IVirtualFileServer.OperationPerformed">
+        <member name="M:VFS.Interfaces.IVirtualFileServer.UploadFileAsync(System.String,System.String,System.String)">
             <summary>
-            Событие завершения выполнения какой-либо операции.
+            Загрузить данные в файл.
+            </summary>
+        </member>
+        <member name="M:VFS.Interfaces.IVirtualFileServer.DownloadFileAsync(System.String,System.String)">
+            <summary>
+            Получить данные из файла.
             </summary>
         </member>
         <member name="T:VFS.Interfaces.DriveStructureMessageFormat.DriveStructureInfo">
             <summary>
             Информация о структуре файлов и папок на диске.
+            </summary>
+        </member>
+        <member name="P:VFS.Interfaces.DriveStructureMessageFormat.DriveStructureInfo.Name">
+            <summary>
+            Имя диска.
+            </summary>
+        </member>
+        <member name="P:VFS.Interfaces.DriveStructureMessageFormat.DriveStructureInfo.Directories">
+            <summary>
+            Информация о папках в корне диска.
+            </summary>
+        </member>
+        <member name="P:VFS.Interfaces.DriveStructureMessageFormat.DriveStructureInfo.Files">
+            <summary>
+            Информация о файлах в корне диска.
             </summary>
         </member>
         <member name="T:VFS.Interfaces.DriveStructureMessageFormat.IVFSDirectoryInfo">
@@ -130,21 +161,6 @@
         <member name="P:VFS.Interfaces.DriveStructureMessageFormat.IVFSDirectoryInfo.Files">
             <summary>
             Информация о файлах в папке.
-            </summary>
-        </member>
-        <member name="P:VFS.Interfaces.DriveStructureMessageFormat.DriveStructureInfo.Name">
-            <summary>
-            Имя диска.
-            </summary>
-        </member>
-        <member name="P:VFS.Interfaces.DriveStructureMessageFormat.DriveStructureInfo.Directories">
-            <summary>
-            Информация о папках в корне диска.
-            </summary>
-        </member>
-        <member name="P:VFS.Interfaces.DriveStructureMessageFormat.DriveStructureInfo.Files">
-            <summary>
-            Информация о файлах в корне диска.
             </summary>
         </member>
         <member name="T:VFS.Interfaces.DriveStructureMessageFormat.VFSDirectoryInfo">
@@ -204,13 +220,11 @@
             Начать сеанс работы с виртуальным файловым сервером.
             </summary>
             <param name="userName">Имя пользователя.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.Quit">
             <summary>
             Завершить сеанс работы с виртуальным файловым сервером.
             </summary>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.SubscribeForNotifications">
             <summary>
@@ -222,14 +236,17 @@
             Создать директорию.
             </summary>
             <param name="path">Путь к создаваемой папке.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
-        <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.SetCurrentDirectory(System.String)">
+        <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.GetCurrentWorkingDirectoryPath">
+            <summary>
+            Получить полный путь к текущей рабочей директории пользователя.
+            </summary>
+        </member>
+        <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.SetCurrentWorkingDirectory(System.String)">
             <summary>
             Установить текущую директорию.
             </summary>
             <param name="path">Путь к директории.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.RemoveDirectory(System.String,System.Boolean)">
             <summary>
@@ -237,28 +254,24 @@
             </summary>
             <param name="path">Путь к директории.</param>
             <param name="recursive">Вместе со всеми входящими директориями.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.MakeFile(System.String)">
             <summary>
             Создать файл.
             </summary>
             <param name="path">Путь к файлу (включая имя файла).</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.DeleteFile(System.String)">
             <summary>
             Удалить файл.
             </summary>
             <param name="path">Путь к файлу (включая имя файла).</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.LockFile(System.String)">
             <summary>
             Запретить удаление файла.
             </summary>
             <param name="path">Путь к файлу (включая имя файла).</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.UnlockFile(System.String)">
             <summary>
@@ -273,7 +286,6 @@
             </summary>
             <param name="sourcePath">Путь к копируемому файлу или директории.</param>
             <param name="destinationPath">Путь к целевой директории.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.Move(System.String,System.String)">
             <summary>
@@ -281,14 +293,22 @@
             </summary>
             <param name="sourcePath">Путь к перемещаемому файлу или директории.</param>
             <param name="destinationPath">Путь к целевой директории.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.GetDriveStructure(System.String)">
             <summary>
             Получить структуру папок и файлов определенного диска.
             </summary>
             <param name="drive">Буква диска.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
+        </member>
+        <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.UploadFileAsync(System.String,System.String)">
+            <summary>
+            Загрузить данные в файл.
+            </summary>
+        </member>
+        <member name="M:VFS.Interfaces.Service.IVFSSingleUserService.DownloadFileAsync(System.String)">
+            <summary>
+            Получить данные из файла.
+            </summary>
         </member>
         <member name="T:VFS.Interfaces.Service.IVFSSingleUserServiceProvider">
             <summary>
@@ -296,16 +316,13 @@
             с виртуальным файловым сервером.
             </summary>
         </member>
-        <member name="M:VFS.Interfaces.Service.IVFSSingleUserServiceProvider.CreateVFSService(System.String,System.Nullable{System.Int32},VFS.Interfaces.Service.IVFSNotificationHandler,System.Object[])">
+        <member name="M:VFS.Interfaces.Service.IVFSSingleUserServiceProvider.CreateVFSService(VFS.Interfaces.Service.IVFSNotificationHandler)">
             <summary>
             Получить интерфейс работы пользователя
             с виртуальным файловым сервером.
             </summary>
-            <param name="serverName">Имя сервера.</param>
-            <param name="port">Порт.</param>
             <param name="notificationHandler">Обработчик уведомлений сервера.</param>
-            <param name="parameters">Дополнительные параметры.</param>
-            <returns>Интерфейс доступа пользователя к виртуальному 
+            <returns>Интерфейс доступа пользователя к виртуальному
             файловому серверу.</returns>
         </member>
         <member name="T:VFS.Interfaces.Service.StandardOperationResult">
@@ -399,6 +416,21 @@
             Виртуальная папка.
             </summary>
         </member>
+        <member name="P:VFS.Interfaces.VirtualDrive.IVirtualDirectory.Name">
+            <summary>
+            Имя директории.
+            </summary>
+        </member>
+        <member name="P:VFS.Interfaces.VirtualDrive.IVirtualDirectory.ChildDirectories">
+            <summary>
+            Корневые папки.
+            </summary>
+        </member>
+        <member name="P:VFS.Interfaces.VirtualDrive.IVirtualDirectory.Files">
+            <summary>
+            Корневые файлы.
+            </summary>
+        </member>
         <member name="M:VFS.Interfaces.VirtualDrive.IVirtualDirectory.CreateFile(System.String)">
             <summary>
             Создать новый файл.
@@ -454,51 +486,10 @@
             <param name="copiedFile">Копируемый файл.</param>
             <returns>Созданная копия.</returns>
         </member>
-        <member name="P:VFS.Interfaces.VirtualDrive.IVirtualDirectory.Name">
-            <summary>
-            Имя директории.
-            </summary>
-        </member>
-        <member name="P:VFS.Interfaces.VirtualDrive.IVirtualDirectory.Directories">
-            <summary>
-            Корневые папки.
-            </summary>
-        </member>
-        <member name="P:VFS.Interfaces.VirtualDrive.IVirtualDirectory.Files">
-            <summary>
-            Корневые файлы.
-            </summary>
-        </member>
         <member name="T:VFS.Interfaces.VirtualDrive.IVirtualDrive">
             <summary>
             Виртуальный диск.
             </summary>
-        </member>
-        <member name="M:VFS.Interfaces.VirtualDrive.IVirtualDrive.Initialize(System.String,System.String)">
-            <summary>
-            Инициализировать виртуальный диск для начала работы.
-            </summary>
-            <param name="xmlConfig">Конфигурация виртуального диска.</param>
-            <param name="driveName">Имя диска (например, "C:").</param>
-            <remarks>У каждой реализации виртуального диска предполагается
-            свой формат конфигурационных данных, схему которого можно
-            получить, вызвав <see cref="M:VFS.Interfaces.VirtualDrive.IVirtualDrive.GetXmlConfigSchema"/>.</remarks>
-        </member>
-        <member name="M:VFS.Interfaces.VirtualDrive.IVirtualDrive.GetXmlConfigSchema">
-            <summary>
-            Получить схему xml-конфигурации виртуального диска.
-            </summary>
-            <returns>Схема xml-конфигурации виртуального диска.</returns>
-            <remarks>Схема - .xsd документ, содержащий правила формирования
-            xml-документа.</remarks>
-        </member>
-        <member name="M:VFS.Interfaces.VirtualDrive.IVirtualDrive.SetIntegrationBehaviour(VFS.Interfaces.VirtualDrive.IIntegrationBehaviour)">
-            <summary>
-            Назначить поведение интеграции с другими
-            реализациями виртуальных дисков.
-            </summary>
-            <param name="integrationBehaviour">Поведение интеграции
-            с другими реализациями виртуальных дисков.</param>
         </member>
         <member name="M:VFS.Interfaces.VirtualDrive.IVirtualDrive.FindDirectory(System.String)">
             <summary>
@@ -516,6 +507,18 @@
             <summary>
             Имя файла.
             </summary>
+        </member>
+        <member name="M:VFS.Interfaces.VirtualDrive.IVirtualFile.GetDataAsync">
+            <summary>
+            Получить данные из файла.
+            </summary>
+        </member>
+        <member name="M:VFS.Interfaces.VirtualDrive.IVirtualFile.WriteDataAsync(System.String)">
+            <summary>
+            Записать данные в файл.
+            </summary>
+            <param name="data">Данные.</param>
+            <returns></returns>
         </member>
     </members>
 </doc>

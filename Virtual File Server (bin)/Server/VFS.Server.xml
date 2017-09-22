@@ -4,183 +4,6 @@
         <name>VFS.Server</name>
     </assembly>
     <members>
-        <member name="T:VFS.Server.LockInfo">
-            <summary>
-            Информация о блокировке файла.
-            </summary>
-        </member>
-        <member name="M:VFS.Server.LockInfo.#ctor(VFS.Server.VFSUser,VFS.Interfaces.VirtualDrive.IVirtualFile)">
-            <summary>
-            Создать информацию о блокировке файла.
-            </summary>
-            <param name="user">Пользователь, заблокировавший файл.</param>
-            <param name="file">Блокируемый файл.</param>
-        </member>
-        <member name="P:VFS.Server.LockInfo.User">
-            <summary>
-            Пользователь, заблокировавший файл.
-            </summary>
-        </member>
-        <member name="P:VFS.Server.LockInfo.File">
-            <summary>
-            Заблокированный файл.
-            </summary>
-        </member>
-        <member name="T:VFS.Server.SyncronizedVirtualFileServer">
-            <summary>
-            Обертка виртуального файлового сервера, позволяющая 
-            работать с ним сразу многим пользователям.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.SyncronizedVirtualFileServer.vfServer">
-            <summary>
-            Экземпляр виртуального файлового сервера.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.SyncronizedVirtualFileServer.maxParallelQueries">
-            <summary>
-            Максимальное количество одновременных запросов.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.SyncronizedVirtualFileServer.currentQueriesCount">
-            <summary>
-            Текущее количество выполняющихся запросов.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.SyncronizedVirtualFileServer.syncObject">
-            <summary>
-            Объект для синхронизации.
-            </summary>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.#ctor(VFS.Interfaces.IVirtualFileServer,System.Int32)">
-            <summary>
-            Создать обертку-"синхронизатор" виртуального файлового сервера.
-            </summary>
-            <param name="virtualFileServer">Виртуальный файловый сервер.</param>
-            <param name="maxParallelQueries">Максимальное количество параллельных запросов.</param>
-            <remarks>
-            Если количество одновременно выполняющихся запросов достигнет
-            <paramref name="maxParallelQueries"/>, последующие запросы не будут выполняться.
-            </remarks>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.ConnectUser(System.String)">
-            <summary>
-            Подключить нового пользователя.
-            </summary>
-            <param name="userName">Имя еще не подключенного пользователя.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.ChangeUsersCurrentDirectory(System.String,System.String)">
-            <summary>
-            Изменить текущую директорию пользователя.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="directoryPath">Путь к новой текущей директории.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.DisconnectUser(System.String)">
-            <summary>
-            Отключить пользователя.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.GetUsersCount">
-            <summary>
-            Получить общее количество подключенных пользователей.
-            </summary>
-            <returns>Общее количество подключенных пользователей.</returns>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.GetDriveStructure(System.String)">
-            <summary>
-            Получить информацию о структуре диска.
-            </summary>
-            <param name="driveName">Имя диска.</param>
-            <returns>Информация о структуре диска.</returns>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.CreateDirectory(System.String,System.String)">
-            <summary>
-            Создать папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="directoryPath">Путь и имя создаваемой директории.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.RemoveDirectory(System.String,System.String,System.Boolean)">
-            <summary>
-            Удалить папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="directoryPath">Путь к удаляемой папке.</param>
-            <param name="recursive">Удалить, даже если есть подпапки.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.CreateFile(System.String,System.String)">
-            <summary>
-            Создать файл.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к файлу.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.RemoveFile(System.String,System.String)">
-            <summary>
-            Удалить файл.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к удаляемому файлу.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.LockFile(System.String,System.String)">
-            <summary>
-            Запретить удаление файла.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к удаляемому файлу.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.UnlockFile(System.String,System.String)">
-            <summary>
-            Снять запрет удаления файла.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к файлу.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.Copy(System.String,System.String,System.String)">
-            <summary>
-            Копировать папку или файл в целевую папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="sourcePath">Путь к копируемой папке или файлу.</param>
-            <param name="destinationPath">Путь к целевой папке.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.Move(System.String,System.String,System.String)">
-            <summary>
-            Переместить папку или файл в другую папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="sourcePath">Путь к перемещаемой папке или файлу.</param>
-            <param name="destinationPath">Путь к целевой папке.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.SyncPerformFunction``1(System.Func{``0})">
-            <summary>
-            Выполнить функцию синхронно (т.е. после завершения выполнения
-            других операций и функций).
-            </summary>
-            <typeparam name="T">Тип результата функции.</typeparam>
-            <param name="function">Функция.</param>
-            <returns>Результат функции.</returns>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.SyncPerformAction(System.Action)">
-            <summary>
-            Выполнить операцию синхронно, т.е. после завершения
-            выполнения других операций и функций.
-            </summary>
-            <param name="action">Операция.</param>
-        </member>
-        <member name="M:VFS.Server.SyncronizedVirtualFileServer.ThrowIfOverload">
-            <summary>
-            Выдать исключение, если превышен предел одновременных
-            запросов.
-            </summary>
-        </member>
-        <member name="E:VFS.Server.SyncronizedVirtualFileServer.OperationPerformed">
-            <summary>
-            Событие завершения выполнения какой-либо операции.
-            </summary>
-        </member>
         <member name="T:VFS.Server.VFSConfig">
             <summary>
             Конфигурация виртуального файлового сервера.
@@ -195,7 +18,7 @@
         </member>
         <member name="P:VFS.Server.VFSConfig.DefaultDirPath">
             <summary>
-            Путь к директории, с которой начинают 
+            Путь к директории, с которой начинают
             работу все новые пользователи
             </summary>
         </member>
@@ -208,6 +31,16 @@
         <member name="F:VFS.Server.VFSConnectedUsers.registeredUsers">
             <summary>
             Подключенные пользователи.
+            </summary>
+        </member>
+        <member name="P:VFS.Server.VFSConnectedUsers.RegisteredUsers">
+            <summary>
+            Список подключенных пользователей.
+            </summary>
+        </member>
+        <member name="E:VFS.Server.VFSConnectedUsers.UserUnregistered">
+            <summary>
+            Событие отключения пользователя.
             </summary>
         </member>
         <member name="M:VFS.Server.VFSConnectedUsers.RegisterUser(System.String,System.String)">
@@ -238,45 +71,6 @@
             </summary>
             <param name="userName">Имя подключенного пользователя.</param>
             <returns>Подключенный пользователь.</returns>
-        </member>
-        <member name="E:VFS.Server.VFSConnectedUsers.UserUnregistered">
-            <summary>
-            Событие отключения пользователя.
-            </summary>
-        </member>
-        <member name="P:VFS.Server.VFSConnectedUsers.RegisteredUsers">
-            <summary>
-            Список подключенных пользователей.
-            </summary>
-        </member>
-        <member name="T:VFS.Server.VFSUser">
-            <summary>
-            Пользователь виртуального файлового сервера.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.VFSUser.currentDirectoryPath">
-            <summary>
-            Путь к текущей папке пользователя.
-            </summary>
-        </member>
-        <member name="M:VFS.Server.VFSUser.#ctor(System.String,System.String)">
-            <summary>
-            Создать нового пользователя виртуального 
-            файлового сервера.
-            </summary>
-            <param name="name">Имя пользователя.</param>
-            <param name="currentDirectoryPath">Путь к текущей рабочей
-            папке пользователя.</param>
-        </member>
-        <member name="P:VFS.Server.VFSUser.Name">
-            <summary>
-            Имя пользователя.
-            </summary>
-        </member>
-        <member name="P:VFS.Server.VFSUser.CurrentDirectoryPath">
-            <summary>
-            Путь к текущей папке пользователя.
-            </summary>
         </member>
         <member name="T:VFS.Server.VFSLockingPolicy">
             <summary>
@@ -321,21 +115,28 @@
         </member>
         <member name="M:VFS.Server.VFSLockingPolicy.LockFile(System.String,VFS.Interfaces.VirtualDrive.IVirtualFile)">
             <summary>
-            Заблокировать файл для удаления.
+            Заблокировать файл.
             </summary>
             <param name="userName">Имя пользователя.</param>
             <param name="file">Файл.</param>
         </member>
         <member name="M:VFS.Server.VFSLockingPolicy.UnlockFile(System.String,VFS.Interfaces.VirtualDrive.IVirtualFile)">
             <summary>
-            Разблокировать удаление файла.
+            Разблокировать файл.
+            </summary>
+            <param name="userName">Имя пользователя.</param>
+            <param name="file">Файл.</param>
+        </member>
+        <member name="M:VFS.Server.VFSLockingPolicy.SafeUnlockFile(System.String,VFS.Interfaces.VirtualDrive.IVirtualFile)">
+            <summary>
+            Разблокировать файл, если он заблокирован этим пользователем.
             </summary>
             <param name="userName">Имя пользователя.</param>
             <param name="file">Файл.</param>
         </member>
         <member name="M:VFS.Server.VFSLockingPolicy.GetDirStructureWithLockingInfo(VFS.Interfaces.VirtualDrive.IVirtualDirectory)">
             <summary>
-            Сформировать информацию о директории, включающую 
+            Сформировать информацию о директории, включающую
             информацию о блокировках.
             </summary>
             <param name="directory">Директория.</param>
@@ -343,7 +144,7 @@
         </member>
         <member name="M:VFS.Server.VFSLockingPolicy.IsFileLocked(VFS.Interfaces.VirtualDrive.IVirtualFile)">
             <summary>
-            Признак того, что файл заблокирован для удаления.
+            Признак того, что файл заблокирован.
             </summary>
             <param name="file">Файл.</param>
             <returns>True - файл заблокирован, false - нет.</returns>
@@ -368,41 +169,12 @@
             виртуального файлового сервера.
             </summary>
         </member>
-        <member name="M:VFS.Server.VFSUserEventArgs.#ctor(VFS.Server.VFSUser)">
-            <summary>
-            Создать аргументы события, связанного с пользователем
-            виртуального файлового сервера.
-            </summary>
-            <param name="user">Пользователь.</param>
-        </member>
-        <member name="P:VFS.Server.VFSUserEventArgs.User">
-            <summary>
-            Пользователь виртуального файлового сервера.
-            </summary>
-        </member>
         <member name="T:VFS.Server.VirtualFileServer">
-            <summary>
-            Виртуальный файловый сервер.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.VirtualFileServer.fileSystem">
-            <summary>
-            Единая виртуальная файловая система.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.VirtualFileServer.connectedUsers">
-            <summary>
-            Подключенные пользователи.
-            </summary>
+            <inheritdoc chref="IVirtualFileServer" />
         </member>
         <member name="F:VFS.Server.VirtualFileServer.lockingPolicy">
             <summary>
             Политика блокировки удаления файлов.
-            </summary>
-        </member>
-        <member name="F:VFS.Server.VirtualFileServer.config">
-            <summary>
-            Конфигурация виртуального файлового сервера.
             </summary>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.#ctor">
@@ -410,96 +182,58 @@
             Создать виртуальный файловый сервер.
             </summary>
         </member>
-        <member name="M:VFS.Server.VirtualFileServer.ConnectUser(System.String)">
+        <member name="E:VFS.Server.VirtualFileServer.OperationPerformed">
             <summary>
-            Подключить нового пользователя.
+            Событие завершения выполнения какой-либо операции.
             </summary>
-            <param name="userName">Имя еще не подключенного пользователя.</param>
+        </member>
+        <member name="M:VFS.Server.VirtualFileServer.ConnectUser(System.String)">
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.ChangeUsersCurrentDirectory(System.String,System.String)">
-            <summary>
-            Изменить текущую директорию пользователя.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="directoryPath">Путь к новой текущей директории.</param>
+            <inheritdoc/>
+        </member>
+        <member name="M:VFS.Server.VirtualFileServer.GetUsersCurrentWorkingDirectoryPath(System.String)">
+            <inheritdoc />
         </member>
         <member name="M:VFS.Server.VirtualFileServer.DisconnectUser(System.String)">
-            <summary>
-            Отключить пользователя.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
+            <inheritdoc />
         </member>
         <member name="M:VFS.Server.VirtualFileServer.GetUsersCount">
-            <summary>
-            Получить общее количество подключенных пользователей.
-            </summary>
-            <returns>Общее количество подключенных пользователей.</returns>
+            <inheritdoc />
         </member>
         <member name="M:VFS.Server.VirtualFileServer.GetDriveStructure(System.String)">
-            <summary>
-            Получить информацию о структуре диска.
-            </summary>
-            <param name="driveName">Имя диска.</param>
-            <returns>Информация о структуре диска.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.CreateDirectory(System.String,System.String)">
-            <summary>
-            Создать папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="directoryPath">Путь и имя создаваемой директории.</param>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.RemoveDirectory(System.String,System.String,System.Boolean)">
-            <summary>
-            Удалить папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="directoryPath">Путь к удаляемой папке.</param>
-            <param name="recursive">Удалить, даже если есть подпапки.</param>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.CreateFile(System.String,System.String)">
-            <summary>
-            Создать файл.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к файлу.</param>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.RemoveFile(System.String,System.String)">
-            <summary>
-            Удалить файл.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к удаляемому файлу.</param>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.LockFile(System.String,System.String)">
-            <summary>
-            Запретить удаление файла.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к удаляемому файлу.</param>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.UnlockFile(System.String,System.String)">
-            <summary>
-            Снять запрет удаления файла.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="filePath">Путь к файлу.</param>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.Copy(System.String,System.String,System.String)">
-            <summary>
-            Копировать папку или файл в целевую папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="sourcePath">Путь к копируемой папке или файлу.</param>
-            <param name="destinationPath">Путь к целевой папке.</param>
+            <inheritdoc/>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.Move(System.String,System.String,System.String)">
-            <summary>
-            Переместить папку или файл в другую папку.
-            </summary>
-            <param name="userName">Имя подключенного пользователя.</param>
-            <param name="sourcePath">Путь к перемещаемой папке или файлу.</param>
-            <param name="destinationPath">Путь к целевой папке.</param>
+            <inheritdoc/>
+        </member>
+        <member name="M:VFS.Server.VirtualFileServer.UploadFileAsync(System.String,System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:VFS.Server.VirtualFileServer.DownloadFileAsync(System.String,System.String)">
+            <inheritdoc />
         </member>
         <member name="M:VFS.Server.VirtualFileServer.GetFullPath(System.String,System.String)">
             <summary>
@@ -510,15 +244,12 @@
             рабочей директории пользователя.</param>
             <returns>Полный путь к файлу или папке.</returns>
         </member>
-        <member name="M:VFS.Server.VirtualFileServer.ThrowIfTryRemoveCurrentDir(System.String,System.String)">
+        <member name="M:VFS.Server.VirtualFileServer.IsCurrentOrParentDirForUser(System.String,System.String)">
             <summary>
-            Сгенерировать исключение, если пользователь
-            пытается удалить свою текущую директорию, или директорию,
-            родительскую по отношению к текущей.
+            Является ли <paramref name="fullPath" /> текущей директорией,
+            или директорией, родительской по отношению к текущей для
+            пользователя <paramref name="userName" />.
             </summary>
-            <param name="userName">Имя пользователя.</param>
-            <param name="fullPath">Полный путь к директории, которую
-            пользователь собирается удалить/переместить.</param>
         </member>
         <member name="M:VFS.Server.VirtualFileServer.RaiseOperationPerformedAsync(System.String,System.String)">
             <summary>
@@ -527,118 +258,21 @@
             <param name="notification">Краткое описание операции.</param>
             <param name="userName">Имя пользователя, выполнившего операцию.</param>
         </member>
-        <member name="E:VFS.Server.VirtualFileServer.OperationPerformed">
-            <summary>
-            Событие завершения выполнения какой-либо операции.
-            </summary>
-        </member>
         <member name="T:VFS.Server.VirtualFileSystem">
             <summary>
             Единая виртуальная файловая система, работающая
             с разными реализациями виртуальных дисков.
             </summary>
         </member>
-        <member name="F:VFS.Server.VirtualFileSystem.drives">
-            <summary>
-            Виртуальные диски.
-            </summary>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.#ctor">
-            <summary>
-            Создать единую виртуальную файловую систему.
-            </summary>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.CheckDirectoryExisting(System.String)">
-            <summary>
-            Проверить существование директории.
-            </summary>
-            <param name="fullPath">Полный путь к директории.</param>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.GetRootDirectory(System.String)">
-            <summary>
-            Получить информацию о структуре виртуального диска.
-            </summary>
-            <param name="driveName">Имя виртуального диска.</param>
-            <returns>Информация о структуре виртуального диска.</returns>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.CreateDirectory(System.String)">
-            <summary>
-            Создать новую директорию.
-            </summary>
-            <param name="directoryFullPath">Полный путь.</param>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.RemoveDirectory(System.String,System.Boolean)">
-            <summary>
-            Удалить директорию.
-            </summary>
-            <param name="fullPath">Полный путь к директории.</param>
-            <param name="recursive">Вместе с дочерними папками.</param>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.CreateFile(System.String)">
-            <summary>
-            Создать новый файл.
-            </summary>
-            <param name="fullFilePath">Полный путь к создаваемому файлу.</param>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.RemoveFile(System.String)">
-            <summary>
-            Удалить файл.
-            </summary>
-            <param name="fullFilePath">Полный путь к файлу.</param>
-        </member>
         <member name="M:VFS.Server.VirtualFileSystem.GetExistingDirectory(System.String)">
-            <summary>
-            Найти существующую директорию.
-            </summary>
-            <param name="fullDirectoryPath">Полный путь к существующей директории.</param>
-            <returns>Найденная директория.</returns>
             <exception cref="T:System.IO.DirectoryNotFoundException">
             Директория не существует.
             </exception>
         </member>
         <member name="M:VFS.Server.VirtualFileSystem.GetExistingFile(System.String)">
-            <summary>
-            Найти существующий файл.
-            </summary>
-            <param name="fullFilePath">Полный путь к существующему файлу.</param>
-            <returns>Найденный файл.</returns>
             <exception cref="T:System.IO.FileNotFoundException">
             Файл не существует.
             </exception>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.Copy(System.String,System.String)">
-            <summary>
-            Копировать папку или файл в целевую папку.
-            </summary>
-            <param name="fullSource">Полный путь к папке или файлу.</param>
-            <param name="fullDestination">Полный путь к целевой папке.</param>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.Move(System.String,System.String)">
-            <summary>
-            Переместить папку или файл в целевую папку.
-            </summary>
-            <param name="fullSource">Полный путь к папке или файлу.</param>
-            <param name="fullDestination">Полный путь к целевой папке.</param>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.FindDirectory(System.String)">
-            <summary>
-            Найти директорию по полному пути.
-            </summary>
-            <param name="fullDirectoryPath">Путь к директории.</param>
-            <returns>Найденная директория, или null.</returns>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.FindFile(System.String)">
-            <summary>
-            Найти файл по полному пути.
-            </summary>
-            <param name="fullFilePath">Полный путь к файлу.</param>
-            <returns>Найденный файл, или null.</returns>
-        </member>
-        <member name="M:VFS.Server.VirtualFileSystem.AddInMemoryVirtualDrive(System.String)">
-            <summary>
-            Добавить виртуальный диск, хранящий данные в памяти.
-            </summary>
-            <param name="driveName">Имя диска.</param>
         </member>
         <member name="M:VFS.Server.VirtualFileSystem.GetExistingDrive(System.String)">
             <summary>

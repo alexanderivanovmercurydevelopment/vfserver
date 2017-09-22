@@ -75,135 +75,38 @@
             </summary>
         </member>
         <member name="T:VFS.WCFService.VFSSingleUserServiceWCF">
-            <summary>
-            Сервис для работы одного пользователя с виртуальным
-            файловым сервером.
-            </summary>
-        </member>
-        <member name="F:VFS.WCFService.VFSSingleUserServiceWCF.server">
-            <summary>
-            Экземпляр виртуального файлового сервера.
-            </summary>
-        </member>
-        <member name="F:VFS.WCFService.VFSSingleUserServiceWCF.userName">
-            <summary>
-            Имя пользователя.
-            </summary>
+            <inheritdoc />
         </member>
         <member name="F:VFS.WCFService.VFSSingleUserServiceWCF.notifyAction">
             <summary>
             Действие, выполняемое при завершении любой операции сервера.
             </summary>
         </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.Connect(System.String)">
-            <summary>
-            Начать сеанс работы с виртуальным файловым сервером.
-            </summary>
-            <param name="userName">Имя пользователя.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.Quit">
-            <summary>
-            Завершить сеанс работы с виртуальным файловым сервером.
-            </summary>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.SubscribeForNotifications">
-            <summary>
-            Подписаться на уведомления о действиях других пользователей.
-            </summary>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.MakeDirectory(System.String)">
-            <summary>
-            Создать директорию.
-            </summary>
-            <param name="path">Путь к создаваемой папке.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.SetCurrentDirectory(System.String)">
-            <summary>
-            Установить текущую директорию.
-            </summary>
-            <param name="path">Путь к директории.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.RemoveDirectory(System.String,System.Boolean)">
-            <summary>
-            Удалить директорию.
-            </summary>
-            <param name="path">Путь к директории.</param>
-            <param name="recursive">Вместе со всеми входящими директориями.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.MakeFile(System.String)">
-            <summary>
-            Создать файл.
-            </summary>
-            <param name="path">Путь к файлу (включая имя файла).</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.DeleteFile(System.String)">
-            <summary>
-            Удалить файл.
-            </summary>
-            <param name="path">Путь к файлу (включая имя файла).</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
         <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.LockFile(System.String)">
             <summary>
             Запретить удаление файла.
             </summary>
-            <param name="path">Путь к файлу (включая имя файла).</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.UnlockFile(System.String)">
             <summary>
             Разрешить удаление файла.
             </summary>
-            <param name="path">Путь к файлу (включая имя файла).</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.Copy(System.String,System.String)">
-            <summary>
-            Копировать файл или директорию.
-            </summary>
-            <param name="sourcePath">Путь к копируемому файлу или директории.</param>
-            <param name="destinationPath">Путь к целевой директории.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.Move(System.String,System.String)">
-            <summary>
-            Переместить файл или директорию.
-            </summary>
-            <param name="sourcePath">Путь к перемещаемому файлу или директории.</param>
-            <param name="destinationPath">Путь к целевой директории.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
-        </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.GetDriveStructure(System.String)">
-            <summary>
-            Получить структуру папок и файлов определенного диска.
-            </summary>
-            <param name="drive">Буква диска.</param>
-            <returns>Стандартный результат выполнения операции.</returns>
         </member>
         <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.SafeExecute(System.Func{VFS.Interfaces.Service.StandardOperationResult})">
             <summary>
             Выполнить операцию, и вернуть нормальное сообщение
             об ошибке в случае сбоя операции.
             </summary>
-            <param name="operation">Операция.</param>
-            <returns>Стандартный результат операции.</returns>
         </member>
-        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.ServerOnOperationPerformed(System.Object,VFS.Interfaces.NotificationEventArgs)">
+        <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.SafeExecuteAsync(System.Func{System.Threading.Tasks.Task{VFS.Interfaces.Service.StandardOperationResult}})">
             <summary>
-            Обработчик события завершения операции сервера.
+            Выполнить операцию, и вернуть нормальное сообщение
+            об ошибке в случае сбоя операции.
             </summary>
-            <param name="sender">Источник события.</param>
-            <param name="e">Аргументы события.</param>
         </member>
         <member name="M:VFS.WCFService.VFSSingleUserServiceWCF.Finalize">
             <summary>
-            (Не тестировалось) Попытка корректного завершения 
+            (Не тестировалось) Попытка корректного завершения
             работы с сервером при сбое клиента.
             </summary>
         </member>
@@ -225,40 +128,6 @@
         <member name="M:VFS.WCFService.WCFHost.Stop">
             <summary>
             Завершить работу.
-            </summary>
-        </member>
-        <member name="M:VFS.WCFService.WCFHost.GetTCPServiceUri">
-            <summary>
-            Получить URI сервиса.
-            </summary>
-            <returns>URI сервиса.</returns>
-        </member>
-        <member name="M:VFS.WCFService.WCFHost.GetUriForMex">
-            <summary>
-            Получить URI для mex (с другим портом, чтобы позволить 
-            указывать MaxConnections для TCP-биндинга).
-            </summary>
-            <returns>URI для mex.</returns>
-        </member>
-        <member name="M:VFS.WCFService.WCFHost.GetPortNumber">
-            <summary>
-            Прочитать номер порта из конфигурационного файла.
-            </summary>
-            <returns>Номер порта.</returns>
-        </member>
-        <member name="M:VFS.WCFService.WCFHost.SetMetadataBehavior">
-            <summary>
-            Установить поведение метаданных.
-            </summary>
-        </member>
-        <member name="M:VFS.WCFService.WCFHost.AddTCPServiceEndpoint">
-            <summary>
-            Добавить конечную точку доступа к сервису.
-            </summary>
-        </member>
-        <member name="M:VFS.WCFService.WCFHost.AddMexEndpoint">
-            <summary>
-            Добавить конечную точку доступа к метаданным.
             </summary>
         </member>
     </members>

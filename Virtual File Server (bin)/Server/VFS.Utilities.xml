@@ -47,7 +47,7 @@
         </member>
         <member name="M:VFS.Utilities.PathExtensions.GetPathWithoutLastItem(System.String)">
             <summary>
-            Получить путь без последней папки или файла 
+            Получить путь без последней папки или файла
             (и без последнего разделителя).
             </summary>
             <param name="path">Путь.</param>
@@ -71,12 +71,40 @@
             <param name="path">Путь к файлу/папке.</param>
             <returns>True - путь корректен, false - нет.</returns>
         </member>
-        <member name="T:VFS.Utilities.XMLUtilities">
+        <member name="T:VFS.Utilities.ServiceLocator">
+            <summary>
+            Предоставляет доступ к зарегистрированным экземплярам сервисов
+            из любого места приложения.
+            </summary>
+        </member>
+        <member name="P:VFS.Utilities.ServiceLocator.Instance">
+            <summary>
+            Получить единственный экземпляр <see cref="T:VFS.Utilities.ServiceLocator" />'а.
+            </summary>
+        </member>
+        <member name="M:VFS.Utilities.ServiceLocator.RegisterService``1(``0)">
+            <summary>
+            Зарегистрировать один экземпляр для общего использования.
+            </summary>
+            <typeparam name="T">Тип (как правило, тип интерфейса).</typeparam>
+            <param name="sharedInstance">Экземпляр.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Попытка зарегистрировать более одного экземпляра для одного и того же типа.
+            </exception>
+        </member>
+        <member name="M:VFS.Utilities.ServiceLocator.GetService``1">
+            <summary>
+            Получить зарегистрированный для общего использования экземпляр ("сервис").
+            </summary>
+            <typeparam name="T">Тип, экземпляр которого запрашивается.</typeparam>
+            <returns>Зарегистрированный для общего использования экземпляр</returns>
+        </member>
+        <member name="T:VFS.Utilities.XmlUtilities">
             <summary>
             Вспомогательные методы сериализации/десериализации xml.
             </summary>
         </member>
-        <member name="M:VFS.Utilities.XMLUtilities.DeserializeFromXml``1(System.String)">
+        <member name="M:VFS.Utilities.XmlUtilities.DeserializeFromXml``1(System.String)">
             <summary>
             Сериализовать объект в XML.
             </summary>
@@ -84,7 +112,7 @@
             <param name="xml">Объект.</param>
             <returns>Строка XML, в которую преобразован объект.</returns>
         </member>
-        <member name="M:VFS.Utilities.XMLUtilities.SerializeToXml``1(``0)">
+        <member name="M:VFS.Utilities.XmlUtilities.SerializeToXml``1(``0)">
             <summary>
             Сериализовать объект в xml.
             </summary>
@@ -92,7 +120,7 @@
             <param name="object">Объект.</param>
             <returns>XML-представление объекта.</returns>
         </member>
-        <member name="M:VFS.Utilities.XMLUtilities.ValidateXml(System.String,System.String)">
+        <member name="M:VFS.Utilities.XmlUtilities.ValidateXml(System.String,System.String)">
             <summary>
             Проверить соответствие xml схеме xsd.
             </summary>

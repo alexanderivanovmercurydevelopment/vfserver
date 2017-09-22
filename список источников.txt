@@ -1,49 +1,49 @@
-Определения:
+п»їРћРїСЂРµРґРµР»РµРЅРёСЏ:
 https://en.wikipedia.org/wiki/Virtualization
 https://en.wikipedia.org/wiki/Virtual_file_server
 https://en.wikipedia.org/wiki/Virtual_file_system
 https://en.wikipedia.org/wiki/Storage_virtualization
 
-Общая информация о WCF:
+РћР±С‰Р°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ WCF:
 https://ru.wikipedia.org/wiki/Windows_Communication_Foundation
 
-Пример использования WCF Windows Service:
+РџСЂРёРјРµСЂ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ WCF Windows Service:
 http://www.codeproject.com/Articles/653493/WebControls/
 
-Пример передачи файлов через WCF:
+РџСЂРёРјРµСЂ РїРµСЂРµРґР°С‡Рё С„Р°Р№Р»РѕРІ С‡РµСЂРµР· WCF:
 http://aspwebprogrammer.blogspot.ru/2012/03/wcf.html
 
-Установка службы без использования InstallUtil.exe:
+РЈСЃС‚Р°РЅРѕРІРєР° СЃР»СѓР¶Р±С‹ Р±РµР· РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ InstallUtil.exe:
 http://stackoverflow.com/questions/1195478/how-to-make-a-net-windows-service-start-right-after-the-installation/1195621#1195621
 
-Программное получение текущего ip и имени компьютера:
+РџСЂРѕРіСЂР°РјРјРЅРѕРµ РїРѕР»СѓС‡РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ ip Рё РёРјРµРЅРё РєРѕРјРїСЊСЋС‚РµСЂР°:
 http://www.cyberforum.ru/csharp-net/thread27170.html
 
-Оповещение/подписка с использованием WCF:
+РћРїРѕРІРµС‰РµРЅРёРµ/РїРѕРґРїРёСЃРєР° СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј WCF:
 http://www.codeproject.com/Articles/22796/WCF-Implementation-of-the-Publisher-Subscriber-Mod
 
-Ручное генерирование wcf-прокси:
+Р СѓС‡РЅРѕРµ РіРµРЅРµСЂРёСЂРѕРІР°РЅРёРµ wcf-РїСЂРѕРєСЃРё:
 https://philmunro.wordpress.com/2012/02/15/creating-a-wcf-service-proxy-with-channelfactory/
 http://varshots.ru/2013/01/18/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-wcf-%D0%B2-%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%BC-%D0%B8-%D0%BF%D0%BE%D0%BD%D1%8F%D1%82%D0%BD%D0%BE%D0%BC-%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%D0%B5/
 
-Отладка служб Windows:
+РћС‚Р»Р°РґРєР° СЃР»СѓР¶Р± Windows:
 http://stackoverflow.com/questions/125964/easier-way-to-debug-a-c-sharp-windows-service
 
-Пример простейшего клиент-серверного приложения (сокеты):
+РџСЂРёРјРµСЂ РїСЂРѕСЃС‚РµР№С€РµРіРѕ РєР»РёРµРЅС‚-СЃРµСЂРІРµСЂРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ (СЃРѕРєРµС‚С‹):
 http://professorweb.ru/my/csharp/web/level3/3_2.php
 
-Расположение installutil.exe:
+Р Р°СЃРїРѕР»РѕР¶РµРЅРёРµ installutil.exe:
 http://www.csharp-examples.net/install-net-service/
 
-Как настроить количество экземпляров сервиса (WCF):
+РљР°Рє РЅР°СЃС‚СЂРѕРёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌРєР·РµРјРїР»СЏСЂРѕРІ СЃРµСЂРІРёСЃР° (WCF):
 http://stackoverflow.com/questions/8566701/wcf-duplex-callbacks-how-do-i-send-a-message-to-all-clients
 
-Решение проблемы с установкой свойства NetTCPBinding.MaxConnections:
+Р РµС€РµРЅРёРµ РїСЂРѕР±Р»РµРјС‹ СЃ СѓСЃС‚Р°РЅРѕРІРєРѕР№ СЃРІРѕР№СЃС‚РІР° NetTCPBinding.MaxConnections:
 https://support.microsoft.com/ru-ru/kb/2773443
 https://msdn.microsoft.com/en-us/library/aa702636(v=vs.110).aspx
 
-Автоматизированное создание xml-схем:
+РђРІС‚РѕРјР°С‚РёР·РёСЂРѕРІР°РЅРЅРѕРµ СЃРѕР·РґР°РЅРёРµ xml-СЃС…РµРј:
 http://xmlgrid.net/xml2xsd.html
 
-Книга о WCF:
+РљРЅРёРіР° Рѕ WCF:
 Programming WCF Services Design and Build Maintainable Service-Oriented Systems 4th Edition

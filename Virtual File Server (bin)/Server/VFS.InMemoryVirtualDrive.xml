@@ -9,12 +9,6 @@
             Конфигурация виртуального диска, хранящего данные в памяти.
             </summary>
         </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDriveConfig.ThrowIfIntegrationNotSet">
-            <summary>
-            Выдать исключение, если поведение интеграции
-            с другими реализациями виртуальных дисков не задано.
-            </summary>
-        </member>
         <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDriveConfig.MaxFileNameLength">
             <summary>
             Максимальная длина имени файла.
@@ -25,168 +19,65 @@
             Максимальная длина имени папки.
             </summary>
         </member>
+        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDriveConfig.DriveName">
+            <summary>
+            Имя диска.
+            </summary>
+        </member>
         <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDriveConfig.IntegrationBehaviour">
             <summary>
-            Поведение интеграции с другими реализациями 
+            Поведение интеграции с другими реализациями
             виртуальных дисков.
             </summary>
         </member>
-        <member name="T:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory">
+        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDriveConfig.ThrowIfIntegrationNotSet">
             <summary>
-            Виртуальная директория.
+            Выдать исключение, если поведение интеграции
+            с другими реализациями виртуальных дисков не задано.
             </summary>
         </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.name">
+        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.ChildDirectories">
             <summary>
-            Имя директории.
+            Непосредственные дочерние папки (не рекурсивно).
             </summary>
         </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.config">
+        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.Files">
             <summary>
-            Конфигурация виртуального диска.
+            Файлы непосредственно в директории (не рекурсивно).
             </summary>
-        </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.childDirectories">
-            <summary>
-            Дочерние папки.
-            </summary>
-        </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.files">
-            <summary>
-            Файлы.
-            </summary>
-        </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.lockObj">
-            <summary>
-            Блокируемый объект (для параллельных операций).
-            </summary>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.#ctor(System.String,VFS.InMemoryVirtualDrive.InMemoryVirtualDriveConfig)">
-            <summary>
-            Создать виртуальную директорию.
-            </summary>
-            <param name="name">Имя директории.</param>
-            <param name="config">Конфигурация текущего виртуального диска.</param>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.CreateFile(System.String)">
-            <summary>
-            Создать новый файл.
-            </summary>
-            <param name="name">Имя файла.</param>
-            <returns>Созданный файл.</returns>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.CreateDirectory(System.String)">
-            <summary>
-            Создать новую папку.
-            </summary>
-            <param name="name">Имя папки.</param>
-            <returns>Созданная папка.</returns>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.RemoveFile(System.String)">
-            <summary>
-            Удалить файл.
-            </summary>
-            <param name="name">Имя удаляемого файла.</param>
         </member>
         <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.RemoveDirectory(System.String,System.Boolean)">
             <summary>
             Удалить дочернюю папку.
             </summary>
-            <param name="name">Имя удаляемой папки.</param>
-            <param name="recursive">Если папка содержит подпапки, удалить 
+            <param name="directoryName">Имя удаляемой папки.</param>
+            <param name="recursive">Если папка содержит подпапки, удалить
             также и подпапки.</param>
             <exception cref="T:System.InvalidOperationException">
-            Если параметр <paramref name="recursive"/> равен false, 
+            Если параметр <paramref name="recursive" /> равен false,
             а папка содержит подпапки.
             </exception>
         </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.MoveDirectoryTo(System.String,VFS.Interfaces.VirtualDrive.IVirtualDirectory)">
-            <summary>
-            Переместить дочернюю папку в другую папку.
-            </summary>
-            <param name="childDirName">Имя дочерней папки.</param>
-            <param name="destination">Папка назначения.</param>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.MoveFileTo(System.String,VFS.Interfaces.VirtualDrive.IVirtualDirectory)">
-            <summary>
-            Переместить файл из папки в другую папку.
-            </summary>
-            <param name="childFileName">Имя дочернего файла.</param>
-            <param name="destination">Папка назначения.</param>
-        </member>
         <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.CopyDirectoryFrom(VFS.Interfaces.VirtualDrive.IVirtualDirectory)">
             <summary>
-            Создать новую дочернюю папку - копию переданной.
+            Создать в директории новую папку - копию переданной.
             </summary>
-            <param name="copiedDirectory">Копируемая папка.</param>
-            <returns>Созданная копия.</returns>
         </member>
         <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.CopyFileFrom(VFS.Interfaces.VirtualDrive.IVirtualFile)">
             <summary>
             Создать в директории новый файл - копию переданного.
             </summary>
-            <param name="copiedFile">Копируемый файл.</param>
-            <returns>Созданная копия.</returns>
         </member>
         <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.TryCastToInMemoryVirtualDirectory(VFS.Interfaces.VirtualDrive.IVirtualDirectory)">
             <summary>
-            Попробовать привести <see cref="T:VFS.Interfaces.VirtualDrive.IVirtualDirectory"/> к типу
-            <see cref="T:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory"/>.
+            Попробовать привести <see cref="T:VFS.Interfaces.VirtualDrive.IVirtualDirectory" /> к типу
+            <see cref="T:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory" />.
             </summary>
-            <param name="directory">Интерфейс директории.</param>
-            <returns><see cref="T:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory"/> или null.</returns>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.ClearRecursive">
-            <summary>
-            Очистить директорию, т.е. удалить всё содержимое.
-            </summary>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.CreateCopy">
-            <summary>
-            Получить полную копию директории.
-            </summary>
-            <returns>Созданная полная копия .</returns>
-        </member>
-        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.Name">
-            <summary>
-            Имя папки.
-            </summary>
-        </member>
-        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.Directories">
-            <summary>
-            Дочерние папки.
-            </summary>
-        </member>
-        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory.Files">
-            <summary>
-            Файлы.
-            </summary>
+            <returns><see cref="T:VFS.InMemoryVirtualDrive.InMemoryVirtualDirectory" /> или null.</returns>
         </member>
         <member name="T:VFS.InMemoryVirtualDrive.InMemoryVirtualFile">
             <summary>
             Виртуальный файл, хранящий данные в памяти.
-            </summary>
-        </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualFile.name">
-            <summary>
-            Имя файла.
-            </summary>
-        </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualFile.config">
-            <summary>
-            Конфигурация виртуального диска.
-            </summary>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualFile.#ctor(System.String,VFS.InMemoryVirtualDrive.InMemoryVirtualDriveConfig)">
-            <summary>
-            Создать файл, хранящий данные в памяти.
-            </summary>
-            <param name="name">Имя файла.</param>
-            <param name="config">Конфигурация виртуального диска.</param>
-        </member>
-        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualFile.Name">
-            <summary>
-            Имя файла.
             </summary>
         </member>
         <member name="T:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive">
@@ -195,35 +86,25 @@
             в качестве хранилища данных.
             </summary>
         </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.config">
+        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.#ctor">
             <summary>
-            Конфигурация виртуального диска.
+            Создать новый диск, готовый для работы.
             </summary>
         </member>
-        <member name="F:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.root">
+        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.Name">
             <summary>
-            Корневая директория.
+            Имя диска.
             </summary>
         </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.Initialize(System.String,System.String)">
+        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.ChildDirectories">
             <summary>
-            Инизиализировать виртуальный диск для начала работы.
+            Получить список директорий в корне диска.
             </summary>
-            <param name="xmlConfig">Xml-конфигурация.</param>
-            <param name="driveName">Имя диска (например, "C:").</param>
         </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.SetIntegrationBehaviour(VFS.Interfaces.VirtualDrive.IIntegrationBehaviour)">
+        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.Files">
             <summary>
-            Определить поведение интеграции с другими реализациями
-            виртуального диска.
+            Получить список файлов в корне диска.
             </summary>
-            <param name="integrationBehaviour">Поведение интеграции.</param>
-        </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.GetXmlConfigSchema">
-            <summary>
-            Получить схему конфигурации виртуального диска.
-            </summary>
-            <returns>Схема конфигурации виртуального диска.</returns>
         </member>
         <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.CreateFile(System.String)">
             <summary>
@@ -252,7 +133,7 @@
             <param name="name">Имя директории.</param>
             <param name="recursive">Вместе с дочерними подпапками.</param>
             <exception cref="T:System.InvalidOperationException">
-            Если параметр <paramref name="recursive"/>=false, а 
+            Если параметр <paramref name="recursive" />=false, а
             директория содержит подпапки.
             </exception>
         </member>
@@ -296,31 +177,17 @@
             Завершить работу с диском.
             </summary>
         </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.GetRoot">
+        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.Initialize(System.String)">
             <summary>
-            Получить корневую папку диска.
+            Инизиализировать виртуальный диск для начала работы.
             </summary>
+            <param name="xmlConfig">Xml-конфигурация.</param>
         </member>
-        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.ThrowIfNotInitialized">
+        <member name="M:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.GetXmlConfigSchema">
             <summary>
-            Сгенерировать исключение, если виртуальный
-            диск не инициализирован.
+            Получить схему конфигурации виртуального диска.
             </summary>
-        </member>
-        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.Name">
-            <summary>
-            Имя диска.
-            </summary>
-        </member>
-        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.Directories">
-            <summary>
-            Получить список директорий в корне диска.
-            </summary>
-        </member>
-        <member name="P:VFS.InMemoryVirtualDrive.InMemoryVirtualDrive.Files">
-            <summary>
-            Получить список файлов в корне диска.
-            </summary>
+            <returns>Схема конфигурации виртуального диска.</returns>
         </member>
     </members>
 </doc>
