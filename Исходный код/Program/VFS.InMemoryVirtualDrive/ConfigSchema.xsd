@@ -9,6 +9,7 @@
       <xs:sequence>
         <xs:element name="MaxFileNameLength" type="xs:int"></xs:element>
         <xs:element name="MaxDirectoryNameLength" type="xs:int"></xs:element>
+        <xs:element name="DriveName" type="xs:string"></xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -8,7 +8,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using VFS.InMemoryVirtualDrive;
-    using VFS.Utilities;
 
     /// <summary>
     /// Тестирование параллельной работы с виртуальным
@@ -72,15 +71,7 @@
         /// <returns>Готовый к работе виртуальный файловый диск.</returns>
         private static InMemoryVirtualDrive GetNewVirtualDrive()
         {
-            var result = new InMemoryVirtualDrive();
-
-            string xmlConfig = AppResourceReader.GetResource(
-                typeof(InMemoryVirtualDrive).Assembly,
-                "VFS.InMemoryVirtualDrive.ConfigExample.xml");
-
-            result.Initialize(xmlConfig, "C:");
-
-            return result;
+            return new InMemoryVirtualDrive();
         }
 
         private void Initialize()

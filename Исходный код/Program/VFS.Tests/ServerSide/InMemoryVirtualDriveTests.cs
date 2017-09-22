@@ -6,7 +6,6 @@
 
     using VFS.InMemoryVirtualDrive;
     using VFS.Interfaces.VirtualDrive;
-    using VFS.Utilities;
 
     /// <summary>
     /// Класс тестирования виртуального диска, работающего с памятью.
@@ -15,64 +14,13 @@
     public class InMemoryVirtualDriveTests
     {
         /// <summary>
-        /// Инициализация виртуального диска некорректным именем.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void InvalidDriveNameTest()
-        {
-            var drive = new InMemoryVirtualDrive();
-            string config = this.GetDriveStandardConfig();
-            drive.Initialize(config, "C"); // без двоеточия, нестандартное имя диска.
-        }
-
-        /// <summary>
-        /// Инициализация виртуального диска некорректным именем.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void InvalidConfigTest()
-        {
-            var drive = new InMemoryVirtualDrive();
-            drive.Initialize(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<InMemoryVirtualDrive>
-  <MaxFileNameLength>100</MaxFileNameLength>
-  <MaxDirectoryNameLength>100</MaxDirectoryNameLength>
-  <INVALIDELEMENT>100</INVALIDELEMENT>
-</InMemoryVirtualDrive>", "C:");
-        }
-
-        /// <summary>
-        /// Инициализация виртуального диска со стандартной конфигурацией.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void InitializeWithoutConfigTest()
-        {
-            var drive = new InMemoryVirtualDrive();
-            drive.Initialize(null, "D:");
-        }
-
-        /// <summary>
-        /// Инициализация виртуального диска со стандартной конфигурацией.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void InitializeWithEmptyConfigTest()
-        {
-            var drive = new InMemoryVirtualDrive();
-            drive.Initialize("   ", "D:");
-        }
-
-        /// <summary>
         /// Нормальная инициализация.
         /// </summary>
         [TestMethod]
         public void NormalInitialization()
         {
-            var drive = new InMemoryVirtualDrive();
-            string config = this.GetDriveStandardConfig();
-            drive.Initialize(config, "C:");
+            // ReSharper disable once ObjectCreationAsStatement в целях тестирования создания объекта
+            new InMemoryVirtualDrive();
         }
 
         /// <summary>
@@ -82,20 +30,7 @@
         public void DriveNameCheck()
         {
             var drive = new InMemoryVirtualDrive();
-            string config = this.GetDriveStandardConfig();
-            drive.Initialize(config, "C:");
             Assert.AreEqual("C:", drive.Name);
-        }
-
-        /// <summary>
-        /// Схема конфигурации существует.
-        /// </summary>
-        [TestMethod]
-        public void ConfigSchemaNotEmpty()
-        {
-            IVirtualDrive drive = new InMemoryVirtualDrive();
-            string schema = drive.GetXmlConfigSchema();
-            Assert.IsFalse(string.IsNullOrWhiteSpace(schema));
         }
 
         /// <summary>
@@ -105,7 +40,6 @@
         public void FindDirectoryTest()
         {
             var drive = new InMemoryVirtualDrive();
-            drive.Initialize(this.GetDriveStandardConfig(), "C:");
             IVirtualDirectory rootDir = drive.CreateDirectory("dir1");
             IVirtualDirectory dir2 = rootDir.CreateDirectory("DIR2");
             dir2.CreateDirectory("dir3");
@@ -125,7 +59,6 @@
         public void FindDirectoryWithoutDriveNamePathTest()
         {
             var drive = new InMemoryVirtualDrive();
-            drive.Initialize(this.GetDriveStandardConfig(), "C:");
             IVirtualDirectory rootDir = drive.CreateDirectory("dir1");
             IVirtualDirectory dir2 = rootDir.CreateDirectory("DIR2");
             dir2.CreateDirectory("dir3");
@@ -140,7 +73,6 @@
         public void FindDirectoryWithInvalidPath()
         {
             var drive = new InMemoryVirtualDrive();
-            drive.Initialize(this.GetDriveStandardConfig(), "C:");
             IVirtualDirectory rootDir = drive.CreateDirectory("dir1");
             IVirtualDirectory dir2 = rootDir.CreateDirectory("DIR2");
             dir2.CreateDirectory("dir3");
@@ -155,20 +87,8 @@
         public void FindDirInAnotherDrive()
         {
             var drive = new InMemoryVirtualDrive();
-            drive.Initialize(this.GetDriveStandardConfig(), "C:");
             drive.CreateDirectory("dir1");
             Assert.IsNull(drive.FindDirectory("D:\\dir1\\DIR2\\dir3"));
-        }
-
-        /// <summary>
-        /// Получить строку xml из примера структуры файлов и папок.
-        /// </summary>
-        /// <returns>XML-структура папок и файлов.</returns>
-        private string GetDriveStandardConfig()
-        {
-            return AppResourceReader.GetResource(
-                typeof(InMemoryVirtualDrive).Assembly,
-                "VFS.InMemoryVirtualDrive.ConfigExample.xml");
         }
     }
 }

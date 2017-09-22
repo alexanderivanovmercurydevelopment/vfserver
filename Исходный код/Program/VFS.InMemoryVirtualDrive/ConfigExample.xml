@@ -3,4 +3,5 @@
 <InMemoryVirtualDrive>
   <MaxFileNameLength>100</MaxFileNameLength>
   <MaxDirectoryNameLength>100</MaxDirectoryNameLength>
+  <DriveName>C:</DriveName>
 </InMemoryVirtualDrive>

@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,10 +55,6 @@
     <Compile Include="VirtualFileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VFS.InMemoryVirtualDrive\VFS.InMemoryVirtualDrive.csproj">
-      <Project>{5ce28ae2-45b0-40f3-9c33-cdc4104c8809}</Project>
-      <Name>VFS.InMemoryVirtualDrive</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VFS.Interfaces\VFS.Interfaces.csproj">
       <Project>{55eb38ae-ca38-451f-856f-d42c0aa7b0c0}</Project>
       <Name>VFS.Interfaces</Name>

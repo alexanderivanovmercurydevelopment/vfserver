@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
     using System.IO;
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     using VFS.Interfaces.VirtualDrive;
     using VFS.Utilities;
@@ -13,6 +13,7 @@
     /// Виртуальный диск, использующий оперативную память
     /// в качестве хранилища данных.
     /// </summary>
+    [Export(typeof(IVirtualDrive))]
     public class InMemoryVirtualDrive : IVirtualDrive
     {
         private InMemoryVirtualDriveConfig config;
@@ -20,52 +21,15 @@
         private InMemoryVirtualDirectory root;
 
         /// <summary>
-        /// Инизиализировать виртуальный диск для начала работы.
+        /// Создать новый диск, готовый для работы.
         /// </summary>
-        /// <param name="xmlConfig">Xml-конфигурация.</param>
-        /// <param name="driveName">Имя диска (например, "C:").</param>
-        public void Initialize(string xmlConfig, string driveName)
+        public InMemoryVirtualDrive()
         {
-            if (!Regex.IsMatch(driveName, "\\w:"))
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(driveName),
-                    "Имя диска должно содержать букву диска и символ \":\".");
-            }
-
-            if (string.IsNullOrWhiteSpace(xmlConfig))
-            {
-                throw new ArgumentNullException(
-                    nameof(xmlConfig),
-                    "Для инициализации интеграции необходимо передать XML-конфигурацию настройки.");
-            }
-
-            if (!XmlUtilities.ValidateXml(xmlConfig, this.GetXmlConfigSchema()))
-            {
-                throw new InvalidOperationException(
-                    "Переданная xml-конфигурация не соответствует описанной в xsd-схеме.");
-            }
-
-            this.Name = driveName;
-
-            this.config = XmlUtilities
-                .DeserializeFromXml<InMemoryVirtualDriveConfig>(
-                    xmlConfig);
-
-            this.root = new InMemoryVirtualDirectory(
-                "root",
-                this.config);
-        }
-
-        /// <summary>
-        /// Получить схему конфигурации виртуального диска.
-        /// </summary>
-        /// <returns>Схема конфигурации виртуального диска.</returns>
-        public string GetXmlConfigSchema()
-        {
-            return AppResourceReader.GetResource(
+            string xmlConfig = AppResourceReader.GetResource(
                 typeof(InMemoryVirtualDrive).Assembly,
-                "VFS.InMemoryVirtualDrive.ConfigSchema.xsd");
+                "VFS.InMemoryVirtualDrive.ConfigExample.xml");
+
+            this.Initialize(xmlConfig);
         }
 
         /// <summary>
@@ -257,6 +221,46 @@
         internal InMemoryVirtualDirectory GetRoot()
         {
             return this.root;
+        }
+
+        /// <summary>
+        /// Инизиализировать виртуальный диск для начала работы.
+        /// </summary>
+        /// <param name="xmlConfig">Xml-конфигурация.</param>
+        private void Initialize(string xmlConfig)
+        {
+            if (string.IsNullOrWhiteSpace(xmlConfig))
+            {
+                throw new ArgumentNullException(
+                    nameof(xmlConfig),
+                    "Для инициализации интеграции необходимо передать XML-конфигурацию настройки.");
+            }
+
+            if (!XmlUtilities.ValidateXml(xmlConfig, this.GetXmlConfigSchema()))
+            {
+                throw new InvalidOperationException(
+                    "Переданная xml-конфигурация не соответствует описанной в xsd-схеме.");
+            }
+
+            this.config = XmlUtilities
+                .DeserializeFromXml<InMemoryVirtualDriveConfig>(
+                    xmlConfig);
+
+            this.Name = this.config.DriveName;
+            this.root = new InMemoryVirtualDirectory(
+                "root",
+                this.config);
+        }
+
+        /// <summary>
+        /// Получить схему конфигурации виртуального диска.
+        /// </summary>
+        /// <returns>Схема конфигурации виртуального диска.</returns>
+        private string GetXmlConfigSchema()
+        {
+            return AppResourceReader.GetResource(
+                typeof(InMemoryVirtualDrive).Assembly,
+                "VFS.InMemoryVirtualDrive.ConfigSchema.xsd");
         }
 
         private void ThrowIfNotInitialized()

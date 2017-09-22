@@ -1,6 +1,7 @@
 ﻿namespace VFS.InMemoryVirtualDrive
 {
     using System;
+    using System.Text.RegularExpressions;
     using System.Xml.Serialization;
 
     using VFS.Interfaces.VirtualDrive;
@@ -11,6 +12,8 @@
     [XmlRoot("InMemoryVirtualDrive")]
     public class InMemoryVirtualDriveConfig
     {
+        private string driveName;
+
         /// <summary>
         /// Максимальная длина имени файла.
         /// </summary>
@@ -22,6 +25,25 @@
         /// </summary>
         [XmlElement("MaxDirectoryNameLength")]
         public int MaxDirectoryNameLength { get; set; }
+
+        /// <summary>
+        /// Имя диска.
+        /// </summary>
+        [XmlElement("DriveName")]
+        public string DriveName
+        {
+            get { return this.driveName; }
+            set
+            {
+                if (!Regex.IsMatch(value, "\\w:"))
+                {
+                    throw new InvalidOperationException(
+                        "Имя диска должно содержать букву диска и символ \":\".");
+                }
+
+                this.driveName = value;
+            }
+        }
 
         /// <summary>
         /// Поведение интеграции с другими реализациями

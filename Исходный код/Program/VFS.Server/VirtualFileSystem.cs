@@ -2,10 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
 
-    using VFS.InMemoryVirtualDrive;
     using VFS.Interfaces.VirtualDrive;
     using VFS.Utilities;
 
@@ -20,7 +24,51 @@
 
         internal VirtualFileSystem()
         {
-            this.AddInMemoryVirtualDrive("C:");
+            this.Initialize();
+        }
+
+        private void Initialize()
+        {
+            IList<IVirtualDrive> drives = VirtualFileSystem.GetExternalConfiguredDrives()
+                .ToList();
+
+            VirtualFileSystem.CheckDriveNames(drives);
+
+            this.virtualDrives.AddRange(drives);
+        }
+
+        private static IEnumerable<IVirtualDrive> GetExternalConfiguredDrives()
+        {
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "VFS.InMemoryVirtualDrive.dll");
+            ComposablePartCatalog catalog = new AssemblyCatalog(Assembly.LoadFile(path));
+            CompositionContainer container = new CompositionContainer(catalog);
+            container.ComposeParts();
+            IEnumerable<IVirtualDrive> drives = container.GetExportedValues<IVirtualDrive>();
+            return drives;
+        }
+
+        private static void CheckDriveNames(IList<IVirtualDrive> drives)
+        {
+            List<IVirtualDrive> checkedDrives = new List<IVirtualDrive>();
+
+            foreach (var drive in drives)
+            {
+                if (!Regex.IsMatch(drive.Name, "\\w:"))
+                {
+                    throw new InvalidOperationException(
+                        $"Ошибка подключения виртуального диска. Диск {drive.Name} имеет недопустимое имя. " +
+                        "Допустимы имена, содержащие один символ и двоеточие (пример - C:, D:, Z:).");
+                }
+
+                if (checkedDrives.Any(checkedDrive =>
+                    string.Equals(checkedDrive.Name, drive.Name, StringComparison.OrdinalIgnoreCase)))
+                {
+                    throw new InvalidOperationException(
+                        $"Невозможно подключить несколько виртуальных дисков с одним именем {drive.Name}.");
+                }
+
+                checkedDrives.Add(drive);
+            }
         }
 
         internal void CheckDirectoryExisting(string fullPath)
@@ -182,23 +230,6 @@
 
             return directory?.Files.FirstOrDefault(f =>
                 f.Name == fullFilePath.GetDirectoryOrFileName());
-        }
-
-        /// <summary>
-        /// Добавить виртуальный диск, хранящий данные в памяти.
-        /// </summary>
-        /// <param name="driveName">Имя диска.</param>
-        private void AddInMemoryVirtualDrive(string driveName)
-        {
-            IVirtualDrive inMemoryDrive
-                = new InMemoryVirtualDrive();
-
-            string xmlConfig = AppResourceReader.GetResource(
-                typeof(InMemoryVirtualDrive).Assembly,
-                "VFS.InMemoryVirtualDrive.ConfigExample.xml");
-
-            inMemoryDrive.Initialize(xmlConfig, driveName);
-            this.virtualDrives.Add(inMemoryDrive);
         }
 
         /// <summary>
